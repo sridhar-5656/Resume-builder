@@ -106,7 +106,7 @@ npm start
 
 ---
 
-## 🙋‍♂️ Author
+## 🙋‍♂️ Developer
 **Venkata Sridhar Reddy**  
 📧 Email: **bsridhar@gmail.com**
 
