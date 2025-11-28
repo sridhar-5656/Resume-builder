@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Generator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        h1, h2, h3 {
+            color: #2b3b90;
+        }
+        .underline {
+            border-bottom: 2px solid black;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+        }
+        label {
+            font-weight: bold;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .btn {
+            background-color: #2b3b90;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            display: block;
+            margin: 10px auto;
+            text-align: center;
+        }
+        .resume {
+            display: none;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        .resume h2 {
+            text-align: center;
+        }
+        .resume-section {
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Resume Generator</h1>
+        <form id="resume-form">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" required>
+
+            <label for="email">Email</label>
+            <input type="email" id="email" required>
+
+            <label for="phone">Phone</label>
+            <input type="text" id="phone" required>
+
+            <label for="profile">Profile Summary</label>
+            <textarea id="profile" required></textarea>
+
+            <label for="experience">Experience</label>
+            <textarea id="experience"></textarea>
+
+            <label for="education">Education</label>
+            <textarea id="education" required></textarea>
+
+            <label for="skills">Skills</label>
+            <textarea id="skills" required></textarea>
+
+            <button type="button" class="btn" onclick="generateResume()">Generate Resume</button>
+        </form>
+    </div>
+
+    <div class="container resume" id="resume">
+        <h2 id="r-name"></h2>
+        <p><strong>Email:</strong> <span id="r-email"></span></p>
+        <p><strong>Phone:</strong> <span id="r-phone"></span></p>
+
+        <div class="resume-section">
+            <h3 class="underline">Profile Summary</h3>
+            <p id="r-profile"></p>
+        </div>
+
+        <div class="resume-section">
+            <h3 class="underline">Experience</h3>
+            <p id="r-experience"></p>
+        </div>
+
+        <div class="resume-section">
+            <h3 class="underline">Education</h3>
+            <p id="r-education"></p>
+        </div>
+
+        <div class="resume-section">
+            <h3 class="underline">Skills</h3>
+            <p id="r-skills"></p>
+        </div>
+
+        <button id="download-btn" class="btn" onclick="downloadPDF()" style="display: none;">Download Resume</button>
+    </div>
+
+    <script>
+        function generateResume() {
+            document.getElementById("r-name").innerText = document.getElementById("name").value;
+            document.getElementById("r-email").innerText = document.getElementById("email").value;
+            document.getElementById("r-phone").innerText = document.getElementById("phone").value;
+            document.getElementById("r-profile").innerText = document.getElementById("profile").value;
+            document.getElementById("r-experience").innerText = document.getElementById("experience").value;
+            document.getElementById("r-education").innerText = document.getElementById("education").value;
+            document.getElementById("r-skills").innerText = document.getElementById("skills").value;
+
+            document.querySelector(".resume").style.display = "block";
+            document.getElementById("download-btn").style.display = "block";
+        }
+
+        function downloadPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            let y = 20;
+
+            function addSection(title, content) {
+                if (content.trim() !== "") {
+                    doc.setFont("helvetica", "bold");
+                    doc.text(title, 10, y);
+                    doc.setLineWidth(0.5);
+                    doc.line(10, y + 2, 200, y + 2); // Adds a black underline
+                    y += 7;
+                    doc.setFont("helvetica", "normal");
+                    let splitContent = doc.splitTextToSize(content, 180);
+                    doc.text(splitContent, 10, y);
+                    y += splitContent.length * 7;
+                }
+            }
+
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(22);
+            doc.text(document.getElementById("r-name").innerText, 10, y);
+            y += 10;
+
+            doc.setFontSize(14);
+            doc.setFont("helvetica", "normal");
+            doc.text("Email: " + document.getElementById("r-email").innerText, 10, y);
+            y += 7;
+            doc.text("Phone: " + document.getElementById("r-phone").innerText, 10, y);
+            y += 10;
+
+            addSection("Profile Summary", document.getElementById("r-profile").innerText);
+            addSection("Experience", document.getElementById("r-experience").innerText);
+            addSection("Education", document.getElementById("r-education").innerText);
+            addSection("Skills", document.getElementById("r-skills").innerText);
+
+            doc.save("Resume.pdf");
+        }
+    </script>
+
+</body>
+</html>

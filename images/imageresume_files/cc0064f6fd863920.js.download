@@ -1,0 +1,9 @@
+(self["webpackChunk_canva_web"] = self["webpackChunk_canva_web"] || []).push([[32863],{
+
+/***/ 737454:
+function(_, __, __webpack_require__) {__webpack_require__.n_x = __webpack_require__.n;const __web_req__ = __webpack_require__;__web_req__(813110);self._fd1e22c0e0516062f8631db29060abc8 = self._fd1e22c0e0516062f8631db29060abc8 || {};(function(__c) {__c.kmb=function(a,b,c=1,d=1,e=1){__c.na(0<c);__c.na(0<d);__c.na(0<e);const {Pb:f,a:g,b:h}=__c.ie(a),{Pb:k,a:l,b:n}=__c.ie(b);a=(f+k)/2;b=(Math.hypot(g,h)+Math.hypot(l,n))/2;b=.5*(1-Math.sqrt(b**7/(b**7+25**7)));var p=g*(1+b),q=l*(1+b),v=Math.hypot(p,h),w=Math.hypot(q,n);b=(v+w)/2;var x=__c.Via(180*Math.atan2(h,p)/Math.PI);const z=__c.Via(180*Math.atan2(n,q)/Math.PI);p=180<Math.abs(x-z)?(x+z+360)/2:(x+z)/2;q=w-v;v=2*Math.sqrt(v*w)*Math.sin((180>=Math.abs(z-x)?z-x:z<=x?z-x+360:z-x-360)/2*Math.PI/180);
+w=1+.045*b;x=1+.015*b*(1-.17*Math.cos((p-30)*Math.PI/180)+.24*Math.cos(2*p*Math.PI/180)+.32*Math.cos((3*p+6)*Math.PI/180)-.2*Math.cos((4*p-63)*Math.PI/180));return Math.sqrt(((k-f)/(c*(1+.015*(a-50)**2/Math.sqrt(20+(a-50)**2))))**2+(q/(d*w))**2+(v/(e*x))**2+q/(d*w)*(v/(e*x))*-(2*Math.sqrt(b**7/(b**7+25**7)))*Math.sin(60*Math.exp(-1*((p-275)/25)**2)*Math.PI/180))};__c.Ds=function(a,b){return b?[...__c.Fh(a,b).values()].map(c=>c[0]):[...(new Set(a))]};
+}).call(self, self._fd1e22c0e0516062f8631db29060abc8);}
+
+}])
+//# sourceMappingURL=sourcemaps/cc0064f6fd863920.js.map

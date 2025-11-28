@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile - Resume Builder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            background-color: #f4f4f9;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            text-align: center;
+        }
+        #profile-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+            border: 2px solid #007acc;
+        }
+        input, button {
+            width: 90%;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+        button {
+            background: #007acc;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #005fa3;
+        }
+        .file-input-label {
+            display: block;
+            margin: 10px 0;
+            font-size: 14px;
+            color: #007acc;
+            cursor: pointer;
+        }
+        .file-input-label:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>User Profile</h2>
+        <img id="profile-img" src="default-profile.png" alt="Profile Picture">
+        
+        <label for="imageUpload" class="file-input-label">Upload Profile Picture</label>
+        <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+        
+        <input type="text" id="name" placeholder="Full Name">
+        <input type="email" id="email" placeholder="Email">
+        <button onclick="saveProfile()">Save Profile</button>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            loadUserProfile();
+        });
+
+        function loadUserProfile() {
+            let userProfile = JSON.parse(localStorage.getItem("userProfile"));
+
+            if (userProfile) {
+                document.getElementById("name").value = userProfile.name || "";
+                document.getElementById("email").value = userProfile.email || "";
+                document.getElementById("profile-img").src = userProfile.image || "default-profile.png";
+            }
+        }
+
+        document.getElementById("imageUpload").addEventListener("change", function (event) {
+            let file = event.target.files[0];
+
+            if (file && file.type.startsWith("image/")) {
+                let reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById("profile-img").src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                alert("Please upload a valid image file.");
+            }
+        });
+
+        function saveProfile() {
+            let name = document.getElementById("name").value;
+            let email = document.getElementById("email").value;
+            let profileImage = document.getElementById("profile-img").src;
+
+            if (!name || !email) {
+                alert("Please fill in all fields.");
+                return;
+            }
+
+            let userProfile = { name, email, image: profileImage };
+            localStorage.setItem("userProfile", JSON.stringify(userProfile));
+
+            alert("Profile Saved Successfully!");
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Resume Builder</title>
+    <style>
+        /* Font Definitions */
+        @font-face { font-family: 'Arial'; src: local('Arial'); }
+        @font-face { font-family: 'Times New Roman'; src: local('Times New Roman'); }
+        @font-face { font-family: 'Helvetica Neue'; src: local('Helvetica Neue'); }
+        @font-face { font-family: 'Georgia'; src: local('Georgia'); }
+        @font-face { font-family: 'Courier New'; src: local('Courier New'); }
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans&family=Roboto&display=swap');
+
+        /* Base Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            line-height: 1.6;
+        }
+
+        .resume-builder {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h1, h2, h3 {
+            color: #333;
+        }
+
+        h1 {
+            margin-top: 0;
+        }
+
+        h2 {
+            border-bottom: 2px solid #eee;
+            padding-bottom: 5px;
+            margin-top: 30px;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 10px 5px 10px 0;
+            background-color: #2c3e50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #1a252f;
+        }
+
+        .button-primary {
+            background-color: #3498db;
+        }
+
+        .button-primary:hover {
+            background-color: #2980b9;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form-row > * {
+            flex: 1;
+        }
+
+        /* Resume Preview Styles */
+        .resume-preview {
+            margin: 40px auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: white;
+            overflow: hidden;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            position: relative;
+            width: 210mm;
+            min-height: 297mm;
+            box-sizing: border-box;
+            --heading-font: 'Montserrat', sans-serif;
+            --body-font: 'Open Sans', sans-serif;
+            --heading-color: #2c3e50;
+            --sidebar-bg: #2c3e50;
+            --bullet-color: #3498db;
+            --bullet-style: disc;
+        }
+
+        /* Template 1 (Default) */
+        .resume-preview.template-1 .left-sidebar {
+            background-color: var(--sidebar-bg);
+        }
+
+        /* Template 2 (Modern) */
+        .resume-preview.template-2 {
+            --sidebar-bg: #16a085;
+            --bullet-color: #16a085;
+        }
+
+        .resume-preview.template-2 .left-sidebar {
+            background-color: var(--sidebar-bg);
+            padding: 20px;
+        }
+
+        .resume-preview.template-2 .details {
+            padding: 20px;
+        }
+
+        /* Template 3 (Creative) */
+        .resume-preview.template-3 {
+            --sidebar-bg: #e74c3c;
+            --bullet-color: #e74c3c;
+        }
+
+        .resume-preview.template-3 .left-sidebar {
+            background-color: var(--sidebar-bg);
+            padding: 25px;
+        }
+
+        .resume-preview.template-3 .details {
+            padding: 25px;
+        }
+
+        .resume-preview.template-3 .left-sidebar img {
+            border: 3px solid white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        /* Common Preview Styles */
+        .resume-preview .left-sidebar {
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            padding: 30px;
+            color: white;
+            float: left;
+            min-height: 100%;
+            box-sizing: border-box;
+        }
+
+        .resume-preview .left-sidebar img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 20px;
+            display: block;
+            border: 3px solid rgba(255,255,255,0.3);
+        }
+
+        .resume-preview .left-sidebar h2 {
+            color: white;
+            border-bottom: 2px solid rgba(255,255,255,0.2);
+            margin: 25px 0 15px;
+            font-size: 18px;
+            text-transform: uppercase;
+            font-family: var(--heading-font);
+        }
+
+        .resume-preview .left-sidebar p {
+            margin: 8px 0;
+            font-size: 14px;
+            font-family: var(--body-font);
+        }
+
+        .resume-preview .left-sidebar ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin: 15px 0;
+        }
+
+        .resume-preview .left-sidebar ul li {
+            margin-bottom: 8px;
+            position: relative;
+            padding-left: 20px;
+            font-family: var(--body-font);
+        }
+
+        .resume-preview .left-sidebar ul li:before {
+            content: var(--bullet-char, "•");
+            position: absolute;
+            left: 0;
+            color: var(--bullet-color);
+            font-size: 20px;
+            line-height: 1;
+        }
+
+        .resume-preview .details {
+            margin-left: 280px;
+            padding: 30px;
+            box-sizing: border-box;
+        }
+
+        .resume-preview .details h1 {
+            font-size: 28px;
+            margin: 0 0 5px;
+            color: var(--heading-color);
+            text-transform: uppercase;
+            font-family: var(--heading-font);
+        }
+
+        .resume-preview .details h2 {
+            font-size: 20px;
+            margin: 25px 0 15px;
+            color: var(--heading-color);
+            border-bottom: 2px solid #eee;
+            padding-bottom: 5px;
+            text-transform: uppercase;
+            font-family: var(--heading-font);
+        }
+
+        .resume-preview .details p {
+            margin: 10px 0;
+            font-family: var(--body-font);
+        }
+
+        .resume-preview .details ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin: 15px 0;
+        }
+
+        .resume-preview .details ul li {
+            margin-bottom: 15px;
+            position: relative;
+            padding-left: 25px;
+            font-family: var(--body-font);
+        }
+
+        .resume-preview .details ul li:before {
+            content: var(--bullet-char, "•");
+            position: absolute;
+            left: 0;
+            color: var(--bullet-color);
+            font-size: 20px;
+            line-height: 1;
+        }
+
+        .job-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .company {
+            font-style: italic;
+            margin-bottom: 5px;
+        }
+
+        .date {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .clearfix:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        .remove-btn {
+            background-color: #e74c3c;
+            font-size: 14px;
+        }
+
+        .remove-btn:hover {
+            background-color: #c0392b;
+        }
+
+        .template-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .template-option {
+            width: 100px;
+            height: 140px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .template-option:hover {
+            border-color: #3498db;
+        }
+
+        .template-option.selected {
+            border-color: #3498db;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.5);
+        }
+
+        .template-option .preview {
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .template-option .label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 5px;
+            text-align: center;
+            font-size: 12px;
+        }
+
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .resume-preview, .resume-preview * {
+                visibility: visible;
+            }
+            .resume-preview {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+                page-break-after: always;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .resume-preview {
+                width: 100%;
+                min-height: auto;
+            }
+            .resume-preview .left-sidebar {
+                width: 100%;
+                float: none;
+            }
+            .resume-preview .details {
+                margin-left: 0;
+            }
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            .template-selector {
+                flex-wrap: wrap;
+            }
+            .template-option {
+                width: 80px;
+                height: 112px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="resume-builder">
+        <h1>Professional Resume Builder</h1>
+        
+        <form id="resumeForm">
+            <div class="form-section">
+                <h2>Template Selection</h2>
+                <div class="template-selector">
+                    <div class="template-option selected" data-template="1" onclick="selectTemplate(1)">
+                        <div class="preview" style="background-color: #2c3e50;"></div>
+                        <div class="label">Classic</div>
+                    </div>
+                    <div class="template-option" data-template="2" onclick="selectTemplate(2)">
+                        <div class="preview" style="background-color: #16a085;"></div>
+                        <div class="label">Modern</div>
+                    </div>
+                    <div class="template-option" data-template="3" onclick="selectTemplate(3)">
+                        <div class="preview" style="background-color: #e74c3c;"></div>
+                        <div class="label">Creative</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2>Personal Information</h2>
+                <div class="form-row">
+                    <div>
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" placeholder="Full Name" value="RICHARD SANCHEZ">
+                    </div>
+                    <div>
+                        <label for="jobTitle">Job Title</label>
+                        <input type="text" id="jobTitle" placeholder="Job Title" value="MARKETING MANAGER">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div>
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" placeholder="Phone Number" value="+123-456-7890">
+                    </div>
+                    <div>
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" placeholder="Email" value="hello@reallygreatsite.com">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div>
+                        <label for="address">Address</label>
+                        <input type="text" id="address" placeholder="Address" value="123 Anywhere St., Any City">
+                    </div>
+                    <div>
+                        <label for="website">Website</label>
+                        <input type="url" id="website" placeholder="Website" value="www.reallygreatsite.com">
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="imageUpload">Profile Photo</label>
+                    <input type="file" id="imageUpload" accept="image/*">
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2>Professional Summary</h2>
+                <textarea id="profile" placeholder="Write a brief professional summary">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation.</textarea>
+            </div>
+
+            <div class="form-section">
+                <h2>Skills</h2>
+                <textarea id="skills" placeholder="List your skills (one per line)">Project Management
+Public Relations
+Teamwork
+Time Management
+Leadership
+Effective Communication
+Critical Thinking
+Digital Marketing</textarea>
+            </div>
+
+            <div class="form-section">
+                <h2>Languages</h2>
+                <textarea id="languages" placeholder="List languages and proficiency (one per line)">English (Fluent)
+French (Fluent)
+German (Basic)
+Spanish (Intermediate)</textarea>
+            </div>
+
+            <div class="form-section">
+                <h2>Work Experience</h2>
+                <div id="workExperienceContainer">
+                    <div class="experience-entry">
+                        <div class="form-row">
+                            <div>
+                                <label>Company</label>
+                                <input type="text" class="exp-company" placeholder="Company Name" value="Borcelle Studio">
+                            </div>
+                            <div>
+                                <label>Job Title</label>
+                                <input type="text" class="exp-title" placeholder="Job Title" value="Marketing Manager & Specialist">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div>
+                                <label>Start Date</label>
+                                <input type="text" class="exp-start" placeholder="Start Year" value="2030">
+                            </div>
+                            <div>
+                                <label>End Date</label>
+                                <input type="text" class="exp-end" placeholder="End Year" value="PRESENT">
+                            </div>
+                        </div>
+                        <div>
+                            <label>Responsibilities</label>
+                            <textarea class="exp-desc" placeholder="Job responsibilities (one per line)">Develop and execute comprehensive marketing strategies and campaigns that align with the company's goals and objectives.
+Lead, mentor, and manage a high-performing marketing team, fostering a collaborative and results-driven work environment.
+Monitor brand consistency across marketing channels and materials.</textarea>
+                        </div>
+                        <button type="button" class="remove-btn" onclick="removeExperience(this)">Remove Experience</button>
+                    </div>
+                    
+                    <div class="experience-entry">
+                        <div class="form-row">
+                            <div>
+                                <label>Company</label>
+                                <input type="text" class="exp-company" placeholder="Company Name" value="Fauget Studio">
+                            </div>
+                            <div>
+                                <label>Job Title</label>
+                                <input type="text" class="exp-title" placeholder="Job Title" value="Marketing Manager & Specialist">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div>
+                                <label>Start Date</label>
+                                <input type="text" class="exp-start" placeholder="Start Year" value="2025">
+                            </div>
+                            <div>
+                                <label>End Date</label>
+                                <input type="text" class="exp-end" placeholder="End Year" value="2030">
+                            </div>
+                        </div>
+                        <div>
+                            <label>Responsibilities</label>
+                            <textarea class="exp-desc" placeholder="Job responsibilities (one per line)">Collaborated with cross-functional teams to develop and implement marketing campaigns.
+Analyzed market trends and customer insights to identify new opportunities.
+Managed social media presence and content creation.</textarea>
+                        </div>
+                        <button type="button" class="remove-btn" onclick="removeExperience(this)">Remove Experience</button>
+                    </div>
+                </div>
+                <button type="button" class="button-primary" onclick="addExperience()">Add Experience</button>
+            </div>
+
+            <div class="form-section">
+                <h2>Education</h2>
+                <div id="educationContainer">
+                    <div class="education-entry">
+                        <div class="form-row">
+                            <div>
+                                <label>Institution</label>
+                                <input type="text" class="edu-institution" placeholder="School/University" value="University of State">
+                            </div>
+                            <div>
+                                <label>Degree</label>
+                                <input type="text" class="edu-degree" placeholder="Degree" value="Bachelor of Science in Marketing">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div>
+                                <label>Start Date</label>
+                                <input type="text" class="edu-start" placeholder="Start Year" value="2021">
+                            </div>
+                            <div>
+                                <label>End Date</label>
+                                <input type="text" class="edu-end" placeholder="End Year" value="2025">
+                            </div>
+                        </div>
+                        <button type="button" class="remove-btn" onclick="removeEducation(this)">Remove Education</button>
+                    </div>
+                </div>
+                <button type="button" class="button-primary" onclick="addEducation()">Add Education</button>
+            </div>
+
+            <div class="form-section">
+                <h2>Style Customization</h2>
+                <div class="form-row">
+                    <div>
+                        <label for="headingFont">Heading Font</label>
+                        <select id="headingFont">
+                            <option value="'Montserrat', sans-serif">Montserrat</option>
+                            <option value="'Roboto', sans-serif">Roboto</option>
+                            <option value="'Arial'">Arial</option>
+                            <option value="'Times New Roman'">Times New Roman</option>
+                            <option value="'Georgia'">Georgia</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="headingColor">Heading Color</label>
+                        <input type="color" id="headingColor" value="#2c3e50">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div>
+                        <label for="bodyFont">Body Font</label>
+                        <select id="bodyFont">
+                            <option value="'Open Sans', sans-serif">Open Sans</option>
+                            <option value="'Arial'">Arial</option>
+                            <option value="'Times New Roman'">Times New Roman</option>
+                            <option value="'Georgia'">Georgia</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="bulletStyle">Bullet Style</label>
+                        <select id="bulletStyle">
+                            <option value="disc">• (Disc)</option>
+                            <option value="circle">○ (Circle)</option>
+                            <option value="square">■ (Square)</option>
+                            <option value="dash">- (Dash)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="no-print">
+                <button type="button" class="button-primary" onclick="updatePreview()">Update Preview</button>
+                <button type="button" class="button-primary" onclick="window.print()">Print Resume</button>
+                <button type="button" class="button-primary" onclick="saveAsPDF()">Save as PDF</button>
+                <button type="reset">Reset Form</button>
+            </div>
+        </form>
+
+        <div class="resume-preview template-1" id="resumePreview">
+            <div class="left-sidebar">
+                <img id="previewImage" src="https://via.placeholder.com/150" alt="Profile Photo">
+                <h2>Contact</h2>
+                <p id="previewPhone">+123-456-7890</p>
+                <p id="previewEmail">hello@reallygreatsite.com</p>
+                <p id="previewWebsite">www.reallygreatsite.com</p>
+                <p id="previewAddress">123 Anywhere St., Any City</p>
+
+                <h2>Skills</h2>
+                <ul id="previewSkills">
+                    <li>Project Management</li>
+                    <li>Public Relations</li>
+                    <li>Teamwork</li>
+                    <li>Time Management</li>
+                </ul>
+
+                <h2>Languages</h2>
+                <ul id="previewLanguages">
+                    <li>English (Fluent)</li>
+                    <li>French (Fluent)</li>
+                    <li>German (Basic)</li>
+                    <li>Spanish (Intermediate)</li>
+                </ul>
+            </div>
+
+            <div class="details">
+                <h1 id="previewName">RICHARD SANCHEZ</h1>
+                <p id="previewJobTitle">MARKETING MANAGER</p>
+
+                <h2>Profile</h2>
+                <p id="previewProfile">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation.</p>
+
+                <h2>Work Experience</h2>
+                <div id="previewExperience">
+                    <div class="experience-item">
+                        <p class="job-title">Marketing Manager & Specialist</p>
+                        <p class="company">Borcelle Studio</p>
+                        <p class="date">2030 - PRESENT</p>
+                        <ul>
+                            <li>Develop and execute comprehensive marketing strategies and campaigns that align with the company's goals and objectives.</li>
+                            <li>Lead, mentor, and manage a high-performing marketing team, fostering a collaborative and results-driven work environment.</li>
+                            <li>Monitor brand consistency across marketing channels and materials.</li>
+                        </ul>
+                    </div>
+                    <div class="experience-item">
+                        <p class="job-title">Marketing Manager & Specialist</p>
+                        <p class="company">Fauget Studio</p>
+                        <p class="date">2025 - 2030</p>
+                        <ul>
+                            <li>Collaborated with cross-functional teams to develop and implement marketing campaigns.</li>
+                            <li>Analyzed market trends and customer insights to identify new opportunities.</li>
+                            <li>Managed social media presence and content creation.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h2>Education</h2>
+                <div id="previewEducation">
+                    <div class="education-item">
+                        <p class="job-title">Bachelor of Science in Marketing</p>
+                        <p class="company">University of State</p>
+                        <p class="date">2021 - 2025</p>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+
+    <script>
+        // Current template
+        let currentTemplate = 1;
+        
+        // Function to select template
+        function selectTemplate(templateId) {
+            currentTemplate = templateId;
+            document.querySelectorAll('.template-option').forEach(option => {
+                option.classList.remove('selected');
+                if (option.dataset.template == templateId) {
+                    option.classList.add('selected');
+                }
+            });
+            
+            const preview = document.getElementById('resumePreview');
+            preview.className = 'resume-preview';
+            preview.classList.add(`template-${templateId}`);
+            
+            updatePreview();
+        }
+        
+        // Function to update the resume preview
+        function updatePreview() {
+            // Personal Information
+            document.getElementById('previewName').textContent = document.getElementById('name').value.toUpperCase();
+            document.getElementById('previewJobTitle').textContent = document.getElementById('jobTitle').value.toUpperCase();
+            document.getElementById('previewPhone').textContent = document.getElementById('phone').value;
+            document.getElementById('previewEmail').textContent = document.getElementById('email').value;
+            document.getElementById('previewWebsite').textContent = document.getElementById('website').value;
+            document.getElementById('previewAddress').textContent = document.getElementById('address').value;
+            
+            // Profile
+            document.getElementById('previewProfile').textContent = document.getElementById('profile').value;
+            
+            // Skills
+            const skillsList = document.getElementById('previewSkills');
+            skillsList.innerHTML = '';
+            const skills = document.getElementById('skills').value.split('\n');
+            skills.forEach(skill => {
+                if (skill.trim()) {
+                    const li = document.createElement('li');
+                    li.textContent = skill.trim();
+                    skillsList.appendChild(li);
+                }
+            });
+            
+            // Languages
+            const languagesList = document.getElementById('previewLanguages');
+            languagesList.innerHTML = '';
+            const languages = document.getElementById('languages').value.split('\n');
+            languages.forEach(language => {
+                if (language.trim()) {
+                    const li = document.createElement('li');
+                    li.textContent = language.trim();
+                    languagesList.appendChild(li);
+                }
+            });
+            
+            // Work Experience
+            const experienceContainer = document.getElementById('previewExperience');
+            experienceContainer.innerHTML = '';
+            const experienceEntries = document.querySelectorAll('.experience-entry');
+            
+            experienceEntries.forEach(entry => {
+                const company = entry.querySelector('.exp-company').value;
+                const title = entry.querySelector('.exp-title').value;
+                const start = entry.querySelector('.exp-start').value;
+                const end = entry.querySelector('.exp-end').value;
+                const desc = entry.querySelector('.exp-desc').value;
+                
+                const experienceItem = document.createElement('div');
+                experienceItem.className = 'experience-item';
+                experienceItem.innerHTML = `
+                    <p class="job-title">${title}</p>
+                    <p class="company">${company}</p>
+                    <p class="date">${start} - ${end}</p>
+                    <ul>
+                        ${desc.split('\n').filter(item => item.trim()).map(item => `<li>${item.trim()}</li>`).join('')}
+                    </ul>
+                `;
+                experienceContainer.appendChild(experienceItem);
+            });
+            
+            // Education
+            const educationContainer = document.getElementById('previewEducation');
+            educationContainer.innerHTML = '';
+            const educationEntries = document.querySelectorAll('.education-entry');
+            
+            educationEntries.forEach(entry => {
+                const institution = entry.querySelector('.edu-institution').value;
+                const degree = entry.querySelector('.edu-degree').value;
+                const start = entry.querySelector('.edu-start').value;
+                const end = entry.querySelector('.edu-end').value;
+                
+                const educationItem = document.createElement('div');
+                educationItem.className = 'education-item';
+                educationItem.innerHTML = `
+                    <p class="job-title">${degree}</p>
+                    <p class="company">${institution}</p>
+                    <p class="date">${start} - ${end}</p>
+                `;
+                educationContainer.appendChild(educationItem);
+            });
+            
+            // Customization
+            const headingFont = document.getElementById('headingFont').value;
+            const bodyFont = document.getElementById('bodyFont').value;
+            const headingColor = document.getElementById('headingColor').value;
+            const bulletStyle = document.getElementById('bulletStyle').value;
+            
+            const preview = document.getElementById('resumePreview');
+            preview.style.setProperty('--heading-font', headingFont);
+            preview.style.setProperty('--body-font', bodyFont);
+            preview.style.setProperty('--heading-color', headingColor);
+            preview.style.setProperty('--bullet-style', bulletStyle);
+            
+            // Set bullet character based on selection
+            let bulletChar = "•";
+            if (bulletStyle === 'circle') bulletChar = "○";
+            if (bulletStyle === 'square') bulletChar = "■";
+            if (bulletStyle === 'dash') bulletChar = "-";
+            
+            preview.style.setProperty('--bullet-char', `"${bulletChar}"`);
+            
+            // Update sidebar color based on template
+            let sidebarBg = '#2c3e50';
+            if (currentTemplate === 2) sidebarBg = '#16a085';
+            if (currentTemplate === 3) sidebarBg = '#e74c3c';
+            preview.style.setProperty('--sidebar-bg', sidebarBg);
+            preview.style.setProperty('--bullet-color', sidebarBg);
+        }
+        
+        // Function to handle image upload
+        document.getElementById('imageUpload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    document.getElementById('previewImage').src = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        // Function to add new work experience
+        function addExperience() {
+            const container = document.getElementById('workExperienceContainer');
+            const newEntry = document.createElement('div');
+            newEntry.className = 'experience-entry';
+            newEntry.innerHTML = `
+                <div class="form-row">
+                    <div>
+                        <label>Company</label>
+                        <input type="text" class="exp-company" placeholder="Company Name">
+                    </div>
+                    <div>
+                        <label>Job Title</label>
+                        <input type="text" class="exp-title" placeholder="Job Title">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div>
+                        <label>Start Date</label>
+                        <input type="text" class="exp-start" placeholder="Start Year">
+                    </div>
+                    <div>
+                        <label>End Date</label>
+                        <input type="text" class="exp-end" placeholder="End Year">
+                    </div>
+                </div>
+                <div>
+                    <label>Responsibilities</label>
+                    <textarea class="exp-desc" placeholder="Job responsibilities (one per line)"></textarea>
+                </div>
+                <button type="button" class="remove-btn" onclick="removeExperience(this)">Remove Experience</button>
+            `;
+            container.appendChild(newEntry);
+        }
+        
+        // Function to remove work experience
+        function removeExperience(button) {
+            if (document.querySelectorAll('.experience-entry').length > 1) {
+                button.parentElement.remove();
+            } else {
+                alert('You need to have at least one work experience entry.');
+            }
+        }
+        
+        // Function to add new education
+        function addEducation() {
+            const container = document.getElementById('educationContainer');
+            const newEntry = document.createElement('div');
+            newEntry.className = 'education-entry';
+            newEntry.innerHTML = `
+                <div class="form-row">
+                    <div>
+                        <label>Institution</label>
+                        <input type="text" class="edu-institution" placeholder="School/University">
+                    </div>
+                    <div>
+                        <label>Degree</label>
+                        <input type="text" class="edu-degree" placeholder="Degree">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div>
+                        <label>Start Date</label>
+                        <input type="text" class="edu-start" placeholder="Start Year">
+                    </div>
+                    <div>
+                        <label>End Date</label>
+                        <input type="text" class="edu-end" placeholder="End Year">
+                    </div>
+                </div>
+                <button type="button" class="remove-btn" onclick="removeEducation(this)">Remove Education</button>
+            `;
+            container.appendChild(newEntry);
+        }
+        
+        // Function to remove education
+        function removeEducation(button) {
+            if (document.querySelectorAll('.education-entry').length > 1) {
+                button.parentElement.remove();
+            } else {
+                alert('You need to have at least one education entry.');
+            }
+        }
+        
+        // Function to save as PDF (placeholder - would need a library like jsPDF in a real implementation)
+        function saveAsPDF() {
+            alert('In a real implementation, this would generate a PDF using a library like html2pdf.js');
+            // Actual implementation would require including a library like:
+            // html2pdf().from(document.getElementById('resumePreview')).save();
+        }
+        
+        // Initialize the preview on page load
+        window.onload = function() {
+            updatePreview();
+        };
+    </script>
+</body>
+</html>

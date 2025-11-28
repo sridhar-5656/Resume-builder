@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern CV Generator</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #34495e;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            font-family: 'Poppins', sans-serif;
+        }
+        .form-group textarea {
+            resize: vertical;
+            height: 100px;
+        }
+        .preview {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+        }
+        .preview h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+            font-size: 1.8em;
+        }
+        .preview p {
+            margin: 5px 0;
+            color: #555;
+        }
+        .preview ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .preview ul li {
+            background: #ecf0f1;
+            margin: 10px 0;
+            padding: 10px;
+            border-left: 5px solid #3498db;
+            border-radius: 5px;
+        }
+        .preview ul li h3 {
+            margin: 0;
+            font-size: 1.4em;
+            color: #2c3e50;
+        }
+        .preview ul li p {
+            margin: 5px 0;
+            color: #555;
+        }
+        .button-group {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .button-group button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            background-color: #3498db;
+            color: #fff;
+            cursor: pointer;
+            margin: 0 10px;
+            font-family: 'Poppins', sans-serif;
+        }
+        .button-group button:hover {
+            background-color: #2980b9;
+        }
+        .contact-info {
+            display: flex;
+            justify-content: space-around;
+            background: #3498db;
+            color: #fff;
+            padding: 10px;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+        .contact-info a {
+            color: #fff;
+            text-decoration: none;
+        }
+        .contact-info a:hover {
+            text-decoration: underline;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>Modern CV Generator</h1>
+        <form id="cvForm">
+            <!-- Contact Information -->
+            <div class="form-group">
+                <label for="fullName">Full Name</label>
+                <input type="text" id="fullName" placeholder="John Doe" required>
+            </div>
+            <div class="form-group">
+                <label for="phoneNumber">Phone Number</label>
+                <input type="text" id="phoneNumber" placeholder="+123 456 7890" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" placeholder="john.doe@example.com" required>
+            </div>
+            <div class="form-group">
+                <label for="linkedin">LinkedIn Profile</label>
+                <input type="url" id="linkedin" placeholder="https://linkedin.com/in/johndoe">
+            </div>
+            <div class="form-group">
+                <label for="github">GitHub/Portfolio Link</label>
+                <input type="url" id="github" placeholder="https://github.com/johndoe">
+            </div>
+
+            <!-- Professional Title -->
+            <div class="form-group">
+                <label for="professionalTitle">Professional Title</label>
+                <input type="text" id="professionalTitle" placeholder="Software Engineer" required>
+            </div>
+
+            <!-- Professional Summary -->
+            <div class="form-group">
+                <label for="summary">Professional Summary</label>
+                <textarea id="summary" placeholder="Experienced software engineer with a passion for developing innovative programs..."></textarea>
+            </div>
+
+            <!-- Skills -->
+            <div class="form-group">
+                <label for="skills">Skills (comma-separated)</label>
+                <input type="text" id="skills" placeholder="JavaScript, Python, React, Node.js">
+            </div>
+
+            <!-- Work Experience -->
+            <div class="form-group">
+                <label for="experience">Work Experience (use '|' to separate entries)</label>
+                <textarea id="experience" placeholder="Job Title | Company Name | Location | Dates | Responsibilities"></textarea>
+            </div>
+
+            <!-- Education -->
+            <div class="form-group">
+                <label for="education">Education (use '|' to separate entries)</label>
+                <textarea id="education" placeholder="Degree | Institution | Location | Graduation Date"></textarea>
+            </div>
+
+            <!-- Certifications -->
+            <div class="form-group">
+                <label for="certifications">Certifications (comma-separated)</label>
+                <input type="text" id="certifications" placeholder="AWS Certified, Google Analytics Certified">
+            </div>
+
+            <!-- Projects -->
+            <div class="form-group">
+                <label for="projects">Projects (use '|' to separate entries)</label>
+                <textarea id="projects" placeholder="Project Title | Description | Technologies Used | Role"></textarea>
+            </div>
+
+            <!-- Languages -->
+            <div class="form-group">
+                <label for="languages">Languages (comma-separated)</label>
+                <input type="text" id="languages" placeholder="English, Spanish">
+            </div>
+
+            <!-- Hobbies -->
+            <div class="form-group">
+                <label for="hobbies">Hobbies/Interests</label>
+                <input type="text" id="hobbies" placeholder="Reading, Traveling, Coding">
+            </div>
+
+            <div class="button-group">
+                <button type="button" onclick="previewCV()">Preview CV</button>
+                <button type="button" onclick="downloadCV()">Download CV</button>
+            </div>
+        </form>
+
+        <!-- Preview Section -->
+        <div id="preview" class="preview" style="display: none;">
+            <h2>Preview CV</h2>
+            <div id="cvContent"></div>
+        </div>
+    </div>
+
+    <script>
+        function previewCV() {
+            const fullName = document.getElementById('fullName').value;
+            const phoneNumber = document.getElementById('phoneNumber').value;
+            const email = document.getElementById('email').value;
+            const linkedin = document.getElementById('linkedin').value;
+            const github = document.getElementById('github').value;
+            const professionalTitle = document.getElementById('professionalTitle').value;
+            const summary = document.getElementById('summary').value;
+            const skills = document.getElementById('skills').value.split(',').map(skill => skill.trim());
+            const experience = document.getElementById('experience').value.split('\n').map(entry => entry.split('|').map(item => item.trim()));
+            const education = document.getElementById('education').value.split('\n').map(entry => entry.split('|').map(item => item.trim()));
+            const certifications = document.getElementById('certifications').value.split(',').map(cert => cert.trim());
+            const projects = document.getElementById('projects').value.split('\n').map(entry => entry.split('|').map(item => item.trim()));
+            const languages = document.getElementById('languages').value.split(',').map(lang => lang.trim());
+            const hobbies = document.getElementById('hobbies').value.split(',').map(hobby => hobby.trim());
+
+            let cvContent = `
+                <h1>${fullName}</h1>
+                <p><strong>${professionalTitle}</strong></p>
+                <div class="contact-info">
+                    <a href="tel:${phoneNumber}">${phoneNumber}</a>
+                    <a href="mailto:${email}">${email}</a>
+                    <a href="${linkedin}" target="_blank">LinkedIn</a>
+                    <a href="${github}" target="_blank">GitHub</a>
+                </div>
+                <h2>Professional Summary</h2>
+                <p>${summary}</p>
+                <h2>Skills</h2>
+                <ul>${skills.map(skill => `<li>${skill}</li>`).join('')}</ul>
+                <h2>Work Experience</h2>
+                <ul>${experience.map(entry => `
+                    <li>
+                        <h3>${entry[0]}</h3>
+                        <p>${entry[1]} | ${entry[2]} | ${entry[3]}</p>
+                        <p>${entry[4]}</p>
+                    </li>
+                `).join('')}</ul>
+                <h2>Education</h2>
+                <ul>${education.map(entry => `
+                    <li>
+                        <h3>${entry[0]}</h3>
+                        <p>${entry[1]} | ${entry[2]} | ${entry[3]}</p>
+                    </li>
+                `).join('')}</ul>
+                <h2>Certifications</h2>
+                <ul>${certifications.map(cert => `<li>${cert}</li>`).join('')}</ul>
+                <h2>Projects</h2>
+                <ul>${projects.map(entry => `
+                    <li>
+                        <h3>${entry[0]}</h3>
+                        <p>${entry[1]}</p>
+                        <p><strong>Technologies:</strong> ${entry[2]}</p>
+                        <p><strong>Role:</strong> ${entry[3]}</p>
+                    </li>
+                `).join('')}</ul>
+                <h2>Languages</h2>
+                <ul>${languages.map(lang => `<li>${lang}</li>`).join('')}</ul>
+                <h2>Hobbies/Interests</h2>
+                <ul>${hobbies.map(hobby => `<li>${hobby}</li>`).join('')}</ul>
+            `;
+
+            document.getElementById('cvContent').innerHTML = cvContent;
+            document.getElementById('preview').style.display = 'block';
+        }
+
+        function downloadCV() {
+            const element = document.getElementById('cvContent');
+            const opt = {
+                margin: 10,
+                filename: 'cv.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+            html2pdf().from(element).set(opt).save();
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Colorful Resume Generator</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+        }
+        .form-container {
+            max-width: 900px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        .form-container h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .form-container label {
+            font-weight: bold;
+            color: #555;
+        }
+        .form-container input,
+        .form-container textarea {
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .form-container button {
+            display: block;
+            width: 100%;
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .form-container button:hover {
+            background-color: #555;
+        }
+
+        .resume-container {
+            display: none;
+            max-width: 1000px;
+            margin: 20px auto;
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        .left, .right {
+            padding: 20px;
+        }
+        .left {
+            width: 300px;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: #fff;
+            text-align: center;
+            padding-top: 30px;
+        }
+        .left img {
+            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            margin-bottom: 20px;
+            border: 4px solid #fff;
+        }
+        .left h3 {
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+        .left p {
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        .right {
+            flex: 1;
+            background: #f4f4f4;
+        }
+        .right h2 {
+            margin-top: 0;
+            border-bottom: 2px solid #333;
+            padding-bottom: 5px;
+            font-size: 20px;
+        }
+        .right p, .right ul {
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        .right ul {
+            list-style: square;
+            margin: 0;
+            padding-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Create Your Resume</h1>
+        <form id="resumeForm">
+            <label for="photo">Photo URL</label>
+            <input type="text" id="photo" placeholder="Enter photo URL">
+
+            <label for="name">Name</label>
+            <input type="text" id="name" placeholder="Enter your name" required>
+
+            <label for="mobile">Mobile Number</label>
+            <input type="text" id="mobile" placeholder="Enter your mobile number" required>
+
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="Enter your email" required>
+
+            <label for="education">Education (Degree, Year, Percentage)</label>
+            <textarea id="education" placeholder="e.g., B.Sc. Computer Science, 2020, 85%" required></textarea>
+
+            <label for="skills">Skills</label>
+            <textarea id="skills" placeholder="e.g., JavaScript, HTML, CSS" required></textarea>
+
+            <label for="links">Links (GitHub, LinkedIn)</label>
+            <textarea id="links" placeholder="e.g., GitHub: github.com/username, LinkedIn: linkedin.com/in/username"></textarea>
+
+            <label for="about">About Me</label>
+            <textarea id="about" placeholder="Write a short bio about yourself" required></textarea>
+
+            <label for="experience">Experience</label>
+            <textarea id="experience" placeholder="e.g., Software Developer at XYZ, 2 years"></textarea>
+
+            <label for="achievements">Achievements</label>
+            <textarea id="achievements" placeholder="e.g., Best Employee of the Year"></textarea>
+
+            <button type="button" onclick="generateResume()">Generate Resume</button>
+        </form>
+    </div>
+
+    <div id="resume" class="resume-container">
+        <div class="left">
+            <img id="displayPhoto" src="" alt="User Photo">
+            <h3 id="displayName"></h3>
+            <p id="displayMobile"></p>
+            <p id="displayEmail"></p>
+            <h3>Education</h3>
+            <p id="displayEducation"></p>
+            <h3>Skills</h3>
+            <p id="displaySkills"></p>
+            <h3>Links</h3>
+            <p id="displayLinks"></p>
+        </div>
+        <div class="right">
+            <h2>About Me</h2>
+            <p id="displayAbout"></p>
+            <h2>Experience</h2>
+            <p id="displayExperience"></p>
+            <h2>Achievements</h2>
+            <p id="displayAchievements"></p>
+        </div>
+    </div>
+
+    <script>
+        function generateResume() {
+            document.getElementById('displayPhoto').src = document.getElementById('photo').value;
+            document.getElementById('displayName').innerText = document.getElementById('name').value;
+            document.getElementById('displayMobile').innerText = document.getElementById('mobile').value;
+            document.getElementById('displayEmail').innerText = document.getElementById('email').value;
+            document.getElementById('displayEducation').innerText = document.getElementById('education').value;
+            document.getElementById('displaySkills').innerText = document.getElementById('skills').value;
+            document.getElementById('displayLinks').innerText = document.getElementById('links').value;
+            document.getElementById('displayAbout').innerText = document.getElementById('about').value;
+            document.getElementById('displayExperience').innerText = document.getElementById('experience').value;
+            document.getElementById('displayAchievements').innerText = document.getElementById('achievements').value;
+         document.getElementById('resume').style.display = 'flex';
+        }
+    </script>
+</body>
+</html>

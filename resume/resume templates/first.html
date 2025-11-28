@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Resume Builder</title>
+    <style>
+        @font-face {
+            font-family: 'Arial';
+            src: local('Arial');
+        }
+        
+        @font-face {
+            font-family: 'Times New Roman';
+            src: local('Times New Roman');
+        }
+        
+        @font-face {
+            font-family: 'Helvetica Neue';
+            src: local('Helvetica Neue');
+        }
+        
+        @font-face {
+            font-family: 'Georgia';
+            src: local('Georgia');
+        }
+        
+        @font-face {
+            font-family: 'Courier New';
+            src: local('Courier New');
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            line-height: 1.6;
+        }
+
+        .resume-builder {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h1, h2, h3 {
+            color: #333;
+        }
+
+        h1 {
+            margin-top: 0;
+        }
+
+        h2 {
+            border-bottom: 2px solid #eee;
+            padding-bottom: 5px;
+            margin-top: 30px;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 10px 5px 10px 0;
+            background-color: #2c3e50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #1a252f;
+        }
+
+        .button-primary {
+            background-color: #3498db;
+        }
+
+        .button-primary:hover {
+            background-color: #2980b9;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form-row > * {
+            flex: 1;
+        }
+
+        .resume-preview {
+            margin-top: 40px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: white;
+            overflow: hidden;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .resume-preview .left-sidebar {
+            width: 280px;
+            background-color: #2c3e50;
+            padding: 30px;
+            color: white;
+            float: left;
+            min-height: 100%;
+            box-sizing: border-box;
+        }
+
+        .resume-preview .left-sidebar img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 20px;
+            display: block;
+            border: 3px solid white;
+        }
+
+        .resume-preview .left-sidebar h2 {
+            color: white;
+            border-bottom: 2px solid rgba(255,255,255,0.2);
+            margin: 25px 0 15px;
+            font-size: 18px;
+            text-transform: uppercase;
+        }
+
+        .resume-preview .left-sidebar p {
+            margin: 8px 0;
+            font-size: 14px;
+        }
+
+        .resume-preview .left-sidebar ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin: 15px 0;
+        }
+
+        .resume-preview .left-sidebar ul li {
+            margin-bottom: 8px;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .resume-preview .left-sidebar ul li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #3498db;
+            font-size: 20px;
+            line-height: 1;
+        }
+
+        .resume-preview .details {
+            margin-left: 280px;
+            padding: 30px;
+            box-sizing: border-box;
+        }
+
+        .resume-preview .details h1 {
+            font-size: 28px;
+            margin: 0 0 5px;
+            color: #2c3e50;
+            text-transform: uppercase;
+        }
+
+        .resume-preview .details h2 {
+            font-size: 20px;
+            margin: 25px 0 15px;
+            color: #2c3e50;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .resume-preview .details p {
+            margin: 10px 0;
+        }
+
+        .resume-preview .details ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin: 15px 0;
+        }
+
+        .resume-preview .details ul li {
+            margin-bottom: 15px;
+            position: relative;
+            padding-left: 25px;
+        }
+
+        .resume-preview .details ul li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #3498db;
+            font-size: 20px;
+            line-height: 1;
+        }
+
+        .job-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .company {
+            font-style: italic;
+            margin-bottom: 5px;
+        }
+
+        .date {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .clearfix:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        .remove-btn {
+            background-color: #e74c3c;
+            font-size: 14px;
+        }
+
+        .remove-btn:hover {
+            background-color: #c0392b;
+        }
+
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .resume-preview, .resume-preview * {
+                visibility: visible;
+            }
+            .resume-preview {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .resume-preview .left-sidebar {
+                width: 100%;
+                float: none;
+            }
+            .resume-preview .details {
+                margin-left: 0;
+            }
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="resume-builder">
+        <h1>Professional Resume Builder</h1>
+        
+        <form id="resumeForm">
+            <div class="form-section">
+                <h2>Personal Information</h2>
+                <div class="form-row">
+                    <div>
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" placeholder="Full Name" value="RICHARD SANCHEZ">
+                    </div>
+                    <div>
+                        <label for="jobTitle">Job Title</label>
+                        <input type="text" id="jobTitle" placeholder="Job Title" value="MARKETING MANAGER">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div>
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" placeholder="Phone Number" value="+123-456-7890">
+                    </div>
+                    <div>
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" placeholder="Email" value="hello@reallygreatsite.com">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div>
+                        <label for="address">Address</label>
+                        <input type="text" id="address" placeholder="Address" value="123 Anywhere St., Any City">
+                    </div>
+                    <div>
+                        <label for="website">Website</label>
+                        <input type="url" id="website" placeholder="Website" value="www.reallygreatsite.com">
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="imageUpload">Profile Photo</label>
+                    <input type="file" id="imageUpload" accept="image/*">
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2>Professional Summary</h2>
+                <textarea id="profile" placeholder="Write a brief professional summary">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation.</textarea>
+            </div>
+
+            <div class="form-section">
+                <h2>Skills</h2>
+                <textarea id="skills" placeholder="List your skills (one per line)">Project Management
+Public Relations
+Teamwork
+Time Management
+Leadership
+Effective Communication
+Critical Thinking
+Digital Marketing</textarea>
+            </div>
+
+            <div class="form-section">
+                <h2>Languages</h2>
+                <textarea id="languages" placeholder="List languages and proficiency (one per line)">English (Fluent)
+French (Fluent)
+German (Basic)
+Spanish (Intermediate)</textarea>
+            </div>
+
+            <div class="form-section">
+                <h2>Work Experience</h2>
+                <div id="workExperienceContainer">
+                    <div class="experience-entry">
+                        <div class="form-row">
+                            <div>
+                                <label>Company</label>
+                                <input type="text" class="exp-company" placeholder="Company Name" value="Borcelle Studio">
+                            </div>
+                            <div>
+                                <label>Job Title</label>
+                                <input type="text" class="exp-title" placeholder="Job Title" value="Marketing Manager & Specialist">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div>
+                                <label>Start Date</label>
+                                <input type="text" class="exp-start" placeholder="Start Year" value="2030">
+                            </div>
+                            <div>
+                                <label>End Date</label>
+                                <input type="text" class="exp-end" placeholder="End Year" value="PRESENT">
+                            </div>
+                        </div>
+                        <div>
+                            <label>Responsibilities</label>
+                            <textarea class="exp-desc" placeholder="Job responsibilities (one per line)">Develop and execute comprehensive marketing strategies and campaigns that align with the company's goals and objectives.
+Lead, mentor, and manage a high-performing marketing team, fostering a collaborative and results-driven work environment.
+Monitor brand consistency across marketing channels and materials.</textarea>
+                        </div>
+                        <button type="button" class="remove-btn" onclick="removeExperience(this)">Remove Experience</button>
+                    </div>
+                    
+                    <div class="experience-entry">
+                        <div class="form-row">
+                            <div>
+                                <label>Company</label>
+                                <input type="text" class="exp-company" placeholder="Company Name" value="Fauget Studio">
+                            </div>
+                            <div>
+                                <label>Job Title</label>
+                                <input type="text" class="exp-title" placeholder="Job Title" value="Marketing Manager & Specialist">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div>
+                                <label>Start Date</label>
+                                <input type="text" class="exp-start" placeholder="Start Year" value="2025">
+                            </div>
+                            <div>
+                                <label>End Date</label>
+                                <input type="text" class="exp-end" placeholder="End Year" value="2029">
+                            </div>
+                        </div>
+                        <div>
+                            <label>Responsibilities</label>
+                            <textarea class="exp-desc" placeholder="Job responsibilities (one per line)">Create and manage the marketing budget, ensuring efficient allocation of resources and optimizing ROI.
+Oversee market research to identify emerging trends, customer needs, and competitor strategies.</textarea>
+                        </div>
+                        <button type="button" class="remove-btn" onclick="removeExperience(this)">Remove Experience</button>
+                    </div>
+                </div>
+                <button type="button" id="addExperience" class="button-primary">+ Add Experience</button>
+            </div>
+
+            <div class="form-section">
+                <h2>Education</h2>
+                <div id="educationContainer">
+                    <div class="education-entry">
+                        <div class="form-row">
+                            <div>
+                                <label>Degree</label>
+                                <input type="text" class="edu-degree" placeholder="Degree" value="Master of Business Management">
+                            </div>
+                            <div>
+                                <label>School</label>
+                                <input type="text" class="edu-school" placeholder="School" value="School of business | Wardiere University">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div>
+                                <label>Start Date</label>
+                                <input type="text" class="edu-start" placeholder="Start Year" value="2029">
+                            </div>
+                            <div>
+                                <label>End Date</label>
+                                <input type="text" class="edu-end" placeholder="End Year" value="2031">
+                            </div>
+                        </div>
+                        <div>
+                            <label>Details</label>
+                            <input type="text" class="edu-details" placeholder="Details" value="GPA: 3.8 / 4.0">
+                        </div>
+                        <button type="button" class="remove-btn" onclick="removeEducation(this)">Remove Education</button>
+                    </div>
+                    
+                    <div class="education-entry">
+                        <div class="form-row">
+                            <div>
+                                <label>Degree</label>
+                                <input type="text" class="edu-degree" placeholder="Degree" value="Bachelor of Business Management">
+                            </div>
+                            <div>
+                                <label>School</label>
+                                <input type="text" class="edu-school" placeholder="School" value="School of business | Wardiere University">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div>
+                                <label>Start Date</label>
+                                <input type="text" class="edu-start" placeholder="Start Year" value="2025">
+                            </div>
+                            <div>
+                                <label>End Date</label>
+                                <input type="text" class="edu-end" placeholder="End Year" value="2029">
+                            </div>
+                        </div>
+                        <div>
+                            <label>Details</label>
+                            <input type="text" class="edu-details" placeholder="Details" value="GPA: 3.8 / 4.0">
+                        </div>
+                        <button type="button" class="remove-btn" onclick="removeEducation(this)">Remove Education</button>
+                    </div>
+                </div>
+                <button type="button" id="addEducation" class="button-primary">+ Add Education</button>
+            </div>
+
+            <div class="form-section">
+                <h2>References</h2>
+                <div class="form-row">
+                    <div>
+                        <label>Name</label>
+                        <input type="text" id="referenceName" placeholder="Reference Name" value="Estelle Darcy">
+                    </div>
+                    <div>
+                        <label>Position</label>
+                        <input type="text" id="referencePosition" placeholder="Reference Position" value="Wardiere Inc. / CTO">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div>
+                        <label>Phone</label>
+                        <input type="tel" id="referencePhone" placeholder="Reference Phone" value="123-456-7890">
+                    </div>
+                    <div>
+                        <label>Email</label>
+                        <input type="email" id="referenceEmail" placeholder="Reference Email" value="hello@reallygreatsite.com">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section no-print">
+                <h2>Design Options</h2>
+                <div class="form-row">
+                    <div>
+                        <label for="primaryColor">Primary Color</label>
+                        <input type="color" id="primaryColor" value="#2c3e50">
+                    </div>
+                    <div>
+                        <label for="secondaryColor">Accent Color</label>
+                        <input type="color" id="secondaryColor" value="#3498db">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div>
+                        <label for="fontFamily">Font Family</label>
+                        <select id="fontFamily">
+                            <option value="Arial, sans-serif">Arial</option>
+                            <option value="'Times New Roman', serif">Times New Roman</option>
+                            <option value="'Helvetica Neue', sans-serif">Helvetica</option>
+                            <option value="Georgia, serif">Georgia</option>
+                            <option value="'Courier New', monospace">Courier New</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="fontSize">Font Size (px)</label>
+                        <input type="number" id="fontSize" min="10" max="24" value="14">
+                    </div>
+                </div>
+            </div>
+
+            <div class="no-print">
+                <button type="button" onclick="previewResume()" class="button-primary">Preview Resume</button>
+                <button type="button" onclick="downloadResume()" class="button-primary">Download PDF</button>
+                <button type="button" onclick="window.print()">Print Resume</button>
+                <button type="button" onclick="resetForm()" style="background-color: #95a5a6;">Reset Form</button>
+            </div>
+        </form>
+
+        <div id="resumePreview" class="resume-preview clearfix" style="display: none;"></div>
+    </div>
+
+    <!-- Include html2pdf library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script>
+        // Add experience entry
+        document.getElementById('addExperience').addEventListener('click', function() {
+            const container = document.getElementById('workExperienceContainer');
+            const newEntry = document.createElement('div');
+            newEntry.className = 'experience-entry';
+            newEntry.innerHTML = `
+                <div class="form-row">
+                    <div>
+                        <label>Company</label>
+                        <input type="text" class="exp-company" placeholder="Company Name">
+                    </div>
+                    <div>
+                        <label>Job Title</label>
+                        <input type="text" class="exp-title" placeholder="Job Title">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div>
+                        <label>Start Date</label>
+                        <input type="text" class="exp-start" placeholder="Start Year">
+                    </div>
+                    <div>
+                        <label>End Date</label>
+                        <input type="text" class="exp-end" placeholder="End Year">
+                    </div>
+                </div>
+                <div>
+                    <label>Responsibilities</label>
+                    <textarea class="exp-desc" placeholder="Job responsibilities (one per line)"></textarea>
+                </div>
+                <button type="button" class="remove-btn" onclick="removeExperience(this)">Remove Experience</button>
+            `;
+            container.appendChild(newEntry);
+        });
+
+        // Add education entry
+        document.getElementById('addEducation').addEventListener('click', function() {
+            const container = document.getElementById('educationContainer');
+            const newEntry = document.createElement('div');
+            newEntry.className = 'education-entry';
+            newEntry.innerHTML = `
+                <div class="form-row">
+                    <div>
+                        <label>Degree</label>
+                        <input type="text" class="edu-degree" placeholder="Degree">
+                    </div>
+                    <div>
+                        <label>School</label>
+                        <input type="text" class="edu-school" placeholder="School">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div>
+                        <label>Start Date</label>
+                        <input type="text" class="edu-start" placeholder="Start Year">
+                    </div>
+                    <div>
+                        <label>End Date</label>
+                        <input type="text" class="edu-end" placeholder="End Year">
+                    </div>
+                </div>
+                <div>
+                    <label>Details</label>
+                    <input type="text" class="edu-details" placeholder="Details">
+                </div>
+                <button type="button" class="remove-btn" onclick="removeEducation(this)">Remove Education</button>
+            `;
+            container.appendChild(newEntry);
+        });
+
+        // Remove experience entry
+        function removeExperience(button) {
+            if (confirm('Are you sure you want to remove this experience entry?')) {
+                button.parentElement.remove();
+            }
+        }
+
+        // Remove education entry
+        function removeEducation(button) {
+            if (confirm('Are you sure you want to remove this education entry?')) {
+                button.parentElement.remove();
+            }
+        }
+
+        // Reset form
+        function resetForm() {
+            if (confirm('Are you sure you want to reset all fields?')) {
+                document.getElementById('resumeForm').reset();
+                document.getElementById('workExperienceContainer').innerHTML = '';
+                document.getElementById('educationContainer').innerHTML = '';
+                document.getElementById('resumePreview').style.display = 'none';
+            }
+        }
+
+        // Preview resume
+        function previewResume() {
+            const name = document.getElementById('name').value;
+            const jobTitle = document.getElementById('jobTitle').value;
+            const phone = document.getElementById('phone').value;
+            const email = document.getElementById('email').value;
+            const address = document.getElementById('address').value;
+            const website = document.getElementById('website').value;
+            const imageUpload = document.getElementById('imageUpload').files[0];
+            const profile = document.getElementById('profile').value;
+            const skills = document.getElementById('skills').value;
+            const languages = document.getElementById('languages').value;
+            const referenceName = document.getElementById('referenceName').value;
+            const referencePosition = document.getElementById('referencePosition').value;
+            const referencePhone = document.getElementById('referencePhone').value;
+            const referenceEmail = document.getElementById('referenceEmail').value;
+
+            // Get style options
+            const primaryColor = document.getElementById('primaryColor').value;
+            const secondaryColor = document.getElementById('secondaryColor').value;
+            const fontFamily = document.getElementById('fontFamily').value;
+            const fontSize = document.getElementById('fontSize').value;
+
+            // Get experience data
+            const experienceEntries = document.querySelectorAll('.experience-entry');
+            const experienceItems = [];
+            experienceEntries.forEach(entry => {
+                experienceItems.push({
+                    company: entry.querySelector('.exp-company').value,
+                    title: entry.querySelector('.exp-title').value,
+                    start: entry.querySelector('.exp-start').value,
+                    end: entry.querySelector('.exp-end').value,
+                    desc: entry.querySelector('.exp-desc').value.split('\n').filter(line => line.trim() !== '')
+                });
+            });
+
+            // Get education data
+            const educationEntries = document.querySelectorAll('.education-entry');
+            const educationItems = [];
+            educationEntries.forEach(entry => {
+                educationItems.push({
+                    degree: entry.querySelector('.edu-degree').value,
+                    school: entry.querySelector('.edu-school').value,
+                    start: entry.querySelector('.edu-start').value,
+                    end: entry.querySelector('.edu-end').value,
+                    details: entry.querySelector('.edu-details').value
+                });
+            });
+
+            const preview = document.getElementById('resumePreview');
+            preview.style.display = 'block';
+            
+            // Generate image HTML if uploaded
+            let imageHtml = '';
+            if (imageUpload) {
+                imageHtml = `<img src="${URL.createObjectURL(imageUpload)}" alt="Profile Image">`;
+            }
+
+            preview.innerHTML = `
+                <div class="left-sidebar" style="background-color: ${primaryColor}">
+                    ${imageHtml}
+                    <h2>${name}</h2>
+                    <p>${jobTitle}</p>
+                    <h2>Contact</h2>
+                    <p>${phone}</p>
+                    <p>${email}</p>
+                    <p>${address}</p>
+                    <p>${website}</p>
+                    <h2>Skills</h2>
+                    <ul>
+                        ${skills.split('\n').filter(skill => skill.trim() !== '').map(skill => `<li>${skill}</li>`).join('')}
+                    </ul>
+                    <h2>Languages</h2>
+                    <ul>
+                        ${languages.split('\n').filter(lang => lang.trim() !== '').map(lang => `<li>${lang}</li>`).join('')}
+                    </ul>
+                </div>
+                <div class="details" style="font-family: ${fontFamily}; font-size: ${fontSize}px">
+                    <h1>${name}</h1>
+                    <p style="color: ${secondaryColor}; font-weight: bold; margin-top: 0;">${jobTitle}</p>
+                    
+                    <h2>Professional Summary</h2>
+                    <p>${profile}</p>
+                    
+                    <h2>Work Experience</h2>
+                    ${experienceItems.map(exp => `
+                        <div class="experience-item">
+                            <div class="job-title">${exp.title}</div>
+                            <div class="company">${exp.company}</div>
+                            <div class="date">${exp.start} - ${exp.end}</div>
+                            <ul>
+                                ${exp.desc.map(item => `<li>${item}</li>`).join('')}
+                            </ul>
+                        </div>
+                    `).join('')}
+                    
+                    <h2>Education</h2>
+                    ${educationItems.map(edu => `
+                        <div class="education-item">
+                            <div class="degree">${edu.degree}</div>
+                            <div class="school">${edu.school}</div>
+                            <div class="date">${edu.start} - ${edu.end}</div>
+                            <p>${edu.details}</p>
+                        </div>
+                    `).join('')}
+                    
+                    <h2>References</h2>
+                    <p><strong>${referenceName}</strong></p>
+                    <p>${referencePosition}</p>
+                    <p>Phone: ${referencePhone}</p>
+                    <p>Email: ${referenceEmail}</p>
+                </div>
+            `;
+        }
+
+        // Download resume as PDF
+        function downloadResume() {
+            // First update the preview to ensure it's current
+            previewResume();
+            
+            const element = document.getElementById('resumePreview');
+            const opt = {
+                margin: 10,
+                filename: `${document.getElementById('name').value.replace(/\s+/g, '_')}_Resume.pdf`,
+                image: { 
+                    type: 'jpeg', 
+                    quality: 1.0
+                },
+                html2canvas: { 
+                    scale: 3,
+                    logging: false,
+                    useCORS: true,
+                    allowTaint: true,
+                    scrollX: 0,
+                    scrollY: 0,
+                    windowWidth: element.scrollWidth,
+                    windowHeight: element.scrollHeight,
+                    letterRendering: true,
+                    dpi: 300
+                },
+                jsPDF: { 
+                    unit: 'mm', 
+                    format: 'a4', 
+                    orientation: 'portrait',
+                    compress: false
+                },
+                pagebreak: { mode: 'avoid-all' }
+            };
+
+            // Add a small delay to ensure all fonts are loaded
+            setTimeout(() => {
+                html2pdf().set(opt).from(element).save();
+            }, 500);
+        }
+    </script>
+</body>
+</html>

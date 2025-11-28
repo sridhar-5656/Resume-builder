@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Best Index Page</title>
+  <style>
+    /* Basic Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Body and Layout */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      color: #333;
+    }
+
+    /* Navigation Bar */
+    nav {
+      background-color: #333;
+      padding: 10px 0;
+      text-align: center;
+    }
+
+    nav a {
+      color: #fff;
+      margin: 0 15px;
+      text-decoration: none;
+      font-size: 18px;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    /* Main Content Section */
+    .content {
+      text-align: center;
+      padding: 50px 20px;
+    }
+
+    .content h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+    }
+
+    .content p {
+      font-size: 1.25rem;
+      margin-bottom: 20px;
+    }
+
+    .content button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .content button:hover {
+      background-color: #45a049;
+    }
+
+    /* Footer */
+    footer {
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      padding: 10px 0;
+      position: fixed;
+      width: 100%;
+      bottom: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#about">About</a>
+    <a href="#services">Services</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="content">
+    <h1>Welcome to My Best Index Page</h1>
+    <p>This is a simple example of an HTML, CSS, and JavaScript page all in one file.</p>
+    <button onclick="changeBackgroundColor()">Click me to change background color</button>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2024 My Website | All Rights Reserved</p>
+  </footer>
+
+  <script>
+    // JavaScript function to change the background color of the body
+    function changeBackgroundColor() {
+      // Generate a random color
+      const randomColor = `#${Math.floor(Math.random()*16777215).toString(16)}`;
+      document.body.style.backgroundColor = randomColor;
+    }
+  </script>
+
+</body>
+</html>

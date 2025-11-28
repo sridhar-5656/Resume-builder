@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video and Audio</title>
+    <style>
+        .download{
+            background-color: aqua;
+            width: 200px;
+            height: 50px;
+            border: 1px solid pink;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Click on the audio to play</h2>
+    <audio controls>
+        <source src="pushpa.mp3" type="audio/mp3">
+        <source src="pushpa.ogg" type="audio/ogg">
+        Your browser does not support the audio element.
+    </audio>
+    <br><br>
+
+    <h2>Click the video to play</h2>
+    <video controls width="640" height="360">
+        <source src="videodownloader.mp4.exe" type="video/mp4">
+        <source src="videodownloader.mp4.exe" type="video/ogg">
+        Your browser does not support the video element.
+    </video>
+    <br>
+    <p>
+        <a href="videoplayback.mp4" download="videoplayback.mp4">Download the video</a>
+    </p>
+    <br>
+
+    <h2>Embedded YouTube Video</h2>
+    <iframe 
+        width="640" 
+        height="360" 
+        src="https://www.youtube.com/embed/v5RAeRpEod8" 
+        frameborder="0" 
+        allowfullscreen>
+    </iframe>
+
+
+    <a href="modern.jpg" class="download">
+        <button class="download">DOWNLOAD</button>
+    </a>
+    
+</body>
+</html>
+
+
+
+// function generateResume() {
+    //     const fileInput = document.getElementById('file');
+    //     const file = fileInput.files[0];
+    //     if (file) {
+    //         const reader = new FileReader();
+    //         reader.onload = function(e) {
+    //             document.getElementById('display-image').src = e.target.result;
+    //         };
+    //         reader.readAsDataURL(file);
+    //     }
+
+    //     document.getElementById('display-name').innerText = document.getElementById('name').value;
+    //     document.getElementById('display-email').innerText = document.getElementById('email').value;
+    //     document.getElementById('display-phone').innerText = document.getElementById('number').value;
+    //     document.getElementById('display-about').innerText = document.getElementById('about').value;
+
+    //     document.getElementById('display-course').innerText = document.getElementById('course').value;
+    //     document.getElementById('display-year').innerText = document.getElementById('year').value;
+    //     document.getElementById('display-percentage').innerText = document.getElementById('percentage').value;
+
+    //     document.getElementById('display-technical').innerText = document.getElementById('technical').value;
+    //     document.getElementById('display-nonTechnical').innerText = document.getElementById('nonTechnical').value;
+    //     document.getElementById('display-links').innerText = document.getElementById('links').value;
+
+    //     document.getElementById('display-experience').innerText = document.getElementById('experience').value;
+    //     document.getElementById('display-achievements').innerText = document.getElementById('achievements').value;
+
+    //     document.getElementById('resume').style.display = 'block';
+    // }
+
+
+    body {
+        font-family: 'Verdana', sans-serif;
+        margin: 0;
+        padding: 0;
+        background: #f5f5f5;
+    }
+    .container {
+        max-width: 1200px;
+        margin: 20px auto;
+        padding: 20px;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+        text-align: center;
+        color: #444;
+        margin-bottom: 20px;
+    }
+    form {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+    label {
+        font-weight: bold;
+        margin-bottom: 5px;
+        display: block;
+    }
+    input, textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+    button {
+        width: 100%;
+        padding: 10px;
+        background: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    button:hover {
+        background: #0056b3;
+    }
+    .resume-output {
+        display: none;
+        margin-top: 20px;
+        border: 1px solid #ddd;
+        padding: 20px;
+        border-radius: 10px;
+        background: #fafafa;
+    }
+    .resume-header {
+        display: flex;
+        gap: 20px;
+    }
+    .resume-header img {
+        width: 120px;
+        height: 120px;
+        border-radius: 10px;
+        border: 2px solid #ccc;
+    }
+    .resume-header .info {
+        flex: 1;
+    }
+    .section {
+        margin-bottom: 20px;
+    }
+    .section h2 {
+        border-bottom: 2px solid #007bff;
+        display: inline-block;
+        margin-bottom: 10px;
+    }
+
+    .download{--
+        background-color: aqua;
+        width: 200px;
+        height: 50px;
+        border: 1px solid pink;
+        border-radius: 10px;
+    }

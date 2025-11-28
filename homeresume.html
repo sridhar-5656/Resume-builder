@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resume Builder - Home</title>
+  <style>
+    /* Basic Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Body and Layout */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      color: #333;
+    }
+
+    /* Navigation Bar */
+    nav {
+      background-color: #2C3E50;
+      padding: 15px 20px;
+      text-align: center;
+    }
+
+    nav a {
+      color: white;
+      margin: 0 20px;
+      text-decoration: none;
+      font-size: 1.1rem;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    /* Welcome Section */
+    .welcome-container {
+      text-align: center;
+      padding: 50px 20px;
+      background-color: white;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      margin: 50px auto;
+      max-width: 900px;
+      border-radius: 8px;
+    }
+
+    .welcome-container h1 {
+      font-size: 2.5rem;
+      color: #2C3E50;
+      margin-bottom: 20px;
+    }
+
+    .welcome-container p {
+      font-size: 1.2rem;
+      color: #7F8C8D;
+      margin-bottom: 30px;
+    }
+
+    .btn-start {
+      padding: 15px 30px;
+      font-size: 1.1rem;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-start:hover {
+      background-color: #2980b9;
+    }
+
+    /* Footer */
+    footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      text-align: center;
+      background-color: #2C3E50;
+      color: white;
+      padding: 10px 0;
+      font-size: 1rem;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav>
+    <a href="#">Home</a>
+    <a href="#">Features</a>
+    <a href="#">Pricing</a>
+    <a href="#">Contact</a>
+  </nav>
+
+  <!-- Welcome Section -->
+  <div class="welcome-container">
+    <h1>Welcome to the Resume Builder</h1>
+    <p>Create a professional resume in just a few easy steps. Our tool helps you build and customize your resume, so you can impress employers!</p>
+    <button class="btn-start" onclick="startBuildingResume()">Start Building My Resume</button>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2024 Resume Builder | All Rights Reserved</p>
+  </footer>
+
+  <script>
+    // JavaScript function to navigate to the resume building page
+    function startBuildingResume() {
+      alert("Redirecting to the resume building page...");
+      // Here you can replace the alert with the actual redirection:
+      // window.location.href = "build-resume.html";
+    }
+  </script>
+
+</body>
+</html>

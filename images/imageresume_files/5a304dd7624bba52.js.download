@@ -1,0 +1,9 @@
+(self["webpackChunk_canva_web"] = self["webpackChunk_canva_web"] || []).push([[71591],{
+
+/***/ 653563:
+function(_, __, __webpack_require__) {__webpack_require__.n_x = __webpack_require__.n;const __web_req__ = __webpack_require__;__web_req__(813110);self._fd1e22c0e0516062f8631db29060abc8 = self._fd1e22c0e0516062f8631db29060abc8 || {};(function(__c) {var Fs,omb;__c.Es=function(){const a=__c.lmb.box(null);return Object.create({},{current:{get:()=>a.get(),set:(0,__c.mmb)(b=>a.set(b))}})};Fs=__webpack_require__(875604);__c.nmb=Fs.memo;omb=Fs.useCallback;__c.pmb=Fs.useEffect;__c.qmb=Fs.useId;__c.rmb=Fs.useLayoutEffect;__c.smb=Fs.useRef;__c.tmb=Fs.useState;var umb;umb=__webpack_require__(42782);__c.mmb=umb.aD;__c.vmb=umb.EH;__c.lmb=umb.LO;var wmb;wmb=__webpack_require__(443763);__c.xmb=wmb.Fragment;__c.ymb=wmb.jsx;__c.zmb=wmb.jsxs;__c.Amb=()=>{var {kW:a,tff:b,defaultValue:c,IntersectionObserver:d=window.IntersectionObserver,kIf:e}={};const [f,g]=(0,__c.tmb)(c||!1),[h,k]=(0,__c.tmb)(null),l=omb(p=>{k(p)},[]),n=omb(p=>{p.forEach(q=>{q.isIntersecting&&!f?g(!0):q.isIntersecting||!f||e||g(!1)})},[f,e]);(0,__c.pmb)(()=>{if(h){const p={root:null===a||void 0===a?void 0:a.current,rootMargin:b,threshold:0};if("undefined"!==typeof d){const q=new d(n,p);q.observe(h);return()=>{q.disconnect()}}throw Error("IntersectionObserver not available.");
+}},[a,b,n,h,d]);return{isVisible:!(!h||!f),bEb:l}};var Gs;Gs=Math.PI/5;__c.Hs=Math.cos(Gs);__c.Is=Math.sin(Gs);__c.Bmb=Math.cos(Gs/2);__c.Cmb=Math.sin(Gs/2);__c.Dmb=Math.atan(Math.PI/2-2*Gs);
+}).call(self, self._fd1e22c0e0516062f8631db29060abc8);}
+
+}])
+//# sourceMappingURL=sourcemaps/5a304dd7624bba52.js.map

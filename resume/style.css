@@ -1,0 +1,115 @@
+/* General body styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Container styling */
+.container {
+    max-width: 900px;
+    margin: 20px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+.section{
+    width: 150px;
+    min-height: 100vh;
+    margin-top: 0px;
+    margin-left: 0px;
+    background-color: #52aae4;
+    border: 1p solid black;
+    border-radius: 15px;
+    
+
+}
+
+/* Headings */
+h1 {
+    font-size: 1.8em;
+    margin-bottom: 15px;
+    color: #2c3e50;
+    text-transform: uppercase;
+}
+
+u {
+    text-decoration: none;
+    border-bottom: 2px solid #3498db;
+}
+
+/* Form styling */
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Section styling */
+.section {
+    margin-bottom: 30px;
+}
+
+/* Labels and inputs */
+label {
+    display: block;
+    margin: 10px 0 5px;
+    font-weight: bold;
+    color: #555;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="number"],
+input[type="url"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="number"]:focus,
+input[type="url"]:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+}
+
+/* Skills and links */
+h1 + label {
+    margin-top: 15px;
+}
+
+/* Image styling */
+img {
+    display: block;
+    max-width: 150px;
+    height: auto;
+    margin-bottom: 20px;
+    border-radius: 50%;
+    border: 2px solid #3498db;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 1.5em;
+    }
+
+    label,
+    input {
+        font-size: 0.9rem;
+    }
+}
+

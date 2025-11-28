@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Builder</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+    <style>
+        body {
+            font-family: "Times New Roman", Times, serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            width: 800px;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+        h1 {
+            text-align: center;
+            text-transform: uppercase;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+            display: block;
+            width: 100%;
+            font-size: 16px;
+        }
+        .resume-preview {
+            border: 1px solid #000;
+            padding: 20px;
+            margin-top: 20px;
+            background: #fff;
+        }
+        h3 {
+            position: relative;
+            padding-bottom: 5px;
+        }
+        h3::after {
+            content: "";
+            display: block;
+            width: 100%;
+            border-bottom: 2px solid black;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Resume Builder</h1>
+        <form id="resume-form">
+            <label for="name">Full Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="phone">Phone:</label>
+            <input type="text" id="phone" name="phone" required>
+
+            <label for="objective">Objective:</label>
+            <textarea id="objective" name="objective" required></textarea>
+
+            <label for="experience">Work Experience:</label>
+            <textarea id="experience" name="experience" required></textarea>
+
+            <label for="education">Education:</label>
+            <textarea id="education" name="education" required></textarea>
+
+            <label for="skills">Technical Skills:</label>
+            <textarea id="skills" name="skills" required></textarea>
+
+            <label for="projects">Projects:</label>
+            <textarea id="projects" name="projects" required></textarea>
+
+            <label for="achievements">Achievements:</label>
+            <textarea id="achievements" name="achievements" required></textarea>
+
+            <label for="interests">Other Interests:</label>
+            <textarea id="interests" name="interests" required></textarea>
+
+            <label for="font-family">Font Family:</label>
+            <select id="font-family">
+                <option value="Arial">Arial</option>
+                <option value="Times New Roman">Times New Roman</option>
+                <option value="Verdana">Verdana</option>
+            </select>
+
+            <label for="font-size">Font Size:</label>
+            <input type="number" id="font-size" min="12" max="20" value="16">
+
+            <label for="bulletstyle">Bullet Style:</label>
+            <select id="bulletstyle">
+                <option value="disc">disc</option>
+                <option value="circle">circle</option>
+                <option value="square">square</option>
+            </select>
+
+            <label for="font-color">Font Color:</label>
+            <input type="color" id="font-color" value="#000000">
+
+            <button type="button" onclick="generateResume()">Preview Resume</button>
+            <button type="button" onclick="downloadResume()">Download as PDF</button>
+            <button type="button" onclick="applyCustomStyles()">Apply Styles</button>
+        </form>
+        
+        <div id="resume-preview" class="resume-preview"></div>
+    </div>
+
+    <script>
+        function applyCustomStyles() {
+            const fontColor = document.getElementById('font-color').value;
+            const fontFamily = document.getElementById('font-family').value;
+            const bulletStyle = document.getElementById('bulletstyle').value;
+            const fontSize = document.getElementById('font-size').value + 'px';
+
+            const resumePreview = document.getElementById('resume-preview');
+            resumePreview.style.fontFamily = fontFamily;
+            resumePreview.style.fontSize = fontSize;
+            resumePreview.style.color = fontColor;
+
+            const lists = resumePreview.querySelectorAll('ul');
+            lists.forEach(ul => {
+                ul.style.listStyleType = bulletStyle;
+            });
+        }
+
+        function generateResume() {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const objective = document.getElementById('objective').value;
+            const experience = document.getElementById('experience').value;
+            const education = document.getElementById('education').value;
+            const skills = document.getElementById('skills').value;
+            const projects = document.getElementById('projects').value;
+            const achievements = document.getElementById('achievements').value;
+            const interests = document.getElementById('interests').value;
+
+            const resumePreview = document.getElementById('resume-preview');
+            resumePreview.innerHTML = `
+                <h2>${name}</h2>
+                <p><strong>Email:</strong> ${email}</p>
+                <p><strong>Phone:</strong> ${phone}</p>
+                <h3>Objective</h3>
+                <p>${objective}</p>
+                <h3>Work Experience</h3>
+                <p>${experience}</p>
+                <h3>Education</h3>
+                <p>${education}</p>
+                <h3>Technical Skills</h3>
+                <p>${skills}</p>
+                <h3>Projects</h3>
+                <p>${projects}</p>
+                <h3>Achievements</h3>
+                <p>${achievements}</p>
+                <h3>Other Interests</h3>
+                <p>${interests}</p>
+            `;
+
+            applyCustomStyles();
+        }
+
+        function downloadResume() {
+            const resumeElement = document.getElementById('resume-preview');
+
+            if (!resumeElement.innerHTML.trim()) {
+                alert("Please preview the resume before downloading.");
+                return;
+            }
+
+            const options = {
+                margin: 10,
+                filename: 'resume.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().from(resumeElement).set(options).save();
+        }
+    </script>
+</body>
+</html>

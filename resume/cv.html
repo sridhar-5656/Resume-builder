@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV Builder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .container {
+            display: flex;
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+        .sidebar {
+            background: #003366;
+            color: white;
+            padding: 20px;
+            width: 30%;
+            text-align: center;
+        }
+        .sidebar img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+        .sidebar h2, .sidebar h3 {
+            color: white;
+        }
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            margin: 5px 0;
+        }
+        .content {
+            padding: 20px;
+            width: 70%;
+        }
+        .content h3 {
+            border-bottom: 2px solid #003366;
+            padding-bottom: 5px;
+        }
+        .content ul {
+            padding-left: 20px;
+        }
+        .download-btn {
+            background: #28a745;
+            color: white;
+            padding: 10px;
+            border: none;
+            width: 100%;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .download-btn:hover {
+            background: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="cv-preview">
+        <div class="sidebar">
+            <img id="profile-pic" src="https://via.placeholder.com/100" alt="Profile Picture">
+            <h2 id="preview-name">Your Name</h2>
+            <h3 id="preview-jobTitle">Job Title</h3>
+            <p>Email: <span id="preview-email">your.email@example.com</span></p>
+            <p>Phone: <span id="preview-phone">+1234567890</span></p>
+            <h3>Skills</h3>
+            <ul id="preview-skills">
+                <li>Your key skills.</li>
+            </ul>
+        </div>
+        <div class="content">
+            <h3>About Me</h3>
+            <p id="preview-about">Write about yourself.</p>
+            <h3>Experience</h3>
+            <ul id="preview-experience">
+                <li>List your experience.</li>
+            </ul>
+            <h3>Education</h3>
+            <ul id="preview-education">
+                <li>Your educational background.</li>
+            </ul>
+        </div>
+    </div>
+
+    <button class="download-btn" onclick="downloadCV()">Download CV</button>
+
+    <script>
+        function updatePreview() {
+            document.getElementById("preview-name").innerText = document.getElementById("name").value || "Your Name";
+            document.getElementById("preview-jobTitle").innerText = document.getElementById("jobTitle").value || "Job Title";
+            document.getElementById("preview-email").innerText = document.getElementById("email").value || "your.email@example.com";
+            document.getElementById("preview-phone").innerText = document.getElementById("phone").value || "+1234567890";
+            document.getElementById("preview-about").innerText = document.getElementById("about").value || "Write about yourself.";
+            document.getElementById("preview-experience").innerHTML = formatList(document.getElementById("experience").value);
+            document.getElementById("preview-education").innerHTML = formatList(document.getElementById("education").value);
+            document.getElementById("preview-skills").innerHTML = formatList(document.getElementById("skills").value);
+        }
+        
+        function formatList(text) {
+            return text.split('\n').map(item => `<li>${item}</li>`).join('');
+        }
+        
+        function downloadCV() {
+            const element = document.getElementById("cv-preview");
+            html2canvas(element).then(canvas => {
+                const imgData = canvas.toDataURL("image/png");
+                const pdf = new jsPDF();
+                pdf.addImage(imgData, "PNG", 10, 10, 180, 250);
+                pdf.save("CV.pdf");
+            });
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+</body>
+</html>

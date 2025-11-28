@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV Builder</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            width: 800px;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+        h1 {
+            text-align: center;
+            text-transform: uppercase;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+            display: block;
+            width: 100%;
+            font-size: 16px;
+        }
+        .resume-preview {
+            border: 1px solid #000;
+            padding: 20px;
+            margin-top: 20px;
+            background: #fff;
+        }
+        h3 {
+            position: relative;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+        }
+        h3::after {
+            content: "";
+            display: block;
+            width: 100%;
+            border-bottom: 2px solid black;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CV Builder</h1>
+        <form id="cv-form">
+            <label for="name">Full Name:</label>
+            <input type="text" id="name" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" required>
+
+            <label for="phone">Phone:</label>
+            <input type="text" id="phone" required>
+
+            <label for="summary">Professional Summary:</label>
+            <textarea id="summary" required></textarea>
+
+            <label for="education">Education:</label>
+            <textarea id="education" required></textarea>
+
+            <label for="experience">Work Experience (Use bullets by pressing Enter):</label>
+            <textarea id="experience" required></textarea>
+
+            <label for="skills">Skills (Use bullets by pressing Enter):</label>
+            <textarea id="skills" required></textarea>
+
+            <label for="achievements">Achievements (Use bullets by pressing Enter):</label>
+            <textarea id="achievements" required></textarea>
+
+            <label for="interests">Interests (Use bullets by pressing Enter):</label>
+            <textarea id="interests" required></textarea>
+
+            <h3>Customize Your CV</h3>
+            <label for="font-family">Font Family:</label>
+            <select id="font-family">
+                <option value="Arial">Arial</option>
+                <option value="Times New Roman">Times New Roman</option>
+                <option value="Verdana">Verdana</option>
+            </select>
+
+            <label for="font-size">Font Size (px):</label>
+            <input type="number" id="font-size" min="12" max="20" value="16">
+
+            <label for="font-color">Font Color:</label>
+            <input type="color" id="font-color" value="#000000">
+
+            <button type="button" onclick="generateCV()">Preview CV</button>
+            <button type="button" onclick="downloadCV()">Download PDF</button>
+        </form>
+
+        <div id="cv-preview" class="resume-preview"></div>
+    </div>
+
+    <script>
+        function applyStyles() {
+            const fontColor = document.getElementById('font-color').value;
+            const fontFamily = document.getElementById('font-family').value;
+            const fontSize = document.getElementById('font-size').value + 'px';
+
+            const cvPreview = document.getElementById('cv-preview');
+            cvPreview.style.color = fontColor;
+            cvPreview.style.fontFamily = fontFamily;
+            cvPreview.style.fontSize = fontSize;
+        }
+
+        function formatList(text) {
+            return text.split("\n").map(item => item.trim() ? `<li>${item.trim()}</li>` : "").join("");
+        }
+
+        function generateCV() {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const summary = document.getElementById('summary').value;
+            const education = document.getElementById('education').value;
+            const experience = document.getElementById('experience').value;
+            const skills = document.getElementById('skills').value;
+            const achievements = document.getElementById('achievements').value;
+            const interests = document.getElementById('interests').value;
+
+            document.getElementById('cv-preview').innerHTML = `
+                <h2>${name}</h2>
+                <p><strong>Email:</strong> ${email} | <strong>Phone:</strong> ${phone}</p>
+                <h3>Professional Summary</h3>
+                <p>${summary}</p>
+                <h3>Education</h3>
+                <p>${education}</p>
+                <h3>Work Experience</h3>
+                <ul>${formatList(experience)}</ul>
+                <h3>Skills</h3>
+                <ul>${formatList(skills)}</ul>
+                <h3>Achievements</h3>
+                <ul>${formatList(achievements)}</ul>
+                <h3>Interests</h3>
+                <ul>${formatList(interests)}</ul>
+            `;
+
+            applyStyles();
+        }
+
+        function downloadCV() {
+            const element = document.getElementById('cv-preview');
+            html2pdf(element);
+        }
+    </script>
+</body>
+</html>

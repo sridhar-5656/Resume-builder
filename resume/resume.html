@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Generator</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #34495e;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .form-group textarea {
+            resize: vertical;
+            height: 100px;
+        }
+        .preview {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .preview h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+            font-size: 1.5em;
+        }
+        .preview p {
+            margin: 5px 0;
+            color: #555;
+        }
+        .preview ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .preview ul li {
+            background: #ecf0f1;
+            margin: 10px 0;
+            padding: 10px;
+            border-left: 5px solid #3498db;
+            border-radius: 5px;
+        }
+        .preview ul li h3 {
+            margin: 0;
+            font-size: 1.2em;
+            color: #2c3e50;
+        }
+        .preview ul li p {
+            margin: 5px 0;
+            color: #555;
+        }
+        .button-group {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .button-group button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            background-color: #3498db;
+            color: #fff;
+            cursor: pointer;
+            margin: 0 10px;
+        }
+        .button-group button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Resume Generator</h1>
+        <form id="resumeForm">
+            <!-- Contact Information -->
+            <div class="form-group">
+                <label for="fullName">Full Name</label>
+                <input type="text" id="fullName" placeholder="Prashant Singh" required>
+            </div>
+            <div class="form-group">
+                <label for="rollNo">Roll No.</label>
+                <input type="text" id="rollNo" placeholder="xxxxxxx" required>
+            </div>
+            <div class="form-group">
+                <label for="degree">Degree</label>
+                <input type="text" id="degree" placeholder="Bachelor of Technology" required>
+            </div>
+            <div class="form-group">
+                <label for="college">College</label>
+                <input type="text" id="college" placeholder="Shri Ramdeobaba College of Engineering and Management, Nagpur" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="text" id="phone" placeholder="+91-xxxxxxx" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" placeholder="prashantxxxxx@gmail.com" required>
+            </div>
+            <div class="form-group">
+                <label for="github">GitHub Profile</label>
+                <input type="url" id="github" placeholder="GitHub Profile Link">
+            </div>
+            <div class="form-group">
+                <label for="linkedin">LinkedIn Profile</label>
+                <input type="url" id="linkedin" placeholder="LinkedIn Profile Link">
+            </div>
+
+            <!-- Education -->
+            <div class="form-group">
+                <label for="education">Education (use '|' to separate entries)</label>
+                <textarea id="education" placeholder="Degree | Institution | Location | Graduation Date | CGPA"></textarea>
+            </div>
+
+            <!-- Personal Projects -->
+            <div class="form-group">
+                <label for="projects">Personal Projects (use '|' to separate entries)</label>
+                <textarea id="projects" placeholder="Project Title | Description | Technology Used"></textarea>
+            </div>
+
+            <!-- Experience -->
+            <div class="form-group">
+                <label for="experience">Experience (use '|' to separate entries)</label>
+                <textarea id="experience" placeholder="Job Title | Company | Location | Dates | Description"></textarea>
+            </div>
+
+            <!-- Technical Skills -->
+            <div class="form-group">
+                <label for="skills">Technical Skills (comma-separated)</label>
+                <input type="text" id="skills" placeholder="C/C++, Python, JavaScript, HTML+CSS">
+            </div>
+
+            <!-- Positions of Responsibility -->
+            <div class="form-group">
+                <label for="positions">Positions of Responsibility (use '|' to separate entries)</label>
+                <textarea id="positions" placeholder="Position | Organization | Dates | Description"></textarea>
+            </div>
+
+            <div class="button-group">
+                <button type="button" onclick="previewResume()">Preview Resume</button>
+                <button type="button" onclick="downloadResume()">Download Resume</button>
+            </div>
+        </form>
+
+        <!-- Preview Section -->
+        <div id="preview" class="preview" style="display: none;">
+            <h2>Preview Resume</h2>
+            <div id="resumeContent"></div>
+        </div>
+    </div>
+
+    <script>
+        function previewResume() {
+            const fullName = document.getElementById('fullName').value;
+            const rollNo = document.getElementById('rollNo').value;
+            const degree = document.getElementById('degree').value;
+            const college = document.getElementById('college').value;
+            const phone = document.getElementById('phone').value;
+            const email = document.getElementById('email').value;
+            const github = document.getElementById('github').value;
+            const linkedin = document.getElementById('linkedin').value;
+            const education = document.getElementById('education').value.split('\n').map(entry => entry.split('|').map(item => item.trim()));
+            const projects = document.getElementById('projects').value.split('\n').map(entry => entry.split('|').map(item => item.trim()));
+            const experience = document.getElementById('experience').value.split('\n').map(entry => entry.split('|').map(item => item.trim()));
+            const skills = document.getElementById('skills').value.split(',').map(skill => skill.trim());
+            const positions = document.getElementById('positions').value.split('\n').map(entry => entry.split('|').map(item => item.trim()));
+
+            let resumeContent = `
+                <h1>${fullName}</h1>
+                <p><strong>Roll No.:</strong> ${rollNo}</p>
+                <p><strong>${degree}</strong></p>
+                <p>${college} | ${phone} | ${email}</p>
+                <p><strong>GitHub:</strong> <a href="${github}" target="_blank">${github}</a></p>
+                <p><strong>LinkedIn:</strong> <a href="${linkedin}" target="_blank">${linkedin}</a></p>
+
+                <h2>Education</h2>
+                <ul>${education.map(entry => `
+                    <li>
+                        <h3>${entry[0]}</h3>
+                        <p>${entry[1]} | ${entry[2]} | ${entry[3]} | CGPA: ${entry[4]}</p>
+                    </li>
+                `).join('')}</ul>
+
+                <h2>Personal Projects</h2>
+                <ul>${projects.map(entry => `
+                    <li>
+                        <h3>${entry[0]}</h3>
+                        <p>${entry[1]}</p>
+                        <p><strong>Technology Used:</strong> ${entry[2]}</p>
+                    </li>
+                `).join('')}</ul>
+
+                <h2>Experience</h2>
+                <ul>${experience.map(entry => `
+                    <li>
+                        <h3>${entry[0]}</h3>
+                        <p>${entry[1]} | ${entry[2]} | ${entry[3]}</p>
+                        <p>${entry[4]}</p>
+                    </li>
+                `).join('')}</ul>
+
+                <h2>Technical Skills</h2>
+                <ul>${skills.map(skill => `<li>${skill}</li>`).join('')}</ul>
+
+                <h2>Positions of Responsibility</h2>
+                <ul>${positions.map(entry => `
+                    <li>
+                        <h3>${entry[0]}</h3>
+                        <p>${entry[1]} | ${entry[2]}</p>
+                        <p>${entry[3]}</p>
+                    </li>
+                `).join('')}</ul>
+            `;
+
+            document.getElementById('resumeContent').innerHTML = resumeContent;
+            document.getElementById('preview').style.display = 'block';
+        }
+
+        function downloadResume() {
+            const element = document.getElementById('resumeContent');
+            const opt = {
+                margin: 10,
+                filename: 'resume.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+            html2pdf().from(element).set(opt).save();
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</body>
+</html>

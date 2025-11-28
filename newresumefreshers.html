@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Builder</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            background: white;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        h1 {
+            text-align: center;
+            color: #007bff;
+        }
+        label {
+            font-weight: bold;
+            margin-top: 10px;
+            display: block;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            padding: 10px;
+            border: none;
+            width: 100%;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        #resume-preview {
+            padding: 20px;
+            background: white;
+            margin-top: 20px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Resume Builder</h1>
+        <form id="resume-form">
+            <label>Full Name</label>
+            <input type="text" id="name" placeholder="Enter Full Name">
+            
+            <label>Email</label>
+            <input type="email" id="email" placeholder="Enter Email">
+            
+            <label>Phone Number</label>
+            <input type="tel" id="phone" placeholder="Enter Phone Number">
+            
+            <label>Summary</label>
+            <textarea id="summary" placeholder="Briefly describe yourself"></textarea>
+            
+            <label>Experience</label>
+            <textarea id="experience" placeholder="Enter your experience"></textarea>
+            
+            <label>Education</label>
+            <textarea id="education" placeholder="Enter your education"></textarea>
+            
+            <label>Skills</label>
+            <textarea id="skills" placeholder="List your skills"></textarea>
+            
+            <button type="button" onclick="generatePreview()">Preview Resume</button>
+        </form>
+    </div>
+    
+    <div class="container" id="resume-preview" style="display:none;">
+        <h2 id="preview-name"></h2>
+        <p><strong>Email:</strong> <span id="preview-email"></span></p>
+        <p><strong>Phone:</strong> <span id="preview-phone"></span></p>
+        <p><strong>Summary:</strong> <span id="preview-summary"></span></p>
+        <p><strong>Experience:</strong> <span id="preview-experience"></span></p>
+        <p><strong>Education:</strong> <span id="preview-education"></span></p>
+        <p><strong>Skills:</strong> <span id="preview-skills"></span></p>
+        <button onclick="downloadResume()">Download Resume</button>
+    </div>
+    
+    <script>
+        function generatePreview() {
+            document.getElementById('preview-name').innerText = document.getElementById('name').value;
+            document.getElementById('preview-email').innerText = document.getElementById('email').value;
+            document.getElementById('preview-phone').innerText = document.getElementById('phone').value;
+            document.getElementById('preview-summary').innerText = document.getElementById('summary').value;
+            document.getElementById('preview-experience').innerText = document.getElementById('experience').value;
+            document.getElementById('preview-education').innerText = document.getElementById('education').value;
+            document.getElementById('preview-skills').innerText = document.getElementById('skills').value;
+            
+            document.getElementById('resume-preview').style.display = 'block';
+        }
+
+        function downloadResume() {
+            html2canvas(document.getElementById('resume-preview')).then(canvas => {
+                let link = document.createElement('a');
+                link.href = canvas.toDataURL("image/png");
+                link.download = 'resume.png';
+                link.click();
+            });
+        }
+    </script>
+</body>
+</html>

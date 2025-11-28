@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Builder</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .builder-container {
+            display: flex;
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .input-section {
+            width: 50%;
+            padding: 20px;
+            background: #f9f9f9;
+        }
+        .preview-section {
+            width: 50%;
+            padding: 20px;
+            background: white;
+            overflow-y: auto;
+            height: 100vh;
+            position: relative;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+        }
+        h3 {
+            color: #2c3e50;
+            margin-top: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .resume {
+            font-family: 'Arial', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            background: white;
+        }
+        .resume-left {
+            width: 30%;
+            background: #3498db;
+            color: white;
+            padding: 30px;
+        }
+        .resume-right {
+            width: 70%;
+            padding: 30px;
+        }
+        .resume h2 {
+            color: white;
+            border-bottom: 2px solid white;
+            padding-bottom: 5px;
+            margin-top: 25px;
+        }
+        .resume h3 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+            margin-top: 25px;
+        }
+        .resume ul {
+            padding-left: 20px;
+        }
+        .resume li {
+            margin-bottom: 5px;
+        }
+        .name-title {
+            margin-bottom: 30px;
+        }
+        .name-title h1 {
+            text-align: left;
+            color: white;
+            margin-bottom: 5px;
+            font-size: 24px;
+        }
+        .name-title p {
+            color: white;
+            font-style: italic;
+            margin-top: 0;
+        }
+        .contact-info p {
+            margin: 5px 0;
+        }
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .skill-column {
+            width: 50%;
+            box-sizing: border-box;
+            padding-right: 10px;
+        }
+        .project-item, .education-item, .activity-item {
+            margin-bottom: 20px;
+        }
+        .project-item h4, .education-item h4 {
+            margin-bottom: 5px;
+        }
+        .education-item p, .activity-item p {
+            margin: 5px 0;
+        }
+        .hidden {
+            display: none;
+        }
+        .tab-container {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        .tab {
+            padding: 10px 20px;
+            background: #ddd;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+        .tab.active {
+            background: #3498db;
+            color: white;
+        }
+        .download-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #27ae60;
+            z-index: 100;
+        }
+        .download-btn:hover {
+            background: #219653;
+        }
+        .button-container {
+            display: flex;
+            gap: 10px;
+        }
+        .button-container button {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+    <h1>Resume Builder</h1>
+    
+    <div class="builder-container">
+        <div class="input-section">
+            <div class="tab-container">
+                <div class="tab active" onclick="showTab('personal')">Personal</div>
+                <div class="tab" onclick="showTab('professional')">Professional</div>
+                <div class="tab" onclick="showTab('education')">Education</div>
+                <div class="tab" onclick="showTab('projects')">Projects</div>
+            </div>
+            
+            <div id="personal-tab" class="tab-content">
+                <h2>Personal Information</h2>
+                <div class="form-group">
+                    <label for="full-name">Full Name</label>
+                    <input type="text" id="full-name" placeholder="Alexandra B. Thompson">
+                </div>
+                <div class="form-group">
+                    <label for="job-title">Job Title</label>
+                    <input type="text" id="job-title" placeholder="Graphic Designer">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="text" id="email" placeholder="alexandra.thompson@email.com">
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone</label>
+                    <input type="text" id="phone" placeholder="(555) 123-4567">
+                </div>
+                <div class="form-group">
+                    <label for="linkedin">LinkedIn</label>
+                    <input type="text" id="linkedin" placeholder="linkedin.com/in/alexandrathompson_design">
+                </div>
+                <div class="form-group">
+                    <label for="website">Website</label>
+                    <input type="text" id="website" placeholder="www.thompsondesign.com">
+                </div>
+                
+                <h2>Skills</h2>
+                <div class="form-group">
+                    <label>Enter your skills (one per line)</label>
+                    <textarea id="skills">Adobe Creative Suite
+Sketch
+Figma
+Typography
+Branding
+Logo Design
+Animation
+UX/UI Design
+Attention to Detail
+Time Management</textarea>
+                </div>
+                
+                <h2>Awards</h2>
+                <div class="form-group">
+                    <label>Enter your awards (one per line)</label>
+                    <textarea id="awards">2023—Outstanding Senior Project Award, University of Art and Design
+2022—Best Design Concept, State Design Competition</textarea>
+                </div>
+            </div>
+            
+            <div id="professional-tab" class="tab-content hidden">
+                <h2>Professional Summary</h2>
+                <div class="form-group">
+                    <textarea id="summary">Creative, recent Graphic Design graduate with a passion for visual storytelling and a strong foundation in design principles. Proficient in Adobe Creative Suite and experienced in creating compelling graphics, logos, and layouts. Participated in a project, creating a logo, website, and promotional materials, improving engagement by 30%. Eager to contribute innovative design solutions to Turnover Marketing.</textarea>
+                </div>
+                
+                <h2>Additional Activities</h2>
+                <div class="form-group">
+                    <label>Enter your activities (one per line)</label>
+                    <textarea id="activities">Vice President, University Art Club with 25 members
+Participant, Global Design Conference 2022
+Avid Photographer, with a focus on urban and landscape photography</textarea>
+                </div>
+            </div>
+            
+            <div id="education-tab" class="tab-content hidden">
+                <h2>Education</h2>
+                <div class="form-group">
+                    <label for="degree">Degree</label>
+                    <input type="text" id="degree" placeholder="Bachelor of Arts in Graphic Design">
+                </div>
+                <div class="form-group">
+                    <label for="university">University</label>
+                    <input type="text" id="university" placeholder="University of Art and Design, Artville, CA">
+                </div>
+                <div class="form-group">
+                    <label for="education-years">Years</label>
+                    <input type="text" id="education-years" placeholder="2019–2023">
+                </div>
+                <div class="form-group">
+                    <label for="gpa">GPA</label>
+                    <input type="text" id="gpa" placeholder="3.8/4.0">
+                </div>
+                <div class="form-group">
+                    <label for="education-notes">Additional Notes</label>
+                    <textarea id="education-notes">Honors and Awards: Dean's List (all semesters)</textarea>
+                </div>
+                
+                <h3>Course Highlights</h3>
+                <div class="form-group">
+                    <label>Typography and Branding</label>
+                    <textarea id="course-typo">Created comprehensive branding projects, including logo design, business cards, and style guides. Developed a brand identity for a fictional company as part of a semester-long project.</textarea>
+                </div>
+                <div class="form-group">
+                    <label>Web and Interactive Design</label>
+                    <textarea id="course-web">Designed and developed 5 interactive websites using HTML, CSS, and JavaScript. Created responsive layouts, ensuring accessibility on various devices.</textarea>
+                </div>
+                <div class="form-group">
+                    <label>Print and Digital Media</label>
+                    <textarea id="course-print">Produced high-quality print materials such as brochures, posters, and magazine layouts for a marketing campaign. Utilized Adobe InDesign for layout design and Adobe Photoshop for photo editing.</textarea>
+                </div>
+                <div class="form-group">
+                    <label>UX/UI Design</label>
+                    <textarea id="course-ux">Conducted user research and developed wireframes and prototypes for mobile and web applications. Collaborated on a team project to design a user-friendly mobile app interface.</textarea>
+                </div>
+            </div>
+            
+            <div id="projects-tab" class="tab-content hidden">
+                <h2>Projects</h2>
+                
+                <h3>Project 1</h3>
+                <div class="form-group">
+                    <label for="project1-title">Title</label>
+                    <input type="text" id="project1-title" placeholder="Senior Capstone Project: Brand Redesign for Local Non-Profit">
+                </div>
+                <div class="form-group">
+                    <label for="project1-desc">Description</label>
+                    <textarea id="project1-desc">- Led a team of four students to redesign the visual identity of a local non-profit organization.
+- Created a new logo, website layout, and promotional materials, resulting in a 30% increase in community engagement.
+- Presented the project to a panel of industry professionals and received the Outstanding Senior Project Award.</textarea>
+                </div>
+                
+                <h3>Project 2</h3>
+                <div class="form-group">
+                    <label for="project2-title">Title</label>
+                    <input type="text" id="project2-title" placeholder="Interactive Website Design for University Event">
+                </div>
+                <div class="form-group">
+                    <label for="project2-desc">Description</label>
+                    <textarea id="project2-desc">- Designed and developed an interactive website for the university's annual art and design event.
+- Incorporated responsive design principles to ensure accessibility on all devices.
+- Increased event registration by 20% through effective use of visual elements and user-friendly navigation.</textarea>
+                </div>
+            </div>
+            
+            <div class="button-container">
+                <button onclick="generateResume()">Update Preview</button>
+                <button onclick="downloadResume()" class="download-btn">Download Resume</button>
+            </div>
+        </div>
+        
+        <div class="preview-section">
+            <div id="resume-preview" class="resume">
+                <!-- Preview will be generated here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.add('hidden');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show the selected tab content
+            document.getElementById(tabName + '-tab').classList.remove('hidden');
+            
+            // Add active class to the clicked tab
+            event.currentTarget.classList.add('active');
+        }
+        
+        function generateResume() {
+            const name = document.getElementById("full-name").value || "Alexandra B. Thompson";
+            const jobTitle = document.getElementById("job-title").value || "Graphic Designer";
+            const email = document.getElementById("email").value || "alexandra.thompson@email.com";
+            const phone = document.getElementById("phone").value || "(555) 123-4567";
+            const linkedin = document.getElementById("linkedin").value || "linkedin.com/in/alexandrathompson_design";
+            const website = document.getElementById("website").value || "www.thompsondesign.com";
+            
+            const skills = document.getElementById("skills").value.split('\n').filter(skill => skill.trim() !== '');
+            const awards = document.getElementById("awards").value.split('\n').filter(award => award.trim() !== '');
+            const summary = document.getElementById("summary").value || "Creative, recent Graphic Design graduate with a passion for visual storytelling...";
+            
+            const degree = document.getElementById("degree").value || "Bachelor of Arts in Graphic Design";
+            const university = document.getElementById("university").value || "University of Art and Design, Artville, CA";
+            const educationYears = document.getElementById("education-years").value || "2019–2023";
+            const gpa = document.getElementById("gpa").value || "3.8/4.0";
+            const educationNotes = document.getElementById("education-notes").value || "Honors and Awards: Dean's List (all semesters)";
+            
+            const courseTypo = document.getElementById("course-typo").value || "Created comprehensive branding projects...";
+            const courseWeb = document.getElementById("course-web").value || "Designed and developed 5 interactive websites...";
+            const coursePrint = document.getElementById("course-print").value || "Produced high-quality print materials...";
+            const courseUx = document.getElementById("course-ux").value || "Conducted user research and developed wireframes...";
+            
+            const project1Title = document.getElementById("project1-title").value || "Senior Capstone Project: Brand Redesign for Local Non-Profit";
+            const project1Desc = document.getElementById("project1-desc").value.split('\n').filter(line => line.trim() !== '');
+            const project2Title = document.getElementById("project2-title").value || "Interactive Website Design for University Event";
+            const project2Desc = document.getElementById("project2-desc").value.split('\n').filter(line => line.trim() !== '');
+            
+            const activities = document.getElementById("activities").value.split('\n').filter(activity => activity.trim() !== '');
+            
+            const resumePreview = document.getElementById("resume-preview");
+            resumePreview.innerHTML = `
+                <div class="resume-left">
+                    <div class="name-title">
+                        <h1>${name}</h1>
+                        <p>${jobTitle}</p>
+                    </div>
+                    
+                    <h2>Personal Info</h2>
+                    <div class="contact-info">
+                        <p><strong>Email</strong><br>${email}</p>
+                        <p><strong>Phone</strong><br>${phone}</p>
+                        <p><strong>LinkedIn</strong><br>${linkedin}</p>
+                        <p><strong>Website</strong><br>${website}</p>
+                    </div>
+                    
+                    <h2>Skills</h2>
+                    <div class="skills-list">
+                        <div class="skill-column">
+                            <ul>
+                                ${skills.slice(0, Math.ceil(skills.length/2)).map(skill => `<li>${skill}</li>`).join('')}
+                            </ul>
+                        </div>
+                        <div class="skill-column">
+                            <ul>
+                                ${skills.slice(Math.ceil(skills.length/2)).map(skill => `<li>${skill}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <h2>Awards</h2>
+                    <ul>
+                        ${awards.map(award => `<li>${award}</li>`).join('')}
+                    </ul>
+                </div>
+                
+                <div class="resume-right">
+                    <h3>Summary</h3>
+                    <p>${summary}</p>
+                    
+                    <h3>Projects</h3>
+                    <div class="project-item">
+                        <h4>${project1Title}</h4>
+                        <ul>
+                            ${project1Desc.map(item => `<li>${item}</li>`).join('')}
+                        </ul>
+                    </div>
+                    
+                    <div class="project-item">
+                        <h4>${project2Title}</h4>
+                        <ul>
+                            ${project2Desc.map(item => `<li>${item}</li>`).join('')}
+                        </ul>
+                    </div>
+                    
+                    <h3>Education</h3>
+                    <div class="education-item">
+                        <h4>${degree}</h4>
+                        <p>${university}</p>
+                        <p>${educationYears}</p>
+                        <p>GPA: ${gpa}</p>
+                        <p>${educationNotes}</p>
+                    </div>
+                    
+                    <h4>Typography and Branding</h4>
+                    <p>${courseTypo}</p>
+                    
+                    <h4>Web and Interactive Design</h4>
+                    <p>${courseWeb}</p>
+                    
+                    <h4>Print and Digital Media</h4>
+                    <p>${coursePrint}</p>
+                    
+                    <h4>UX/UI Design</h4>
+                    <p>${courseUx}</p>
+                    
+                    <h3>Additional Activities</h3>
+                    <ul>
+                        ${activities.map(activity => `<li>${activity}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
+            
+            // Scroll to preview
+            document.querySelector('.preview-section').scrollTop = 0;
+        }
+        
+        function downloadResume() {
+            // Generate the resume first to ensure it's up to date
+            generateResume();
+            
+            // Get the resume element
+            const element = document.getElementById('resume-preview');
+            
+            // Options for the PDF
+            const opt = {
+                margin: 10,
+                filename: 'resume.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+            
+            // Generate the PDF
+            html2pdf().set(opt).from(element).save();
+        }
+        
+        // Generate initial preview
+        window.onload = generateResume;
+    </script>
+</body>
+</html>

@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Builder</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans&family=Playfair+Display&family=Roboto&family=Lato&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --text-color: #333;
+            --light-bg: #f9f9f9;
+            --resume-font: 'Roboto', sans-serif;
+            --header-font: 'Montserrat', sans-serif;
+        }
+        
+        body {
+            font-family: var(--resume-font);
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: var(--text-color);
+        }
+        
+        .builder-container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .input-section {
+            width: 45%;
+            padding: 30px;
+            background: var(--light-bg);
+            overflow-y: auto;
+            height: 100vh;
+        }
+        
+        .preview-section {
+            width: 55%;
+            padding: 30px;
+            background: white;
+            overflow-y: auto;
+            height: 100vh;
+            position: relative;
+        }
+        
+        h1 {
+            text-align: center;
+            color: var(--primary-color);
+            font-family: var(--header-font);
+            margin-bottom: 30px;
+        }
+        
+        h2 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 8px;
+            font-family: var(--header-font);
+            margin-top: 30px;
+        }
+        
+        h3 {
+            color: var(--primary-color);
+            margin-top: 25px;
+            font-family: var(--header-font);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+        
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        button {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 15px;
+            font-family: var(--header-font);
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+        
+        .resume {
+            font-family: var(--resume-font);
+            width: 100%;
+            background: white;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            position: relative;
+            margin-bottom: 20px;
+            padding: 40px;
+        }
+        
+        .resume-header {
+            margin-bottom: 20px;
+        }
+        
+        .resume-name {
+            font-size: var(--name-size, 36px);
+            font-weight: bold;
+            margin: 0;
+            font-family: var(--header-font);
+            color: var(--resume-accent, var(--primary-color));
+            text-transform: uppercase;
+        }
+        
+        .resume-title {
+            font-size: var(--title-size, 18px);
+            color: #666;
+            margin: 5px 0 20px;
+            font-family: var(--header-font);
+        }
+        
+        .resume-summary {
+            font-size: var(--text-size, 14px);
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .resume-section {
+            margin-bottom: 30px;
+        }
+        
+        .resume-section h2 {
+            color: var(--resume-accent, var(--primary-color));
+            border-bottom: 2px solid var(--resume-accent, var(--primary-color));
+            padding-bottom: 5px;
+            font-size: var(--section-heading-size, 20px);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+        
+        .resume-item {
+            margin-bottom: 25px;
+        }
+        
+        .resume-item h3 {
+            font-size: var(--item-heading-size, 18px);
+            font-weight: bold;
+            margin: 0 0 5px;
+        }
+        
+        .resume-item .company {
+            font-style: italic;
+            color: #555;
+            font-weight: bold;
+        }
+        
+        .resume-item .date {
+            color: #777;
+            font-style: italic;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .resume-item p {
+            margin: 5px 0;
+            font-size: var(--text-size, 14px);
+            line-height: 1.5;
+        }
+        
+        ul.resume-list {
+            padding-left: 20px;
+            list-style-type: var(--bullet-style, disc);
+        }
+        
+        ul.resume-list li {
+            margin-bottom: 8px;
+            font-size: var(--text-size, 14px);
+        }
+        
+        .contact-info {
+            margin-bottom: 30px;
+        }
+        
+        .contact-info p {
+            margin: 5px 0;
+            font-size: var(--text-size, 14px);
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .tab-container {
+            display: flex;
+            margin-bottom: 25px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .tab {
+            padding: 12px 25px;
+            background: #eee;
+            cursor: pointer;
+            margin-right: 5px;
+            border-radius: 4px 4px 0 0;
+            font-family: var(--header-font);
+            transition: all 0.3s;
+        }
+        
+        .tab.active {
+            background: var(--secondary-color);
+            color: white;
+        }
+        
+        .tab:hover:not(.active) {
+            background: #ddd;
+        }
+        
+        .style-controls {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .style-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .style-group {
+            flex: 1;
+        }
+        
+        .download-btn {
+            background: #27ae60;
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 100;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+        
+        .download-btn:hover {
+            background: #219653;
+            transform: translateY(-2px) scale(1.02);
+        }
+        
+        .button-container {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .button-container button {
+            flex: 1;
+        }
+        
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .resume, .resume * {
+                visibility: visible;
+            }
+            .resume {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                box-shadow: none;
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Resume Builder</h1>
+    
+    <div class="builder-container">
+        <div class="input-section">
+            <div class="tab-container">
+                <div class="tab active" onclick="showTab('personal')">Personal</div>
+                <div class="tab" onclick="showTab('professional')">Professional</div>
+                <div class="tab" onclick="showTab('experience')">Experience</div>
+                <div class="tab" onclick="showTab('education')">Education</div>
+                <div class="tab" onclick="showTab('skills')">Skills</div>
+            </div>
+            
+            <div class="style-controls">
+                <h3>Style Customization</h3>
+                <div class="style-row">
+                    <div class="style-group">
+                        <label for="resume-font">Font Family</label>
+                        <select id="resume-font" onchange="updateStyle()">
+                            <option value="'Roboto', sans-serif">Roboto</option>
+                            <option value="'Open Sans', sans-serif">Open Sans</option>
+                            <option value="'Lato', sans-serif">Lato</option>
+                            <option value="'Times New Roman', serif">Times New Roman</option>
+                            <option value="'Playfair Display', serif">Playfair Display</option>
+                        </select>
+                    </div>
+                    <div class="style-group">
+                        <label for="header-font">Header Font</label>
+                        <select id="header-font" onchange="updateStyle()">
+                            <option value="'Montserrat', sans-serif">Montserrat</option>
+                            <option value="'Playfair Display', serif">Playfair Display</option>
+                            <option value="'Roboto', sans-serif">Roboto</option>
+                            <option value="'Lato', sans-serif">Lato</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="style-row">
+                    <div class="style-group">
+                        <label for="resume-accent">Accent Color</label>
+                        <input type="color" id="resume-accent" value="#2c3e50" onchange="updateStyle()">
+                    </div>
+                    <div class="style-group">
+                        <label for="bullet-style">Bullet Style</label>
+                        <select id="bullet-style" onchange="updateStyle()">
+                            <option value="disc">Disc</option>
+                            <option value="circle">Circle</option>
+                            <option value="square">Square</option>
+                            <option value="none">None</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="style-row">
+                    <div class="style-group">
+                        <label for="name-size">Name Size (px)</label>
+                        <input type="range" id="name-size" min="24" max="60" value="36" oninput="updateStyle()">
+                    </div>
+                    <div class="style-group">
+                        <label for="title-size">Title Size (px)</label>
+                        <input type="range" id="title-size" min="14" max="30" value="18" oninput="updateStyle()">
+                    </div>
+                </div>
+            </div>
+            
+            <div id="personal-tab" class="tab-content">
+                <h2>Personal Information</h2>
+                <div class="form-group">
+                    <label for="first-name">First Name</label>
+                    <input type="text" id="first-name" placeholder="Keith">
+                </div>
+                <div class="form-group">
+                    <label for="last-name">Last Name</label>
+                    <input type="text" id="last-name" placeholder="Shannons">
+                </div>
+                
+                <h3>Contact Information</h3>
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <input type="text" id="address" placeholder="22 Faubourg Saint Honoré, Paris, Île-de-France 7918">
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone</label>
+                    <input type="text" id="phone" placeholder="123-456-7890">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="text" id="email" placeholder="hello@reallygreatsite.com">
+                </div>
+                <div class="form-group">
+                    <label for="website">Website</label>
+                    <input type="text" id="website" placeholder="www.reallygreatsite.com">
+                </div>
+                <div class="form-group">
+                    <label for="social-media">Social Media</label>
+                    <input type="text" id="social-media" placeholder="@reallygreatsite">
+                </div>
+            </div>
+            
+            <div id="professional-tab" class="tab-content hidden">
+                <h2>Professional Summary</h2>
+                <div class="form-group">
+                    <textarea id="summary">Diligent senior software engineer with 10 years of experience in business applications. Eager to join Austen Tech to build out-of-the-box solutions for regional clients. Skilled in developing plans, managing projects, and user documentation.</textarea>
+                </div>
+            </div>
+            
+            <div id="experience-tab" class="tab-content hidden">
+                <h2>Work Experience</h2>
+                
+                <div class="form-group">
+                    <label for="exp1-title">Job Title</label>
+                    <input type="text" id="exp1-title" placeholder="Senior Software Engineer">
+                </div>
+                <div class="form-group">
+                    <label for="exp1-company">Company</label>
+                    <input type="text" id="exp1-company" placeholder="Heiman Software Labs">
+                </div>
+                <div class="form-group">
+                    <label for="exp1-years">Years</label>
+                    <input type="text" id="exp1-years" placeholder="Aug 2017 - Present">
+                </div>
+                <div class="form-group">
+                    <label for="exp1-description">Description</label>
+                    <textarea id="exp1-description">Provides direction for applications in development. Researches and develops new ways to improve development process. Mentors Junior Software Engineers.</textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="exp2-title">Job Title</label>
+                    <input type="text" id="exp2-title" placeholder="Junior Software Engineer">
+                </div>
+                <div class="form-group">
+                    <label for="exp2-company">Company</label>
+                    <input type="text" id="exp2-company" placeholder="Heiman Software Labs">
+                </div>
+                <div class="form-group">
+                    <label for="exp2-years">Years</label>
+                    <input type="text" id="exp2-years" placeholder="Jun 2011 - Jul 2017">
+                </div>
+                <div class="form-group">
+                    <label for="exp2-description">Description</label>
+                    <textarea id="exp2-description">Developed, installed, and configured internal applications, as well as new application releases into test and production environments.</textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="exp3-title">Job Title</label>
+                    <input type="text" id="exp3-title" placeholder="Software Engineering Intern">
+                </div>
+                <div class="form-group">
+                    <label for="exp3-company">Company</label>
+                    <input type="text" id="exp3-company" placeholder="Berou Solutions, Inc.">
+                </div>
+                <div class="form-group">
+                    <label for="exp3-years">Years</label>
+                    <input type="text" id="exp3-years" placeholder="Sep 2010 - Mar 2011">
+                </div>
+                <div class="form-group">
+                    <label for="exp3-description">Description</label>
+                    <textarea id="exp3-description">Completed six-month undergraduate trainee program. Developed a cloud-based human resources information system, consolidating employee information from various databases and servers.</textarea>
+                </div>
+            </div>
+            
+            <div id="education-tab" class="tab-content hidden">
+                <h2>Education</h2>
+                
+                <div class="form-group">
+                    <label for="edu1-degree">Degree</label>
+                    <input type="text" id="edu1-degree" placeholder="Master of Software Engineering">
+                </div>
+                <div class="form-group">
+                    <label for="edu1-school">School</label>
+                    <input type="text" id="edu1-school" placeholder="De Loureigh University, Venston Bay">
+                </div>
+                <div class="form-group">
+                    <label for="edu1-years">Year</label>
+                    <input type="text" id="edu1-years" placeholder="2014">
+                </div>
+                <div class="form-group">
+                    <label for="edu1-notes">Notes</label>
+                    <input type="text" id="edu1-notes" placeholder="Heiman Software Labs Scholar">
+                </div>
+                
+                <div class="form-group">
+                    <label for="edu2-degree">Degree</label>
+                    <input type="text" id="edu2-degree" placeholder="Bachelor of Science in Computer Science">
+                </div>
+                <div class="form-group">
+                    <label for="edu2-school">School</label>
+                    <input type="text" id="edu2-school" placeholder="De Loureigh University, Venston Bay">
+                </div>
+                <div class="form-group">
+                    <label for="edu2-years">Year</label>
+                    <input type="text" id="edu2-years" placeholder="2011">
+                </div>
+                <div class="form-group">
+                    <label for="edu2-notes">Notes</label>
+                    <input type="text" id="edu2-notes" placeholder="Graduated with honors">
+                </div>
+            </div>
+            
+            <div id="skills-tab" class="tab-content hidden">
+                <h2>Skills and Proficiencies</h2>
+                <div class="form-group">
+                    <label>Technical Skills (one per line)</label>
+                    <textarea id="tech-skills">Java, HTML, CSS, jQuery, PHP, SQL</textarea>
+                </div>
+                <div class="form-group">
+                    <label>Soft Skills (one per line)</label>
+                    <textarea id="soft-skills">Teamwork, multitasking, and attention to detail</textarea>
+                </div>
+                <div class="form-group">
+                    <label>Other Skills (one per line)</label>
+                    <textarea id="other-skills">Software and web development</textarea>
+                </div>
+                
+                <h2>Languages</h2>
+                <div class="form-group">
+                    <label>List your languages with proficiency (one per line)</label>
+                    <textarea id="languages">American English (Native)
+French (B2 Certificate)
+Spanish (B1 Level)</textarea>
+                </div>
+            </div>
+            
+            <div class="button-container">
+                <button onclick="generateResume()">Update Preview</button>
+                <button onclick="printResume()">Print Resume</button>
+            </div>
+        </div>
+        
+        <div class="preview-section">
+            <div id="resume-preview" class="resume">
+                <!-- Preview will be generated here -->
+            </div>
+            <button onclick="downloadResume()" class="download-btn">
+                <i class="fas fa-download"></i> Download PDF
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Global variables for styling
+        let currentStyles = {
+            font: "'Roboto', sans-serif",
+            headerFont: "'Montserrat', sans-serif",
+            accentColor: "#2c3e50",
+            bulletStyle: "disc",
+            nameSize: "36px",
+            titleSize: "18px",
+            sectionHeadingSize: "20px",
+            itemHeadingSize: "18px",
+            textSize: "14px"
+        };
+        
+        function showTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.add('hidden');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show the selected tab content
+            document.getElementById(tabName + '-tab').classList.remove('hidden');
+            
+            // Add active class to the clicked tab
+            event.currentTarget.classList.add('active');
+        }
+        
+        function updateStyle() {
+            // Get style values from controls
+            currentStyles.font = document.getElementById("resume-font").value;
+            currentStyles.headerFont = document.getElementById("header-font").value;
+            currentStyles.accentColor = document.getElementById("resume-accent").value;
+            currentStyles.bulletStyle = document.getElementById("bullet-style").value;
+            currentStyles.nameSize = document.getElementById("name-size").value + "px";
+            currentStyles.titleSize = document.getElementById("title-size").value + "px";
+            
+            // Update the preview
+            generateResume();
+        }
+        
+        function generateResume() {
+            // Get personal information
+            const firstName = document.getElementById("first-name").value || "Keith";
+            const lastName = document.getElementById("last-name").value || "Shannons";
+            const address = document.getElementById("address").value || "22 Faubourg Saint Honoré, Paris, Île-de-France 7918";
+            const phone = document.getElementById("phone").value || "123-456-7890";
+            const email = document.getElementById("email").value || "hello@reallygreatsite.com";
+            const website = document.getElementById("website").value || "www.reallygreatsite.com";
+            const socialMedia = document.getElementById("social-media").value || "@reallygreatsite";
+            
+            // Get professional information
+            const summary = document.getElementById("summary").value || "Diligent senior software engineer with 10 years of experience in business applications. Eager to join Austen Tech to build out-of-the-box solutions for regional clients. Skilled in developing plans, managing projects, and user documentation.";
+            
+            // Get experience information
+            const exp1Title = document.getElementById("exp1-title").value || "Senior Software Engineer";
+            const exp1Company = document.getElementById("exp1-company").value || "Heiman Software Labs";
+            const exp1Years = document.getElementById("exp1-years").value || "Aug 2017 - Present";
+            const exp1Desc = document.getElementById("exp1-description").value || "Provides direction for applications in development. Researches and develops new ways to improve development process. Mentors Junior Software Engineers.";
+            
+            const exp2Title = document.getElementById("exp2-title").value || "Junior Software Engineer";
+            const exp2Company = document.getElementById("exp2-company").value || "Heiman Software Labs";
+            const exp2Years = document.getElementById("exp2-years").value || "Jun 2011 - Jul 2017";
+            const exp2Desc = document.getElementById("exp2-description").value || "Developed, installed, and configured internal applications, as well as new application releases into test and production environments.";
+            
+            const exp3Title = document.getElementById("exp3-title").value || "Software Engineering Intern";
+            const exp3Company = document.getElementById("exp3-company").value || "Berou Solutions, Inc.";
+            const exp3Years = document.getElementById("exp3-years").value || "Sep 2010 - Mar 2011";
+            const exp3Desc = document.getElementById("exp3-description").value || "Completed six-month undergraduate trainee program. Developed a cloud-based human resources information system, consolidating employee information from various databases and servers.";
+            
+            // Get education information
+            const edu1Degree = document.getElementById("edu1-degree").value || "Master of Software Engineering";
+            const edu1School = document.getElementById("edu1-school").value || "De Loureigh University, Venston Bay";
+            const edu1Years = document.getElementById("edu1-years").value || "2014";
+            const edu1Notes = document.getElementById("edu1-notes").value || "Heiman Software Labs Scholar";
+            
+            const edu2Degree = document.getElementById("edu2-degree").value || "Bachelor of Science in Computer Science";
+            const edu2School = document.getElementById("edu2-school").value || "De Loureigh University, Venston Bay";
+            const edu2Years = document.getElementById("edu2-years").value || "2011";
+            const edu2Notes = document.getElementById("edu2-notes").value || "Graduated with honors";
+            
+            // Get skills and languages
+            const techSkills = document.getElementById("tech-skills").value.split('\n').filter(skill => skill.trim() !== '');
+            const softSkills = document.getElementById("soft-skills").value.split('\n').filter(skill => skill.trim() !== '');
+            const otherSkills = document.getElementById("other-skills").value.split('\n').filter(skill => skill.trim() !== '');
+            const languages = document.getElementById("languages").value.split('\n').filter(lang => lang.trim() !== '');
+            
+            // Generate the resume preview
+            const resumePreview = document.getElementById("resume-preview");
+            resumePreview.innerHTML = `
+                <style>
+                    .resume {
+                        font-family: ${currentStyles.font};
+                    }
+                    .resume-name {
+                        font-family: ${currentStyles.headerFont};
+                        font-size: ${currentStyles.nameSize};
+                        color: ${currentStyles.accentColor};
+                    }
+                    .resume-title {
+                        font-size: ${currentStyles.titleSize};
+                    }
+                    .resume-section h2 {
+                        color: ${currentStyles.accentColor};
+                        border-bottom-color: ${currentStyles.accentColor};
+                        font-size: ${currentStyles.sectionHeadingSize};
+                    }
+                    .resume-item h3 {
+                        font-size: ${currentStyles.itemHeadingSize};
+                    }
+                    .resume-item p, ul.resume-list li, .contact-info p, .resume-summary {
+                        font-size: ${currentStyles.textSize};
+                    }
+                    ul.resume-list {
+                        list-style-type: ${currentStyles.bulletStyle};
+                    }
+                </style>
+                
+                <div class="resume-header">
+                    <div class="resume-name">${firstName} ${lastName}</div>
+                </div>
+                
+                <div class="resume-summary">
+                    ${summary}
+                </div>
+                
+                <div class="contact-info">
+                    <p>${address}</p>
+                    <p>${phone}</p>
+                    <p>${email}</p>
+                    <p>${website}</p>
+                    <p>${socialMedia}</p>
+                </div>
+                
+                <div class="resume-section">
+                    <h2>SKILLS AND PROFICIENCIES</h2>
+                    <ul class="resume-list">
+                        ${techSkills.map(skill => `<li>${skill}</li>`).join('')}
+                        ${softSkills.map(skill => `<li>${skill}</li>`).join('')}
+                        ${otherSkills.map(skill => `<li>${skill}</li>`).join('')}
+                    </ul>
+                </div>
+                
+                <div class="resume-section">
+                    <h2>LANGUAGES</h2>
+                    <ul class="resume-list">
+                        ${languages.map(lang => `<li>${lang}</li>`).join('')}
+                    </ul>
+                </div>
+                
+                <div class="resume-section">
+                    <h2>WORK HISTORY</h2>
+                    <div class="resume-item">
+                        <h3>${exp1Title}</h3>
+                        <span class="company">${exp1Company}</span>
+                        <span class="date">${exp1Years}</span>
+                        <p>${exp1Desc}</p>
+                    </div>
+                    ${exp2Title ? `
+                    <div class="resume-item">
+                        <h3>${exp2Title}</h3>
+                        <span class="company">${exp2Company}</span>
+                        <span class="date">${exp2Years}</span>
+                        <p>${exp2Desc}</p>
+                    </div>
+                    ` : ''}
+                    ${exp3Title ? `
+                    <div class="resume-item">
+                        <h3>${exp3Title}</h3>
+                        <span class="company">${exp3Company}</span>
+                        <span class="date">${exp3Years}</span>
+                        <p>${exp3Desc}</p>
+                    </div>
+                    ` : ''}
+                </div>
+                
+                <div class="resume-section">
+                    <h2>EDUCATIONAL BACKGROUND</h2>
+                    <div class="resume-item">
+                        <h3>${edu1Degree}</h3>
+                        <span class="company">${edu1School}</span>
+                        <span class="date">${edu1Years}</span>
+                        ${edu1Notes ? `<p><em>${edu1Notes}</em></p>` : ''}
+                    </div>
+                    ${edu2Degree ? `
+                    <div class="resume-item">
+                        <h3>${edu2Degree}</h3>
+                        <span class="company">${edu2School}</span>
+                        <span class="date">${edu2Years}</span>
+                        ${edu2Notes ? `<p><em>${edu2Notes}</em></p>` : ''}
+                    </div>
+                    ` : ''}
+                </div>
+            `;
+            
+            // Scroll to top of preview
+            document.querySelector('.preview-section').scrollTop = 0;
+        }
+        
+        function downloadResume() {
+            // Generate the resume first to ensure it's up to date
+            generateResume();
+            
+            // Create a clone of the resume element to avoid modifying the original
+            const element = document.getElementById('resume-preview');
+            const clone = element.cloneNode(true);
+            
+            // Remove the download button from the clone
+            const buttons = clone.querySelectorAll('button');
+            buttons.forEach(button => button.remove());
+            
+            // Create a temporary container for the clone
+            const tempContainer = document.createElement('div');
+            tempContainer.appendChild(clone);
+            tempContainer.style.visibility = 'hidden';
+            document.body.appendChild(tempContainer);
+            
+            // Options for the PDF
+            const opt = {
+                margin: 10,
+                filename: `${document.getElementById("first-name").value || 'resume'}_${document.getElementById("last-name").value || ''}.pdf`,
+                image: { 
+                    type: 'jpeg', 
+                    quality: 0.98 
+                },
+                html2canvas: { 
+                    scale: 2,
+                    letterRendering: true,
+                    useCORS: true,
+                    scrollX: 0,
+                    scrollY: 0,
+                    windowWidth: clone.scrollWidth
+                },
+                jsPDF: { 
+                    unit: 'mm', 
+                    format: 'a4', 
+                    orientation: 'portrait' 
+                }
+            };
+            
+            // Generate the PDF
+            html2pdf()
+                .set(opt)
+                .from(clone)
+                .save()
+                .then(() => {
+                    // Clean up by removing the temporary container
+                    document.body.removeChild(tempContainer);
+                });
+        }
+        
+        function printResume() {
+            generateResume();
+            window.print();
+        }
+        
+        // Initialize the form with sample data
+        function initializeForm() {
+            document.getElementById("first-name").value = "Keith";
+            document.getElementById("last-name").value = "Shannons";
+            document.getElementById("address").value = "22 Faubourg Saint Honoré, Paris, Île-de-France 7918";
+            document.getElementById("phone").value = "123-456-7890";
+            document.getElementById("email").value = "hello@reallygreatsite.com";
+            document.getElementById("website").value = "www.reallygreatsite.com";
+            document.getElementById("social-media").value = "@reallygreatsite";
+            
+            document.getElementById("summary").value = "Diligent senior software engineer with 10 years of experience in business applications. Eager to join Austen Tech to build out-of-the-box solutions for regional clients. Skilled in developing plans, managing projects, and user documentation.";
+            
+            document.getElementById("exp1-title").value = "Senior Software Engineer";
+            document.getElementById("exp1-company").value = "Heiman Software Labs";
+            document.getElementById("exp1-years").value = "Aug 2017 - Present";
+            document.getElementById("exp1-description").value = "Provides direction for applications in development. Researches and develops new ways to improve development process. Mentors Junior Software Engineers.";
+            
+            document.getElementById("exp2-title").value = "Junior Software Engineer";
+            document.getElementById("exp2-company").value = "Heiman Software Labs";
+            document.getElementById("exp2-years").value = "Jun 2011 - Jul 2017";
+            document.getElementById("exp2-description").value = "Developed, installed, and configured internal applications, as well as new application releases into test and production environments.";
+            
+            document.getElementById("exp3-title").value = "Software Engineering Intern";
+            document.getElementById("exp3-company").value = "Berou Solutions, Inc.";
+            document.getElementById("exp3-years").value = "Sep 2010 - Mar 2011";
+            document.getElementById("exp3-description").value = "Completed six-month undergraduate trainee program. Developed a cloud-based human resources information system, consolidating employee information from various databases and servers.";
+            
+            document.getElementById("edu1-degree").value = "Master of Software Engineering";
+            document.getElementById("edu1-school").value = "De Loureigh University, Venston Bay";
+            document.getElementById("edu1-years").value = "2014";
+            document.getElementById("edu1-notes").value = "Heiman Software Labs Scholar";
+            
+            document.getElementById("edu2-degree").value = "Bachelor of Science in Computer Science";
+            document.getElementById("edu2-school").value = "De Loureigh University, Venston Bay";
+            document.getElementById("edu2-years").value = "2011";
+            document.getElementById("edu2-notes").value = "Graduated with honors";
+            
+            document.getElementById("tech-skills").value = "Java, HTML, CSS, jQuery, PHP, SQL";
+            document.getElementById("soft-skills").value = "Teamwork, multitasking, and attention to detail";
+            document.getElementById("other-skills").value = "Software and web development";
+            document.getElementById("languages").value = "American English (Native)\nFrench (B2 Certificate)\nSpanish (B1 Level)";
+            
+            // Generate initial preview
+            generateResume();
+        }
+        
+        // Initialize when page loads
+        window.onload = initializeForm;
+    </script>
+</body>
+</html>

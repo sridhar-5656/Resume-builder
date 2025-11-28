@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Builder</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        /* Header Styles */
+        .header1 {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #0073e6;
+            padding: 10px 20px;
+            color: white;
+        }
+
+        .header1 img {
+            width: 75px;
+            height: 50px;
+        }
+
+        .nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 14px;
+        }
+
+        .nav a:hover {
+            text-decoration: underline;
+        }
+
+        /* Container Styles */
+        .container {
+            padding: 20px;
+            background-color: white;
+            margin: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2 {
+            color: #0073e6;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        label {
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        /* Button Styles */
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #0073e6;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #005bb5;
+        }
+
+        /* Preview Section Styles */
+        #preview {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        /* Resume Preview Styles */
+        .resume-preview {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .resume-preview h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .resume-preview h2 {
+            font-size: 20px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .resume-preview p {
+            margin: 0 0 10px;
+        }
+
+        .resume-preview ul {
+            padding-left: 20px;
+        }
+
+        .resume-preview ul li {
+            list-style-type: disc;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header1">
+        <img src="resumelogo.png" alt="resume builder" width="75px" height="50px">
+        <div class="nav">
+            <a href="CV-Builder-master/index.html">Resume<br>examples</a>
+            <a href="templateresume.html">Resume<br>templates</a>
+            <a href="dupesignin.html">Signin</a>
+            <a href="login.html">Login</a>
+            <a href="useraccount.html">Profile</a>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Personal Details -->
+        <h1>YOUR NAME</h1>
+        <label for="cityState">City, State:</label>
+        <input type="text" id="cityState" value="city, state">
+        <label for="contact">Contact:</label>
+        <input type="text" id="contact" value="+xx-9999999999">
+        <label for="email">Email:</label>
+        <input type="email" id="email" value="yourname@gmail.com">
+        <label for="ids">IDs:</label>
+        <input type="text" id="ids" value="yourid yourid yourid yourid">
+
+        <!-- Education Section -->
+        <h2>EDUCATION</h2>
+        <label for="college1">College Name:</label>
+        <input type="text" id="college1" value="College Name">
+        <label for="degree1">Degree Name - CGPA:</label>
+        <input type="text" id="degree1" value="Degree Name - CGPA - xx">
+        <label for="location1">Location:</label>
+        <input type="text" id="location1" value="city, country">
+
+        <label for="college2">College Name:</label>
+        <input type="text" id="college2" value="College Name">
+        <label for="degree2">Exam Name - Course Name - Percentage:</label>
+        <input type="text" id="degree2" value="Exam Name - Course Name - Percentage - xx%">
+        <label for="location2">Location:</label>
+        <input type="text" id="location2" value="city, country">
+
+        <!-- Coursework/Skills Section -->
+        <h2>COURSEWORK / SKILLS</h2>
+        <textarea id="coursework" rows="4">• Data Structures & Algorithms • Network Security • Artificial Intelligence • Web Development
+• Operating Systems • Database Management System (DBMS) • OOPS Concept • Android Development</textarea>
+
+        <!-- Projects Section -->
+        <h2>PROJECTS</h2>
+        <label for="project1">Project Name 1:</label>
+        <input type="text" id="project1" value="Project Name ☑ | Technology Stack Used">
+        <label for="project1Date">Date:</label>
+        <input type="text" id="project1Date" value="MM YYYY">
+        <textarea id="project1Details" rows="3">• About project key points to highlight.
+• Live site here</textarea>
+
+        <label for="project2">Project Name 2:</label>
+        <input type="text" id="project2" value="Project Name ☑ | Technology Stack Used">
+        <label for="project2Date">Date:</label>
+        <input type="text" id="project2Date" value="MM YYYY">
+        <textarea id="project2Details" rows="3">• About project highlight key points.
+• Download</textarea>
+
+        <label for="project3">Project Name 3:</label>
+        <input type="text" id="project3" value="Project Name ☑ | Technology Stack Used">
+        <label for="project3Date">Date:</label>
+        <input type="text" id="project3Date" value="MM YYYY">
+        <textarea id="project3Details" rows="3">• About Project highlight key points</textarea>
+
+        <!-- Internship Section -->
+        <h2>INTERNSHIP</h2>
+        <label for="internshipCompany">Company Name:</label>
+        <input type="text" id="internshipCompany" value="Company Name ☑">
+        <label for="internshipDate">Date:</label>
+        <input type="text" id="internshipDate" value="MM YYYY - MM YYYY">
+        <label for="internshipRole">Role Name:</label>
+        <input type="text" id="internshipRole" value="Role Name">
+        <label for="internshipLocation">Location:</label>
+        <input type="text" id="internshipLocation" value="city, country">
+        <textarea id="internshipDetails" rows="3">• About the role and responsibilities carried out.</textarea>
+
+        <!-- Technical Skills Section -->
+        <h2>TECHNICAL SKILLS</h2>
+        <textarea id="technicalSkills" rows="5">Languages: Python, Java, C, C++, Dart, JavaScript, SQL, NoSQL, R, XML, Go
+Developer Tools: VS Code, Android Studio, DataGrip, Goland, IntelliJ Idea Ultimate
+Technologies/Frameworks: Linux, GitHub, ReactJS, Redux, NextJS, NodeJS, ExpressJS, Git, Mongo, Flutter</textarea>
+
+        <!-- Extracurricular Section -->
+        <h2>EXTRACURRICULAR</h2>
+        <label for="extracurricularOrg">Organization Name:</label>
+        <input type="text" id="extracurricularOrg" value="Organization Name ☑">
+        <label for="extracurricularDate">Date:</label>
+        <input type="text" id="extracurricularDate" value="MM YYYY - MM YYYY">
+        <label for="extracurricularRole">Role:</label>
+        <input type="text" id="extracurricularRole" value="Role">
+        <label for="extracurricularLocation">Location:</label>
+        <input type="text" id="extracurricularLocation" value="Location">
+        <textarea id="extracurricularDetails" rows="3">• About the role and responsibilities carried out.
+• Participation Certificate. ☑</textarea>
+
+        <!-- Certifications Section -->
+        <h2>CERTIFICATIONS</h2>
+        <textarea id="certifications" rows="5">• ReactJS & Redux - Udemy • Java • Command Line in Linux - Coursera
+• Python for Data Science - XIE • SQL • Microsoft AI Classroom - Microsoft
+• 5 Stars in C++ & SQL☑ • MongoDB Basics • NodeJS with Express & MongoDB - Udemy</textarea>
+
+        <!-- Buttons for Preview and Download -->
+        <div class="button-container">
+            <button onclick="previewResume()">Preview Resume</button>
+            <button onclick="downloadResume()">Download Resume</button>
+        </div>
+
+        <!-- Preview Section -->
+        <div id="preview"></div>
+    </div>
+
+    <!-- JavaScript for Preview and Download -->
+    <script>
+        // Function to preview the resume
+        function previewResume() {
+            const preview = document.getElementById('preview');
+            preview.innerHTML = `
+                <div class="resume-preview">
+                    <h1>${document.getElementById('cityState').value}</h1>
+                    <p>${document.getElementById('contact').value} | ${document.getElementById('email').value} | ${document.getElementById('ids').value}</p>
+                    <h2>EDUCATION</h2>
+                    <p><strong>${document.getElementById('college1').value}</strong> ${document.getElementById('degree1').value} | ${document.getElementById('location1').value}</p>
+                    <p><strong>${document.getElementById('college2').value}</strong> ${document.getElementById('degree2').value} | ${document.getElementById('location2').value}</p>
+                    <h2>COURSEWORK / SKILLS</h2>
+                    <p>${document.getElementById('coursework').value.replace(/\n/g, '<br>')}</p>
+                    <h2>PROJECTS</h2>
+                    <p><strong>${document.getElementById('project1').value}</strong> | ${document.getElementById('project1Date').value}</p>
+                    <p>${document.getElementById('project1Details').value.replace(/\n/g, '<br>')}</p>
+                    <p><strong>${document.getElementById('project2').value}</strong> | ${document.getElementById('project2Date').value}</p>
+                    <p>${document.getElementById('project2Details').value.replace(/\n/g, '<br>')}</p>
+                    <p><strong>${document.getElementById('project3').value}</strong> | ${document.getElementById('project3Date').value}</p>
+                    <p>${document.getElementById('project3Details').value.replace(/\n/g, '<br>')}</p>
+                    <h2>INTERNSHIP</h2>
+                    <p><strong>${document.getElementById('internshipCompany').value}</strong> | ${document.getElementById('internshipDate').value}</p>
+                    <p>${document.getElementById('internshipRole').value} | ${document.getElementById('internshipLocation').value}</p>
+                    <p>${document.getElementById('internshipDetails').value.replace(/\n/g, '<br>')}</p>
+                    <h2>TECHNICAL SKILLS</h2>
+                    <p>${document.getElementById('technicalSkills').value.replace(/\n/g, '<br>')}</p>
+                    <h2>EXTRACURRICULAR</h2>
+                    <p><strong>${document.getElementById('extracurricularOrg').value}</strong> | ${document.getElementById('extracurricularDate').value}</p>
+                    <p>${document.getElementById('extracurricularRole').value} | ${document.getElementById('extracurricularLocation').value}</p>
+                    <p>${document.getElementById('extracurricularDetails').value.replace(/\n/g, '<br>')}</p>
+                    <h2>CERTIFICATIONS</h2>
+                    <p>${document.getElementById('certifications').value.replace(/\n/g, '<br>')}</p>
+                </div>
+            `;
+        }
+
+        // Function to download the resume as a PDF
+        function downloadResume() {
+            const element = document.getElementById('preview');
+            html2pdf(element);
+        }
+    </script>
+
+    <!-- Include html2pdf library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+</body>
+</html>

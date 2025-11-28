@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATS Resume Generator</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; }
+        .container { width: 80%; margin: 20px auto; background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+        label { font-weight: bold; }
+        input, textarea, select { width: 100%; padding: 10px; margin-top: 5px; border-radius: 5px; border: 1px solid #ddd; }
+        .btn { width: 100%; padding: 10px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; }
+        .btn:hover { background-color: #45a049; }
+        .resume-output { display: none; padding: 20px; background: white; margin-top: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+        .resume-output p { font-size: var(--font-size, 16px); color: var(--font-color, black); }
+        .highlight { background-color: yellow; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>ATS Resume Generator</h1>
+    <div class="form-container">
+        <label for="name">Full Name:</label>
+        <input type="text" id="name" placeholder="Enter your full name">
+
+        <label for="experience">Experience:</label>
+        <textarea id="experience" placeholder="Describe your work experience"></textarea>
+
+        <label for="skills">Skills (comma-separated):</label>
+        <input type="text" id="skills" placeholder="E.g., JavaScript, Node.js, React">
+
+        <label for="jobDescription">Job Description (for ATS Matching):</label>
+        <textarea id="jobDescription" placeholder="Paste the job description here"></textarea>
+
+        <label for="font">Font Style:</label>
+        <select id="font">
+            <option value="Arial">Arial</option>
+            <option value="Times New Roman">Times New Roman</option>
+            <option value="Verdana">Verdana</option>
+        </select>
+
+        <label for="color">Text Color:</label>
+        <input type="color" id="color">
+
+        <label for="size">Font Size:</label>
+        <input type="number" id="size" min="12" max="24" value="16">
+
+        <button class="btn" onclick="generateResume()">Generate Resume</button>
+    </div>
+</div>
+
+<div class="container resume-output" id="resumeOutput">
+    <h2 id="resumeName"></h2>
+    <p id="resumeExperience"></p>
+    <h3>Skills</h3>
+    <p id="resumeSkills"></p>
+    <h3>ATS Analysis</h3>
+    <p id="atsMatch"></p>
+    <button class="btn print-btn" onclick="window.print()">Print Resume</button>
+</div>
+
+<script>
+    function generateResume() {
+        const name = document.getElementById('name').value;
+        const experience = document.getElementById('experience').value;
+        const skills = document.getElementById('skills').value.split(',').map(skill => skill.trim().toLowerCase());
+        const jobDescription = document.getElementById('jobDescription').value.toLowerCase();
+        const font = document.getElementById('font').value;
+        const color = document.getElementById('color').value;
+        const size = document.getElementById('size').value;
+
+        document.getElementById('resumeName').innerText = name;
+        document.getElementById('resumeExperience').innerText = experience;
+        document.getElementById('resumeSkills').innerText = skills.join(', ');
+
+        // Highlight matching keywords in job description
+        let matchedSkills = skills.filter(skill => jobDescription.includes(skill));
+        let matchPercentage = (matchedSkills.length / skills.length) * 100;
+        document.getElementById('atsMatch').innerHTML = `Match Score: ${matchPercentage.toFixed(2)}%<br>Matched Skills: <span class="highlight">${matchedSkills.join(', ')}</span>`;
+
+        document.getElementById('resumeOutput').style.display = 'block';
+        document.documentElement.style.setProperty('--font-size', size + 'px');
+        document.documentElement.style.setProperty('--font-color', color);
+        document.body.style.fontFamily = font;
+    }
+</script>
+</body>
+</html>

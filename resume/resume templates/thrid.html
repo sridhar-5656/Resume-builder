@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV Builder</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            width: 800px;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+        h1 {
+            text-align: center;
+            text-transform: uppercase;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+            display: block;
+            width: 100%;
+            font-size: 16px;
+        }
+        .resume-preview {
+            border: 1px solid #000;
+            padding: 20px;
+            margin-top: 20px;
+            background: #fff;
+            position: relative;
+        }
+        .section-header {
+            position: relative;
+            padding-bottom: 5px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .section-header::after {
+            content: "";
+            display: block;
+            width: 100%;
+            border-bottom: 2px solid black;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+        .duration {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 14px;
+            color: #666;
+        }
+        ul {
+            list-style-type: disc;
+            padding-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CV Builder</h1>
+        <form id="cv-form">
+            <label for="name">Full Name:</label>
+            <input type="text" id="name" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" required>
+
+            <label for="phone">Phone:</label>
+            <input type="text" id="phone" required>
+
+            <label for="education">Education:</label>
+            <textarea id="education" required></textarea>
+            <label for="education-duration">Duration:</label>
+            <input type="text" id="education-duration" required>
+
+            <label for="experience">Work Experience:</label>
+            <textarea id="experience" required></textarea>
+            <label for="experience-duration">Duration:</label>
+            <input type="text" id="experience-duration" required>
+
+            <label for="skills">Skills:</label>
+            <textarea id="skills" required></textarea>
+
+            <label for="achievements">Achievements:</label>
+            <textarea id="achievements" required></textarea>
+
+            <label for="interests">Interests:</label>
+            <textarea id="interests" required></textarea>
+
+            <button type="button" onclick="generateCV()">Preview CV</button>
+            <button type="button" onclick="downloadCV()">Download PDF</button>
+        </form>
+
+        <div id="cv-preview" class="resume-preview"></div>
+    </div>
+
+    <script>
+        function generateCV() {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const education = document.getElementById('education').value;
+            const educationDuration = document.getElementById('education-duration').value;
+            const experience = document.getElementById('experience').value;
+            const experienceDuration = document.getElementById('experience-duration').value;
+            const skills = document.getElementById('skills').value;
+            const achievements = document.getElementById('achievements').value;
+            const interests = document.getElementById('interests').value;
+
+            document.getElementById('cv-preview').innerHTML = `
+                <h2>${name}</h2>
+                <p><strong>Email:</strong> ${email} | <strong>Phone:</strong> ${phone}</p>
+                
+                <div class="section-header">Education <span class="duration">${educationDuration}</span></div>
+                <ul>${education.split('\n').map(item => `<li>${item}</li>`).join('')}</ul>
+
+                <div class="section-header">Experience <span class="duration">${experienceDuration}</span></div>
+                <ul>${experience.split('\n').map(item => `<li>${item}</li>`).join('')}</ul>
+
+                <div class="section-header">Skills</div>
+                <ul>${skills.split('\n').map(item => `<li>${item}</li>`).join('')}</ul>
+
+                <div class="section-header">Achievements</div>
+                <ul>${achievements.split('\n').map(item => `<li>${item}</li>`).join('')}</ul>
+
+                <div class="section-header">Interests</div>
+                <ul>${interests.split('\n').map(item => `<li>${item}</li>`).join('')}</ul>
+            `;
+        }
+
+        function downloadCV() {
+            const element = document.getElementById('cv-preview');
+            html2pdf(element);
+        }
+    </script>
+</body>
+</html>

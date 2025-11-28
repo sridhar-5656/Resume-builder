@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Builder</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --text-color: #333;
+            --light-bg: #f9f9f9;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: var(--text-color);
+        }
+        
+        .builder-container {
+            display: flex;
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .input-section {
+            width: 45%;
+            padding: 30px;
+            background: var(--light-bg);
+            overflow-y: auto;
+            height: 100vh;
+        }
+        
+        .preview-section {
+            width: 55%;
+            padding: 30px;
+            background: white;
+            overflow-y: auto;
+            height: 100vh;
+            position: relative;
+        }
+        
+        h1 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+        }
+        
+        h2 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 8px;
+            margin-top: 30px;
+        }
+        
+        h3 {
+            color: var(--primary-color);
+            margin-top: 25px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        button {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 15px;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+        
+        .resume {
+            font-family: Arial, sans-serif;
+            width: 100%;
+            background: white;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            position: relative;
+            margin-bottom: 20px;
+        }
+        
+        .resume-header {
+            display: flex;
+        }
+        
+        .resume-left {
+            width: 35%;
+            padding: 40px;
+            background: #f5f5f5;
+            text-align: center;
+        }
+        
+        .profile-image-container {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        
+        .profile-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .resume-right {
+            width: 65%;
+            padding: 40px;
+        }
+        
+        .resume-name {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+        
+        .resume-title {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .resume-section {
+            margin-bottom: 30px;
+        }
+        
+        .resume-section h3 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 5px;
+            font-size: 18px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .resume-item {
+            margin-bottom: 20px;
+        }
+        
+        .resume-item h4 {
+            margin: 0 0 5px;
+            font-size: 16px;
+        }
+        
+        .resume-item p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+        
+        .resume-item .date {
+            color: #777;
+            font-style: italic;
+        }
+        
+        ul.resume-list {
+            padding-left: 20px;
+            list-style-type: none;
+        }
+        
+        ul.resume-list li {
+            margin-bottom: 8px;
+            font-size: 14px;
+            position: relative;
+            padding-left: 20px;
+        }
+        
+        ul.resume-list li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+        }
+        
+        .contact-info p {
+            margin: 5px 0;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .tab-container {
+            display: flex;
+            margin-bottom: 25px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .tab {
+            padding: 12px 25px;
+            background: #eee;
+            cursor: pointer;
+            margin-right: 5px;
+            border-radius: 4px 4px 0 0;
+            transition: all 0.3s;
+        }
+        
+        .tab.active {
+            background: var(--secondary-color);
+            color: white;
+        }
+        
+        .tab:hover:not(.active) {
+            background: #ddd;
+        }
+        
+        .download-btn {
+            background: #27ae60;
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 100;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+        
+        .download-btn:hover {
+            background: #219653;
+            transform: translateY(-2px) scale(1.02);
+        }
+        
+        .button-container {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .button-container button {
+            flex: 1;
+        }
+        
+        #image-upload {
+            display: none;
+        }
+        
+        .upload-btn {
+            background: #3498db;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+        
+        .upload-btn:hover {
+            background: #2980b9;
+        }
+        
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .resume, .resume * {
+                visibility: visible;
+            }
+            .resume {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Resume Builder</h1>
+    
+    <div class="builder-container">
+        <div class="input-section">
+            <div class="tab-container">
+                <div class="tab active" onclick="showTab('personal')">Personal</div>
+                <div class="tab" onclick="showTab('professional')">Professional</div>
+                <div class="tab" onclick="showTab('experience')">Experience</div>
+                <div class="tab" onclick="showTab('education')">Education</div>
+            </div>
+            
+            <div id="personal-tab" class="tab-content">
+                <h2>Personal Information</h2>
+                
+                <div class="form-group">
+                    <label>Profile Image</label>
+                    <input type="file" id="image-upload" accept="image/*">
+                    <label for="image-upload" class="upload-btn">
+                        <i class="fas fa-upload"></i> Upload Image
+                    </label>
+                    <div id="image-preview-container" style="display: none;">
+                        <img id="image-preview" style="max-width: 200px; max-height: 200px; margin-top: 10px;">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="first-name">First Name</label>
+                    <input type="text" id="first-name" placeholder="Juliana">
+                </div>
+                <div class="form-group">
+                    <label for="last-name">Last Name</label>
+                    <input type="text" id="last-name" placeholder="Silva">
+                </div>
+                <div class="form-group">
+                    <label for="job-title">Job Title</label>
+                    <input type="text" id="job-title" placeholder="Owner of Callia Media">
+                </div>
+                
+                <h3>Contact Information</h3>
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="text" id="phone" placeholder="+123-456-7890">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="text" id="email" placeholder="hello@reallygreatsite.com">
+                </div>
+                <div class="form-group">
+                    <label for="social-media">Social Media</label>
+                    <input type="text" id="social-media" placeholder="@reallygreatsite">
+                </div>
+                <div class="form-group">
+                    <label for="website">Website</label>
+                    <input type="text" id="website" placeholder="www.reallygreatsite.com">
+                </div>
+            </div>
+            
+            <div id="professional-tab" class="tab-content hidden">
+                <h2>Professional Information</h2>
+                <div class="form-group">
+                    <label for="about-me">About Me</label>
+                    <textarea id="about-me">Juliana Silva, the owner of Callia Media, is an experienced, highly qualified marketer, and this fact is clearly stated on her website's page.</textarea>
+                </div>
+                
+                <h2>Skills</h2>
+                <div class="form-group">
+                    <label>List your skills (one per line)</label>
+                    <textarea id="skills">Copywriting
+Digital Marketing
+Graphic Design
+Sales Promotion</textarea>
+                </div>
+            </div>
+            
+            <div id="experience-tab" class="tab-content hidden">
+                <h2>Work Experience</h2>
+                
+                <div class="form-group">
+                    <label for="exp1-title">Job Title</label>
+                    <input type="text" id="exp1-title" placeholder="Supervisor">
+                </div>
+                <div class="form-group">
+                    <label for="exp1-years">Years</label>
+                    <input type="text" id="exp1-years" placeholder="2022 - 2024">
+                </div>
+                <div class="form-group">
+                    <label for="exp1-company">Company</label>
+                    <input type="text" id="exp1-company" placeholder="Borcelle">
+                </div>
+                
+                <div class="form-group">
+                    <label for="exp2-title">Job Title</label>
+                    <input type="text" id="exp2-title" placeholder="Administrator">
+                </div>
+                <div class="form-group">
+                    <label for="exp2-years">Years</label>
+                    <input type="text" id="exp2-years" placeholder="2024 - 2025">
+                </div>
+                <div class="form-group">
+                    <label for="exp2-company">Company</label>
+                    <input type="text" id="exp2-company" placeholder="Larana, Inc.">
+                </div>
+                
+                <div class="form-group">
+                    <label for="exp3-title">Job Title</label>
+                    <input type="text" id="exp3-title" placeholder="Designer">
+                </div>
+                <div class="form-group">
+                    <label for="exp3-years">Years</label>
+                    <input type="text" id="exp3-years" placeholder="2025 - 2027">
+                </div>
+                <div class="form-group">
+                    <label for="exp3-company">Company</label>
+                    <input type="text" id="exp3-company" placeholder="Liceria & Co.">
+                </div>
+            </div>
+            
+            <div id="education-tab" class="tab-content hidden">
+                <h2>Education</h2>
+                
+                <div class="form-group">
+                    <label for="edu1-school">School/University</label>
+                    <input type="text" id="edu1-school" placeholder="Fauget University">
+                </div>
+                <div class="form-group">
+                    <label for="edu1-degree">Degree/Status</label>
+                    <input type="text" id="edu1-degree" placeholder="Fresh Graduate | 2022">
+                </div>
+                <div class="form-group">
+                    <label for="edu1-description">Description</label>
+                    <textarea id="edu1-description">Thesis involved studying several companies and optimizing their product process.</textarea>
+                </div>
+            </div>
+            
+            <div class="button-container">
+                <button onclick="generateResume()">Update Preview</button>
+                <button onclick="printResume()">Print Resume</button>
+            </div>
+        </div>
+        
+        <div class="preview-section">
+            <div id="resume-preview" class="resume">
+                <!-- Preview will be generated here -->
+            </div>
+            <button onclick="downloadResume()" class="download-btn">
+                <i class="fas fa-download"></i> Download PDF
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let profileImageUrl = '';
+        
+        // Handle image upload
+        document.getElementById('image-upload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    profileImageUrl = event.target.result;
+                    document.getElementById('image-preview').src = profileImageUrl;
+                    document.getElementById('image-preview-container').style.display = 'block';
+                    generateResume();
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        function showTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.add('hidden');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show the selected tab content
+            document.getElementById(tabName + '-tab').classList.remove('hidden');
+            
+            // Add active class to the clicked tab
+            event.currentTarget.classList.add('active');
+        }
+        
+        function generateResume() {
+            // Get personal information
+            const firstName = document.getElementById("first-name").value || "Juliana";
+            const lastName = document.getElementById("last-name").value || "Silva";
+            const jobTitle = document.getElementById("job-title").value || "Owner of Callia Media";
+            const phone = document.getElementById("phone").value || "+123-456-7890";
+            const email = document.getElementById("email").value || "hello@reallygreatsite.com";
+            const socialMedia = document.getElementById("social-media").value || "@reallygreatsite";
+            const website = document.getElementById("website").value || "www.reallygreatsite.com";
+            
+            // Get professional information
+            const aboutMe = document.getElementById("about-me").value || "Juliana Silva, the owner of Callia Media, is an experienced, highly qualified marketer, and this fact is clearly stated on her website's page.";
+            const skills = document.getElementById("skills").value.split('\n').filter(skill => skill.trim() !== '');
+            
+            // Get experience information
+            const exp1Title = document.getElementById("exp1-title").value || "Supervisor";
+            const exp1Years = document.getElementById("exp1-years").value || "2022 - 2024";
+            const exp1Company = document.getElementById("exp1-company").value || "Borcelle";
+            
+            const exp2Title = document.getElementById("exp2-title").value || "Administrator";
+            const exp2Years = document.getElementById("exp2-years").value || "2024 - 2025";
+            const exp2Company = document.getElementById("exp2-company").value || "Larana, Inc.";
+            
+            const exp3Title = document.getElementById("exp3-title").value || "Designer";
+            const exp3Years = document.getElementById("exp3-years").value || "2025 - 2027";
+            const exp3Company = document.getElementById("exp3-company").value || "Liceria & Co.";
+            
+            // Get education information
+            const edu1School = document.getElementById("edu1-school").value || "Fauget University";
+            const edu1Degree = document.getElementById("edu1-degree").value || "Fresh Graduate | 2022";
+            const edu1Desc = document.getElementById("edu1-description").value || "Thesis involved studying several companies and optimizing their product process.";
+            
+            // Generate the resume preview
+            const resumePreview = document.getElementById("resume-preview");
+            resumePreview.innerHTML = `
+                <div class="resume-header">
+                    <div class="resume-left">
+                        ${profileImageUrl ? `
+                        <div class="profile-image-container">
+                            <img src="${profileImageUrl}" class="profile-image">
+                        </div>
+                        ` : ''}
+                        
+                        <div class="resume-section">
+                            <h3>Contact</h3>
+                            <p>${phone}</p>
+                            <p>${email}</p>
+                            <p>${socialMedia}</p>
+                            <p>${website}</p>
+                        </div>
+                        
+                        <div class="resume-section">
+                            <h3>Skills</h3>
+                            <ul class="resume-list">
+                                ${skills.map(skill => `<li>${skill}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="resume-right">
+                        <div class="resume-name">${firstName} ${lastName}</div>
+                        <div class="resume-title">${jobTitle}</div>
+                        
+                        <div class="resume-section">
+                            <h3>About Me</h3>
+                            <p>${aboutMe}</p>
+                        </div>
+                        
+                        <div class="resume-section">
+                            <h3>Experience</h3>
+                            <ul class="resume-list">
+                                <li><strong>${exp1Title}</strong><br>${exp1Years} | ${exp1Company}</li>
+                                ${exp2Title ? `<li><strong>${exp2Title}</strong><br>${exp2Years} | ${exp2Company}</li>` : ''}
+                                ${exp3Title ? `<li><strong>${exp3Title}</strong><br>${exp3Years} | ${exp3Company}</li>` : ''}
+                            </ul>
+                        </div>
+                        
+                        <div class="resume-section">
+                            <h3>Education</h3>
+                            <ul class="resume-list">
+                                <li><strong>${edu1School}</strong><br>${edu1Degree}<br>${edu1Desc}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Scroll to top of preview
+            document.querySelector('.preview-section').scrollTop = 0;
+        }
+        
+        function downloadResume() {
+            // Generate the resume first to ensure it's up to date
+            generateResume();
+            
+            // Create a clone of the resume element to avoid modifying the original
+            const element = document.getElementById('resume-preview');
+            const clone = element.cloneNode(true);
+            
+            // Remove the download button from the clone
+            const buttons = clone.querySelectorAll('button');
+            buttons.forEach(button => button.remove());
+            
+            // Create a temporary container for the clone
+            const tempContainer = document.createElement('div');
+            tempContainer.appendChild(clone);
+            tempContainer.style.visibility = 'hidden';
+            document.body.appendChild(tempContainer);
+            
+            // Options for the PDF
+            const opt = {
+                margin: 10,
+                filename: `${document.getElementById("first-name").value || 'resume'}_${document.getElementById("last-name").value || ''}.pdf`,
+                image: { 
+                    type: 'jpeg', 
+                    quality: 0.98 
+                },
+                html2canvas: { 
+                    scale: 2,
+                    letterRendering: true,
+                    useCORS: true,
+                    scrollX: 0,
+                    scrollY: 0,
+                    windowWidth: clone.scrollWidth
+                },
+                jsPDF: { 
+                    unit: 'mm', 
+                    format: 'a4', 
+                    orientation: 'portrait' 
+                }
+            };
+            
+            // Generate the PDF
+            html2pdf()
+                .set(opt)
+                .from(clone)
+                .save()
+                .then(() => {
+                    // Clean up by removing the temporary container
+                    document.body.removeChild(tempContainer);
+                });
+        }
+        
+        function printResume() {
+            generateResume();
+            window.print();
+        }
+        
+        // Initialize the form with sample data
+        function initializeForm() {
+            document.getElementById("first-name").value = "Juliana";
+            document.getElementById("last-name").value = "Silva";
+            document.getElementById("job-title").value = "Owner of Callia Media";
+            document.getElementById("phone").value = "+123-456-7890";
+            document.getElementById("email").value = "hello@reallygreatsite.com";
+            document.getElementById("social-media").value = "@reallygreatsite";
+            document.getElementById("website").value = "www.reallygreatsite.com";
+            
+            document.getElementById("about-me").value = "Juliana Silva, the owner of Callia Media, is an experienced, highly qualified marketer, and this fact is clearly stated on her website's page.";
+            
+            document.getElementById("exp1-title").value = "Supervisor";
+            document.getElementById("exp1-years").value = "2022 - 2024";
+            document.getElementById("exp1-company").value = "Borcelle";
+            
+            document.getElementById("exp2-title").value = "Administrator";
+            document.getElementById("exp2-years").value = "2024 - 2025";
+            document.getElementById("exp2-company").value = "Larana, Inc.";
+            
+            document.getElementById("exp3-title").value = "Designer";
+            document.getElementById("exp3-years").value = "2025 - 2027";
+            document.getElementById("exp3-company").value = "Liceria & Co.";
+            
+            document.getElementById("edu1-school").value = "Fauget University";
+            document.getElementById("edu1-degree").value = "Fresh Graduate | 2022";
+            document.getElementById("edu1-description").value = "Thesis involved studying several companies and optimizing their product process.";
+            
+            // Generate initial preview
+            generateResume();
+        }
+        
+        // Initialize when page loads
+        window.onload = initializeForm;
+    </script>
+</body>
+</html>

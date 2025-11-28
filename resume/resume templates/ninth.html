@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Minimalist Resume Builder</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --text-color: #333;
+            --light-text: #777;
+            --bg-color: #f9f9f9;
+            --sidebar-bg: #f1f5f9;
+            --bullet-color: #3498db;
+            --bullet-char: "•";
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1, h2, h3, h4 {
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+        }
+        
+        h1 {
+            font-size: 28px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        h2 {
+            font-size: 20px;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 5px;
+            margin-top: 25px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .form-container {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .form-section {
+            margin-bottom: 30px;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .form-group {
+            flex: 1;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 14px;
+        }
+        
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        button {
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-secondary {
+            background-color: #95a5a6;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #7f8c8d;
+        }
+        
+        .btn-danger {
+            background-color: #e74c3c;
+        }
+        
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+        
+        .resume-preview {
+            width: 210mm;
+            min-height: 297mm;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            display: flex;
+        }
+        
+        .sidebar {
+            width: 35%;
+            background-color: var(--sidebar-bg);
+            padding: 30px;
+            color: var(--secondary-color);
+        }
+        
+        .main-content {
+            width: 65%;
+            padding: 30px;
+        }
+        
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 20px;
+            display: block;
+            border: 3px solid white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .contact-info {
+            margin-bottom: 30px;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .contact-icon {
+            width: 20px;
+            text-align: center;
+            margin-right: 10px;
+            color: var(--primary-color);
+        }
+        
+        .skills-list {
+            margin-top: 15px;
+        }
+        
+        .skill-item {
+            margin-bottom: 15px;
+        }
+        
+        .skill-name {
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .skill-bar {
+            height: 6px;
+            background-color: #e0e0e0;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .skill-level {
+            height: 100%;
+            background-color: var(--primary-color);
+            border-radius: 3px;
+        }
+        
+        .experience-item, .education-item {
+            margin-bottom: 20px;
+        }
+        
+        .job-title, .degree {
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+        
+        .company, .institution {
+            font-style: italic;
+            color: var(--primary-color);
+            margin: 5px 0;
+        }
+        
+        .date {
+            color: var(--light-text);
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        
+        .job-description {
+            margin-left: 15px;
+        }
+        
+        .job-description li {
+            margin-bottom: 5px;
+            position: relative;
+            list-style-type: none;
+            padding-left: 15px;
+        }
+        
+        .job-description li:before {
+            content: var(--bullet-char);
+            position: absolute;
+            left: 0;
+            color: var(--bullet-color);
+            font-size: 18px;
+        }
+        
+        .style-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .style-control {
+            min-width: 200px;
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .resume-preview {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .sidebar, .main-content {
+                width: 100%;
+            }
+        }
+        
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .resume-preview, .resume-preview * {
+                visibility: visible;
+            }
+            .resume-preview {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+                box-shadow: none;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Modern Minimalist Resume Builder</h1>
+        
+        <div class="form-container">
+            <form id="resumeForm">
+                <div class="form-section">
+                    <h2>Personal Information</h2>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" value="SARAH JOHNSON">
+                        </div>
+                        <div class="form-group">
+                            <label for="jobTitle">Professional Title</label>
+                            <input type="text" id="jobTitle" value="SENIOR UX DESIGNER">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" value="sarah.johnson@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone</label>
+                            <input type="tel" id="phone" value="(123) 456-7890">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="address">Address</label>
+                            <input type="text" id="address" value="123 Design Street, Creative City">
+                        </div>
+                        <div class="form-group">
+                            <label for="website">Website/Portfolio</label>
+                            <input type="url" id="website" value="www.sarahjohnson.design">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="profileImage">Profile Image</label>
+                        <input type="file" id="profileImage" accept="image/*">
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h2>Professional Summary</h2>
+                    <textarea id="summary">Creative and detail-oriented UX Designer with 8+ years of experience creating intuitive user experiences for web and mobile applications. Specialized in user research, wireframing, and prototyping. Passionate about solving complex problems through design thinking and user-centered approaches.</textarea>
+                </div>
+                
+                <div class="form-section">
+                    <h2>Skills</h2>
+                    <div id="skillsContainer">
+                        <div class="skill-input form-row">
+                            <div class="form-group">
+                                <input type="text" class="skill-name" placeholder="Skill name" value="User Research">
+                            </div>
+                            <div class="form-group">
+                                <select class="skill-level">
+                                    <option value="90">Expert</option>
+                                    <option value="70">Advanced</option>
+                                    <option value="50">Intermediate</option>
+                                    <option value="30">Beginner</option>
+                                </select>
+                            </div>
+                            <button type="button" class="btn-danger" onclick="removeSkill(this)">Remove</button>
+                        </div>
+                        <div class="skill-input form-row">
+                            <div class="form-group">
+                                <input type="text" class="skill-name" placeholder="Skill name" value="Wireframing">
+                            </div>
+                            <div class="form-group">
+                                <select class="skill-level">
+                                    <option value="90">Expert</option>
+                                    <option value="70" selected>Advanced</option>
+                                    <option value="50">Intermediate</option>
+                                    <option value="30">Beginner</option>
+                                </select>
+                            </div>
+                            <button type="button" class="btn-danger" onclick="removeSkill(this)">Remove</button>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-secondary" onclick="addSkill()">Add Skill</button>
+                </div>
+                
+                <div class="form-section">
+                    <h2>Work Experience</h2>
+                    <div id="experienceContainer">
+                        <div class="experience-input">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Job Title</label>
+                                    <input type="text" class="job-title" value="Senior UX Designer">
+                                </div>
+                                <div class="form-group">
+                                    <label>Company</label>
+                                    <input type="text" class="company" value="Creative Solutions Inc.">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Start Date</label>
+                                    <input type="text" class="start-date" value="2019">
+                                </div>
+                                <div class="form-group">
+                                    <label>End Date</label>
+                                    <input type="text" class="end-date" value="Present">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Responsibilities (one per line)</label>
+                                <textarea class="job-description">Led a team of 5 designers to create user-centered designs for enterprise applications
+Conducted user research and usability testing to inform design decisions
+Created wireframes, prototypes, and high-fidelity mockups
+Collaborated with product managers and developers to ensure design implementation</textarea>
+                            </div>
+                            <button type="button" class="btn-danger" onclick="removeExperience(this)">Remove Experience</button>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-secondary" onclick="addExperience()">Add Experience</button>
+                </div>
+                
+                <div class="form-section">
+                    <h2>Education</h2>
+                    <div id="educationContainer">
+                        <div class="education-input">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Degree</label>
+                                    <input type="text" class="degree" value="Master of Design">
+                                </div>
+                                <div class="form-group">
+                                    <label>Institution</label>
+                                    <input type="text" class="institution" value="University of Art & Design">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Start Date</label>
+                                    <input type="text" class="start-date" value="2012">
+                                </div>
+                                <div class="form-group">
+                                    <label>End Date</label>
+                                    <input type="text" class="end-date" value="2014">
+                                </div>
+                            </div>
+                            <button type="button" class="btn-danger" onclick="removeEducation(this)">Remove Education</button>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-secondary" onclick="addEducation()">Add Education</button>
+                </div>
+                
+                <div class="form-section">
+                    <h2>Style Customization</h2>
+                    <div class="style-controls">
+                        <div class="style-control">
+                            <label for="primaryColor">Primary Color</label>
+                            <input type="color" id="primaryColor" value="#3498db">
+                        </div>
+                        <div class="style-control">
+                            <label for="secondaryColor">Secondary Color</label>
+                            <input type="color" id="secondaryColor" value="#2c3e50">
+                        </div>
+                        <div class="style-control">
+                            <label for="fontFamily">Font Family</label>
+                            <select id="fontFamily">
+                                <option value="'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">Segoe UI</option>
+                                <option value="'Helvetica Neue', Arial, sans-serif">Helvetica</option>
+                                <option value="'Georgia', serif">Georgia</option>
+                                <option value="'Courier New', monospace">Courier New</option>
+                            </select>
+                        </div>
+                        <div class="style-control">
+                            <label for="bulletStyle">Bullet Style</label>
+                            <select id="bulletStyle">
+                                <option value="•">• (Disc)</option>
+                                <option value="▪">▪ (Square)</option>
+                                <option value="▸">▸ (Pointer)</option>
+                                <option value="—">— (Dash)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="no-print">
+                    <button type="button" onclick="updatePreview()">Update Preview</button>
+                    <button type="button" onclick="printResume()">Print Resume</button>
+                    <button type="button" onclick="downloadPDF()">Download PDF</button>
+                </div>
+            </form>
+        </div>
+        
+        <div class="resume-preview" id="resumePreview">
+            <div class="sidebar">
+                <img id="previewImage" src="https://via.placeholder.com/150" alt="Profile Photo" class="profile-img">
+                
+                <div class="contact-info">
+                    <h2>CONTACT</h2>
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+                        <div id="previewEmail">sarah.johnson@example.com</div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fas fa-phone"></i></div>
+                        <div id="previewPhone">(123) 456-7890</div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+                        <div id="previewAddress">123 Design Street, Creative City</div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fas fa-globe"></i></div>
+                        <div id="previewWebsite">www.sarahjohnson.design</div>
+                    </div>
+                </div>
+                
+                <div class="skills-section">
+                    <h2>SKILLS</h2>
+                    <div class="skills-list" id="previewSkills">
+                        <div class="skill-item">
+                            <div class="skill-name">
+                                <span>User Research</span>
+                                <span>90%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-level" style="width: 90%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-name">
+                                <span>Wireframing</span>
+                                <span>70%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-level" style="width: 70%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="main-content">
+                <h1 id="previewName">SARAH JOHNSON</h1>
+                <p id="previewJobTitle">SENIOR UX DESIGNER</p>
+                
+                <div class="summary-section">
+                    <h2>PROFILE</h2>
+                    <p id="previewSummary">Creative and detail-oriented UX Designer with 8+ years of experience creating intuitive user experiences for web and mobile applications. Specialized in user research, wireframing, and prototyping. Passionate about solving complex problems through design thinking and user-centered approaches.</p>
+                </div>
+                
+                <div class="experience-section">
+                    <h2>EXPERIENCE</h2>
+                    <div id="previewExperience">
+                        <div class="experience-item">
+                            <p class="job-title">Senior UX Designer</p>
+                            <p class="company">Creative Solutions Inc.</p>
+                            <p class="date">2019 - Present</p>
+                            <ul class="job-description">
+                                <li>Led a team of 5 designers to create user-centered designs for enterprise applications</li>
+                                <li>Conducted user research and usability testing to inform design decisions</li>
+                                <li>Created wireframes, prototypes, and high-fidelity mockups</li>
+                                <li>Collaborated with product managers and developers to ensure design implementation</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="education-section">
+                    <h2>EDUCATION</h2>
+                    <div id="previewEducation">
+                        <div class="education-item">
+                            <p class="degree">Master of Design</p>
+                            <p class="institution">University of Art & Design</p>
+                            <p class="date">2012 - 2014</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Update preview function
+        function updatePreview() {
+            // Personal Information
+            document.getElementById('previewName').textContent = document.getElementById('name').value.toUpperCase();
+            document.getElementById('previewJobTitle').textContent = document.getElementById('jobTitle').value.toUpperCase();
+            document.getElementById('previewEmail').textContent = document.getElementById('email').value;
+            document.getElementById('previewPhone').textContent = document.getElementById('phone').value;
+            document.getElementById('previewAddress').textContent = document.getElementById('address').value;
+            document.getElementById('previewWebsite').textContent = document.getElementById('website').value;
+            
+            // Summary
+            document.getElementById('previewSummary').textContent = document.getElementById('summary').value;
+            
+            // Skills
+            const skillsContainer = document.getElementById('previewSkills');
+            skillsContainer.innerHTML = '';
+            
+            const skillInputs = document.querySelectorAll('.skill-input');
+            skillInputs.forEach(skill => {
+                const name = skill.querySelector('.skill-name').value;
+                const level = skill.querySelector('.skill-level').value;
+                
+                const skillItem = document.createElement('div');
+                skillItem.className = 'skill-item';
+                skillItem.innerHTML = `
+                    <div class="skill-name">
+                        <span>${name}</span>
+                        <span>${level}%</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-level" style="width: ${level}%"></div>
+                    </div>
+                `;
+                skillsContainer.appendChild(skillItem);
+            });
+            
+            // Experience
+            const experienceContainer = document.getElementById('previewExperience');
+            experienceContainer.innerHTML = '';
+            
+            const experienceInputs = document.querySelectorAll('.experience-input');
+            experienceInputs.forEach(exp => {
+                const title = exp.querySelector('.job-title').value;
+                const company = exp.querySelector('.company').value;
+                const start = exp.querySelector('.start-date').value;
+                const end = exp.querySelector('.end-date').value;
+                const description = exp.querySelector('.job-description').value;
+                
+                const expItem = document.createElement('div');
+                expItem.className = 'experience-item';
+                expItem.innerHTML = `
+                    <p class="job-title">${title}</p>
+                    <p class="company">${company}</p>
+                    <p class="date">${start} - ${end}</p>
+                    <ul class="job-description">
+                        ${description.split('\n').filter(item => item.trim()).map(item => `<li>${item.trim()}</li>`).join('')}
+                    </ul>
+                `;
+                experienceContainer.appendChild(expItem);
+            });
+            
+            // Education
+            const educationContainer = document.getElementById('previewEducation');
+            educationContainer.innerHTML = '';
+            
+            const educationInputs = document.querySelectorAll('.education-input');
+            educationInputs.forEach(edu => {
+                const degree = edu.querySelector('.degree').value;
+                const institution = edu.querySelector('.institution').value;
+                const start = edu.querySelector('.start-date').value;
+                const end = edu.querySelector('.end-date').value;
+                
+                const eduItem = document.createElement('div');
+                eduItem.className = 'education-item';
+                eduItem.innerHTML = `
+                    <p class="degree">${degree}</p>
+                    <p class="institution">${institution}</p>
+                    <p class="date">${start} - ${end}</p>
+                `;
+                educationContainer.appendChild(eduItem);
+            });
+            
+            // Style Customization
+            const primaryColor = document.getElementById('primaryColor').value;
+            const secondaryColor = document.getElementById('secondaryColor').value;
+            const fontFamily = document.getElementById('fontFamily').value;
+            const bulletStyle = document.getElementById('bulletStyle').value;
+            
+            document.documentElement.style.setProperty('--primary-color', primaryColor);
+            document.documentElement.style.setProperty('--secondary-color', secondaryColor);
+            document.documentElement.style.setProperty('--bullet-color', primaryColor);
+            document.documentElement.style.setProperty('--bullet-char', `"${bulletStyle}"`);
+            
+            const preview = document.getElementById('resumePreview');
+            preview.style.fontFamily = fontFamily;
+            
+            // Update bullet points in preview
+            document.querySelectorAll('#resumePreview .job-description li').forEach(li => {
+                li.style.setProperty('--bullet-char', `"${bulletStyle}"`);
+            });
+        }
+        
+        // Handle profile image upload
+        document.getElementById('profileImage').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const previewImage = document.getElementById('previewImage');
+                    previewImage.src = event.target.result;
+                    previewImage.setAttribute('data-image-loaded', 'true');
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        // Add new skill
+        function addSkill() {
+            const container = document.getElementById('skillsContainer');
+            const newSkill = document.createElement('div');
+            newSkill.className = 'skill-input form-row';
+            newSkill.innerHTML = `
+                <div class="form-group">
+                    <input type="text" class="skill-name" placeholder="Skill name">
+                </div>
+                <div class="form-group">
+                    <select class="skill-level">
+                        <option value="90">Expert</option>
+                        <option value="70">Advanced</option>
+                        <option value="50">Intermediate</option>
+                        <option value="30">Beginner</option>
+                    </select>
+                </div>
+                <button type="button" class="btn-danger" onclick="removeSkill(this)">Remove</button>
+            `;
+            container.appendChild(newSkill);
+        }
+        
+        // Remove skill
+        function removeSkill(button) {
+            button.parentElement.remove();
+        }
+        
+        // Add new experience
+        function addExperience() {
+            const container = document.getElementById('experienceContainer');
+            const newExp = document.createElement('div');
+            newExp.className = 'experience-input';
+            newExp.innerHTML = `
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Job Title</label>
+                        <input type="text" class="job-title" placeholder="Job Title">
+                    </div>
+                    <div class="form-group">
+                        <label>Company</label>
+                        <input type="text" class="company" placeholder="Company Name">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Start Date</label>
+                        <input type="text" class="start-date" placeholder="Start Year">
+                    </div>
+                    <div class="form-group">
+                        <label>End Date</label>
+                        <input type="text" class="end-date" placeholder="End Year or Present">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Responsibilities (one per line)</label>
+                    <textarea class="job-description" placeholder="Describe your responsibilities and achievements"></textarea>
+                </div>
+                <button type="button" class="btn-danger" onclick="removeExperience(this)">Remove Experience</button>
+            `;
+            container.appendChild(newExp);
+        }
+        
+        // Remove experience
+        function removeExperience(button) {
+            button.parentElement.remove();
+        }
+        
+        // Add new education
+        function addEducation() {
+            const container = document.getElementById('educationContainer');
+            const newEdu = document.createElement('div');
+            newEdu.className = 'education-input';
+            newEdu.innerHTML = `
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Degree</label>
+                        <input type="text" class="degree" placeholder="Degree Earned">
+                    </div>
+                    <div class="form-group">
+                        <label>Institution</label>
+                        <input type="text" class="institution" placeholder="School/University">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Start Date</label>
+                        <input type="text" class="start-date" placeholder="Start Year">
+                    </div>
+                    <div class="form-group">
+                        <label>End Date</label>
+                        <input type="text" class="end-date" placeholder="End Year">
+                    </div>
+                </div>
+                <button type="button" class="btn-danger" onclick="removeEducation(this)">Remove Education</button>
+            `;
+            container.appendChild(newEdu);
+        }
+        
+        // Remove education
+        function removeEducation(button) {
+            button.parentElement.remove();
+        }
+        
+        // Download PDF function
+        function downloadPDF() {
+            const element = document.getElementById('resumePreview');
+            const clone = element.cloneNode(true);
+            clone.querySelectorAll('button, input, textarea, select').forEach(el => el.remove());
+            
+            const opt = {
+                margin: 10,
+                filename: 'resume.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { 
+                    scale: 2,
+                    logging: true,
+                    dpi: 192,
+                    letterRendering: true,
+                    useCORS: true,
+                    async: true,
+                    allowTaint: true
+                },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+            
+            new Promise((resolve) => {
+                const img = clone.querySelector('#previewImage');
+                if (img && img.hasAttribute('data-image-loaded')) {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    const tempImg = new Image();
+                    
+                    tempImg.crossOrigin = 'Anonymous';
+                    tempImg.onload = function() {
+                        canvas.width = tempImg.width;
+                        canvas.height = tempImg.height;
+                        ctx.drawImage(tempImg, 0, 0);
+                        img.src = canvas.toDataURL('image/jpeg');
+                        resolve();
+                    };
+                    tempImg.src = img.src;
+                } else {
+                    resolve();
+                }
+            }).then(() => {
+                html2pdf().set(opt).from(clone).save();
+            });
+        }
+        
+        // Print resume function
+        function printResume() {
+            const printWindow = window.open('', '_blank');
+            const resumeClone = document.getElementById('resumePreview').cloneNode(true);
+            resumeClone.querySelectorAll('button, input, textarea, select').forEach(el => el.remove());
+            
+            const img = resumeClone.querySelector('#previewImage');
+            if (img && img.hasAttribute('data-image-loaded')) {
+                const tempImg = new Image();
+                tempImg.src = img.src;
+                img.src = '';
+                tempImg.onload = function() {
+                    img.src = tempImg.src;
+                    generatePrintWindow();
+                };
+            } else {
+                generatePrintWindow();
+            }
+            
+            function generatePrintWindow() {
+                printWindow.document.write(`
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <title>Resume</title>
+                        <style>
+                            ${Array.from(document.styleSheets)
+                                .map(sheet => {
+                                    try {
+                                        return Array.from(sheet.cssRules)
+                                            .map(rule => rule.cssText)
+                                            .join('\n');
+                                    } catch (e) {
+                                        return '';
+                                    }
+                                })
+                                .join('\n')}
+                        </style>
+                    </head>
+                    <body>
+                        ${resumeClone.outerHTML}
+                        <script>
+                            window.onload = function() {
+                                setTimeout(function() {
+                                    window.print();
+                                    window.close();
+                                }, 500);
+                            };
+                        </script>
+                    </body>
+                    </html>
+                `);
+                printWindow.document.close();
+            }
+        }
+        
+        // Initialize preview on load
+        window.onload = function() {
+            updatePreview();
+            
+            document.querySelectorAll('input, textarea, select').forEach(element => {
+                element.addEventListener('input', updatePreview);
+            });
+            
+            document.getElementById('primaryColor').addEventListener('input', updatePreview);
+            document.getElementById('secondaryColor').addEventListener('input', updatePreview);
+            document.getElementById('fontFamily').addEventListener('change', updatePreview);
+            document.getElementById('bulletStyle').addEventListener('change', updatePreview);
+        };
+    </script>
+</body>
+</html>

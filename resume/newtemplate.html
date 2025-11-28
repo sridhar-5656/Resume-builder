@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Generator</title>
+    <link rel="stylesheet" href="newtemplate.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsPDF/2.5.1/jspdf.umd.min.js"></script>
+
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <h1>Resume Generator</h1>
+            <form id="resume-form">
+                <label for="file">Profile Picture</label>
+                <input type="file" id="file" accept="image/*"><br>
+                
+                <label for="name">Name</label>
+                <input type="text" id="name" required><br>
+                
+                <label for="native">Native</label>
+                <input type="text" id="native" required><br>
+                
+                <label for="phno">Phone</label>
+                <input type="tel" id="phno" required><br>
+                
+                <label for="email">Email</label>
+                <input type="email" id="email" required><br>
+
+
+                <label for="langague">langague</label>
+                <input type="text" id="languague" required><br>
+                
+                <label for="achievements">Achievements</label>
+                <textarea id="achievements" rows="4"></textarea>
+                
+                <label for="hobbies">Hobbies</label>
+                <textarea id="hobbies" rows="4"></textarea>
+                
+                <label for="experience">Experience</label>
+                <textarea id="experience" rows="5"></textarea>
+                
+                <label for="course">Education</label>
+                <input type="text" id="course" placeholder="Course Name"><br>
+                <input type="text" id="year" placeholder="Year"><br>
+                <input type="text" id="percentage" placeholder="Percentage"><br>
+                
+                <label for="technical">Technical Skills</label>
+                <input type="text" id="technical"><br>
+                
+                <label for="nonTechnical">Non-Technical Skills</label>
+                <input type="text" id="nonTechnical"><br>
+                
+                <button type="button" onclick="generateResume()">Generate Resume</button>
+            </form>
+        </div>
+        
+        <div id="resume-output" class="resume-container">
+            <div class="resume-left">
+                <img id="profile-pic" src="" alt="Profile Picture">
+                <h2 id="display-name"></h2>
+                <p id="display-native"></p>
+                <p id="display-phno"></p>
+                <p id="display-email"></p>
+                <h2>Achievements</h2>
+                <p id="display-achievements"></p>
+                <h2>Hobbies</h2>
+                <p id="display-hobbies"></p>
+                <h2>languagues</h2>
+                <p id="display-language"></p>
+            </div>
+            <div class="resume-right">
+                <h2>Education</h2>
+                <p id="display-course"></p>
+                <p id="display-year"></p>
+                <p id="display-percentage"></p>
+                <h2>Skills</h2>
+                <p id="display-technical"></p>
+                <p id="display-nonTechnical"></p>
+                <h2>Experience</h2>
+                <p id="display-experience"></p>
+                <button onclick="downloadPDF()">Download PDF</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="newtemplate.js"></script>
+</body>
+</html>

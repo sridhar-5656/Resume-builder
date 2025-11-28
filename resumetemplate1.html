@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            display: flex;
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+        .left-side, .right-side {
+            width: 50%;
+            padding: 20px;
+        }
+        .left-side {
+            border-right: 2px solid #ddd;
+        }
+        .left-side img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .left-side h2, .left-side p {
+            margin: 10px 0;
+        }
+        .left-side h2 {
+            color: #333;
+        }
+        .section-title {
+            font-weight: bold;
+            margin-top: 20px;
+            color: #2c3e50;
+        }
+        .right-side .resume-section {
+            margin-bottom: 20px;
+        }
+        .right-side .resume-section h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .right-side .resume-section p {
+            font-size: 14px;
+            color: #555;
+        }
+        .form-container {
+            margin: 20px auto;
+            width: 70%;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .form-container label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+        .form-container input, .form-container textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        .form-container textarea {
+            height: 100px;
+        }
+        .btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+        .resume-output {
+            display: none;
+        }
+        .profile-links a {
+            display: block;
+            margin: 5px 0;
+            color: #3498db;
+            text-decoration: none;
+        }
+        .profile-links a:hover {
+            text-decoration: underline;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container" id="formContainer">
+    <h1>Resume Generator</h1> -->
+
+     Resume Form -->
+    <label for="image">Upload Your Image:</label>
+    <input type="file" id="image" accept="image/*">
+
+    <label for="name">Full Name:</label>
+    <input type="text" id="name" placeholder="Enter your full name">
+
+    <label for="contact">Contact Number:</label>
+    <input type="text" id="contact" placeholder="Enter your contact number">
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" placeholder="Enter your email">
+
+    <label for="study">Study (e.g., University Name, Degree):</label>
+    <input type="text" id="study" placeholder="Enter your education details">
+
+    <label for="summary">Professional Summary:</label>
+    <textarea id="summary" placeholder="Enter your professional summary"></textarea>
+
+    <label for="experience">Experience:</label>
+    <textarea id="experience" placeholder="Describe your work experience"></textarea>
+
+    <label for="project">Projects:</label>
+    <textarea id="project" placeholder="Describe your projects"></textarea>
+
+    <label for="achievements">Achievements:</label>
+    <textarea id="achievements" placeholder="List your achievements"></textarea>
+
+    <label for="goals">Goals:</label>
+    <textarea id="goals" placeholder="Describe your career goals"></textarea>
+
+    <label for="linkedin">LinkedIn Profile:</label>
+    <input type="url" id="linkedin" placeholder="Enter your LinkedIn profile URL">
+
+    <label for="naukri">Naukri Profile:</label>
+    <input type="url" id="naukri" placeholder="Enter your Naukri profile URL">
+
+    <label for="references">References:</label>
+    <textarea id="references" placeholder="Enter references (Name, Contact, Email)"></textarea>
+
+    <button class="btn" onclick="generateResume()">Preview Resume</button>
+</div>
+
+<!-- Generated Resume -->
+<div class="container resume-output hidden" id="resumeOutput">
+    <div class="left-side">
+        <img id="resumeImage" src="" alt="Profile Image">
+        <h2 id="resumeName"></h2>
+        <p id="resumeContact"></p>
+        <p id="resumeEmail"></p>
+        <p id="resumeStudy"></p>
+        <div class="section-title">Summary</div>
+        <p id="resumeSummary"></p>
+        <div class="section-title">References</div>
+        <p id="resumeReferences"></p>
+        <div class="section-title">Profiles</div>
+        <div class="profile-links">
+            <a id="resumeLinkedin" href="" target="_blank">LinkedIn</a>
+            <a id="resumeNaukri" href="" target="_blank">Naukri</a>
+        </div>
+    </div>
+    <div class="right-side">
+        <div class="resume-section">
+            <h3>Experience</h3>
+            <p id="resumeExperience"></p>
+        </div>
+        <div class="resume-section">
+            <h3>Projects</h3>
+            <p id="resumeProject"></p>
+        </div>
+        <div class="resume-section">
+            <h3>Achievements</h3>
+            <p id="resumeAchievements"></p>
+        </div>
+        <div class="resume-section">
+            <h3>Goals</h3>
+            <p id="resumeGoals"></p>
+        </div>
+    </div>
+</div>
+
+<!-- Buttons for Modify and Download -->
+<div class="form-container hidden" id="resumeButtons">
+    <button class="btn" onclick="modifyResume()">Modify Resume</button>
+    <button class="btn" onclick="downloadResume()">Download Resume</button>
+</div>
+
+<script>
+    function generateResume() {
+        // Get input values
+        const name = document.getElementById('name').value;
+        const contact = document.getElementById('contact').value;
+        const email = document.getElementById('email').value;
+        const study = document.getElementById('study').value;
+        const summary = document.getElementById('summary').value;
+        const experience = document.getElementById('experience').value;
+        const project = document.getElementById('project').value;
+        const achievements = document.getElementById('achievements').value;
+        const goals = document.getElementById('goals').value;
+        const linkedin = document.getElementById('linkedin').value;
+        const naukri = document.getElementById('naukri').value;
+        const references = document.getElementById('references').value;
+
+        // Get image file
+        const image = document.getElementById('image').files[0];
+        const reader = new FileReader();
+        reader.onloadend = function() {
+            // Check if all fields are filled
+            if (name && contact && email && study && summary && experience && project && achievements && goals && linkedin && naukri && references) {
+                // Display generated resume
+                document.getElementById('resumeOutput').classList.remove('hidden');
+                document.getElementById('resumeButtons').classList.remove('hidden');
+                document.getElementById('formContainer').classList.add('hidden');
+
+                // Insert values into resume
+                document.getElementById('resumeName').innerText = name;
+                document.getElementById('resumeContact').innerText = `Contact: ${contact}`;
+                document.getElementById('resumeEmail').innerText = `Email: ${email}`;
+                document.getElementById('resumeStudy').innerText = `Education: ${study}`;
+                document.getElementById('resumeSummary').innerText = summary;
+                document.getElementById('resumeExperience').innerText = experience;
+                document.getElementById('resumeProject').innerText = project;
+                document.getElementById('resumeAchievements').innerText = achievements;
+                document.getElementById('resumeGoals').innerText = goals;
+                document.getElementById('resumeLinkedin').href = linkedin;
+                document.getElementById('resumeNaukri').href = naukri;
+                document.getElementById('resumeReferences').innerText = references;
+                document.getElementById('resumeImage').src = reader.result;
+            } else {
+                alert("Please fill all fields before generating the resume.");
+            }
+        };
+        if (image) {
+            reader.readAsDataURL(image);
+        }
+    }
+
+    function modifyResume() {
+        // Hide resume and show form
+        document.getElementById('resumeOutput').classList.add('hidden');
+        document.getElementById('resumeButtons').classList.add('hidden');
+        document.getElementById('formContainer').classList.remove('hidden');
+    }
+
+    function downloadResume() {
+        const element = document.getElementById('resumeOutput');
+        html2pdf()
+            .from(element)
+            .save()
+            .then(() => {
+                // After download, show the form again
+                modifyResume();
+            });
+    }
+</script>
+
+<!-- PDF Generation Library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+</body>
+</html> 

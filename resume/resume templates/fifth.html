@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Builder</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans&family=Playfair+Display&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --text-color: #333;
+            --light-bg: #f9f9f9;
+        }
+        
+        body {
+            font-family: 'Open Sans', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: var(--text-color);
+        }
+        
+        .builder-container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .input-section {
+            width: 45%;
+            padding: 30px;
+            background: var(--light-bg);
+            overflow-y: auto;
+            height: 100vh;
+        }
+        
+        .preview-section {
+            width: 55%;
+            padding: 30px;
+            background: white;
+            overflow-y: auto;
+            height: 100vh;
+            position: relative;
+        }
+        
+        h1 {
+            text-align: center;
+            color: var(--primary-color);
+            font-family: 'Montserrat', sans-serif;
+            margin-bottom: 30px;
+        }
+        
+        h2 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 8px;
+            font-family: 'Montserrat', sans-serif;
+            margin-top: 30px;
+        }
+        
+        h3 {
+            color: var(--primary-color);
+            margin-top: 25px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-family: 'Open Sans', sans-serif;
+        }
+        
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        button {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 15px;
+            font-family: 'Montserrat', sans-serif;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+        
+        .resume {
+            font-family: var(--resume-font, 'Open Sans');
+            width: 100%;
+            background: white;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            position: relative;
+            margin-bottom: 20px;
+        }
+        
+        .resume-header {
+            background-color: var(--resume-accent, #2c3e50);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .resume-header h1 {
+            font-size: var(--name-size, 36px);
+            margin: 0;
+            font-weight: 700;
+            letter-spacing: 2px;
+            font-family: var(--header-font, 'Montserrat');
+            text-transform: uppercase;
+        }
+        
+        .resume-header h2 {
+            font-size: var(--title-size, 20px);
+            margin: 10px 0 0;
+            font-weight: 400;
+            border: none;
+            color: white;
+        }
+        
+        .resume-body {
+            padding: 40px;
+            display: flex;
+        }
+        
+        .resume-left {
+            width: 35%;
+            padding-right: 30px;
+        }
+        
+        .resume-right {
+            width: 65%;
+        }
+        
+        .resume-section {
+            margin-bottom: 30px;
+        }
+        
+        .resume-section h3 {
+            color: var(--resume-accent, #2c3e50);
+            border-bottom: 2px solid var(--resume-accent, #2c3e50);
+            padding-bottom: 5px;
+            font-size: var(--section-heading-size, 18px);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .resume-item {
+            margin-bottom: 20px;
+        }
+        
+        .resume-item h4 {
+            margin: 0 0 5px;
+            font-size: var(--item-heading-size, 16px);
+        }
+        
+        .resume-item p {
+            margin: 5px 0;
+            font-size: var(--text-size, 14px);
+        }
+        
+        .resume-item .date {
+            color: #777;
+            font-style: italic;
+        }
+        
+        ul.resume-list {
+            padding-left: 20px;
+            list-style-type: var(--bullet-style, square);
+        }
+        
+        ul.resume-list li {
+            margin-bottom: 8px;
+            font-size: var(--text-size, 14px);
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .tab-container {
+            display: flex;
+            margin-bottom: 25px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .tab {
+            padding: 12px 25px;
+            background: #eee;
+            cursor: pointer;
+            margin-right: 5px;
+            border-radius: 4px 4px 0 0;
+            font-family: 'Montserrat', sans-serif;
+            transition: all 0.3s;
+        }
+        
+        .tab.active {
+            background: var(--secondary-color);
+            color: white;
+        }
+        
+        .tab:hover:not(.active) {
+            background: #ddd;
+        }
+        
+        .style-controls {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .style-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .style-group {
+            flex: 1;
+        }
+        
+        .download-btn {
+            background: #27ae60;
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 100;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+        
+        .download-btn:hover {
+            background: #219653;
+            transform: translateY(-2px) scale(1.02);
+        }
+        
+        .button-container {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .button-container button {
+            flex: 1;
+        }
+        
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .resume, .resume * {
+                visibility: visible;
+            }
+            .resume {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Resume Builder</h1>
+    
+    <div class="builder-container">
+        <div class="input-section">
+            <div class="tab-container">
+                <div class="tab active" onclick="showTab('personal')">Personal</div>
+                <div class="tab" onclick="showTab('professional')">Professional</div>
+                <div class="tab" onclick="showTab('education')">Education</div>
+                <div class="tab" onclick="showTab('experience')">Experience</div>
+            </div>
+            
+            <div class="style-controls">
+                <h3>Style Customization</h3>
+                <div class="style-row">
+                    <div class="style-group">
+                        <label for="resume-font">Font Family</label>
+                        <select id="resume-font" onchange="updateStyle()">
+                            <option value="'Open Sans', sans-serif">Open Sans</option>
+                            <option value="'Montserrat', sans-serif">Montserrat</option>
+                            <option value="'Times New Roman', serif">Times New Roman</option>
+                            <option value="Arial, sans-serif">Arial</option>
+                            <option value="'Playfair Display', serif">Playfair Display</option>
+                        </select>
+                    </div>
+                    <div class="style-group">
+                        <label for="header-font">Header Font</label>
+                        <select id="header-font" onchange="updateStyle()">
+                            <option value="'Montserrat', sans-serif">Montserrat</option>
+                            <option value="'Playfair Display', serif">Playfair Display</option>
+                            <option value="'Open Sans', sans-serif">Open Sans</option>
+                            <option value="Arial, sans-serif">Arial</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="style-row">
+                    <div class="style-group">
+                        <label for="resume-accent">Accent Color</label>
+                        <input type="color" id="resume-accent" value="#2c3e50" onchange="updateStyle()">
+                    </div>
+                    <div class="style-group">
+                        <label for="bullet-style">Bullet Style</label>
+                        <select id="bullet-style" onchange="updateStyle()">
+                            <option value="square">Square</option>
+                            <option value="disc">Disc</option>
+                            <option value="circle">Circle</option>
+                            <option value="'- '">Dash</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="style-row">
+                    <div class="style-group">
+                        <label for="name-size">Name Size (px)</label>
+                        <input type="range" id="name-size" min="24" max="60" value="36" oninput="updateStyle()">
+                    </div>
+                    <div class="style-group">
+                        <label for="title-size">Title Size (px)</label>
+                        <input type="range" id="title-size" min="14" max="30" value="20" oninput="updateStyle()">
+                    </div>
+                </div>
+            </div>
+            
+            <div id="personal-tab" class="tab-content">
+                <h2>Personal Information</h2>
+                <div class="form-group">
+                    <label for="first-name">First Name</label>
+                    <input type="text" id="first-name" placeholder="Olivia">
+                </div>
+                <div class="form-group">
+                    <label for="last-name">Last Name</label>
+                    <input type="text" id="last-name" placeholder="Wilson">
+                </div>
+                <div class="form-group">
+                    <label for="job-title">Job Title</label>
+                    <input type="text" id="job-title" placeholder="Student">
+                </div>
+                
+                <h3>Contact Information</h3>
+                <div class="form-group">
+                    <label for="phone">Phone</label>
+                    <input type="text" id="phone" placeholder="(123) 456-7890">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="text" id="email" placeholder="hello@realtygreatsite.com">
+                </div>
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <input type="text" id="address" placeholder="123 Anywhere St., Any City, State, Country 12345">
+                </div>
+            </div>
+            
+            <div id="professional-tab" class="tab-content hidden">
+                <h2>Professional Profile</h2>
+                <div class="form-group">
+                    <textarea id="profile">I consider myself a responsible and orderly person. I am looking forward to my first work experience.</textarea>
+                </div>
+                
+                <h2>Languages</h2>
+                <div class="form-group">
+                    <label>List your languages (one per line)</label>
+                    <textarea id="languages">Native English
+Advanced Spanish</textarea>
+                </div>
+                
+                <h2>Computer Skills</h2>
+                <div class="form-group">
+                    <label>List your computer skills (one per line)</label>
+                    <textarea id="computer-skills">Text processor
+Spreadsheet
+Slide presentation</textarea>
+                </div>
+            </div>
+            
+            <div id="education-tab" class="tab-content hidden">
+                <h2>Education</h2>
+                
+                <div class="form-group">
+                    <label for="education1-degree">Degree</label>
+                    <input type="text" id="education1-degree" placeholder="Business Administration">
+                </div>
+                <div class="form-group">
+                    <label for="education1-school">School</label>
+                    <input type="text" id="education1-school" placeholder="MILEMORA UNIVERSITY">
+                </div>
+                <div class="form-group">
+                    <label for="education1-years">Years</label>
+                    <input type="text" id="education1-years" placeholder="2017-2021">
+                </div>
+                <div class="form-group">
+                    <label for="education1-description">Description</label>
+                    <textarea id="education1-description">Business Administration career, in progress.</textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="education2-degree">Degree (Optional)</label>
+                    <input type="text" id="education2-degree" placeholder="">
+                </div>
+                <div class="form-group">
+                    <label for="education2-school">School (Optional)</label>
+                    <input type="text" id="education2-school" placeholder="BRAVERSHIRE COLLEGE">
+                </div>
+                <div class="form-group">
+                    <label for="education2-years">Years (Optional)</label>
+                    <input type="text" id="education2-years" placeholder="">
+                </div>
+                <div class="form-group">
+                    <label for="education2-description">Description (Optional)</label>
+                    <textarea id="education2-description"></textarea>
+                </div>
+            </div>
+            
+            <div id="experience-tab" class="tab-content hidden">
+                <h2>Experience</h2>
+                
+                <div class="form-group">
+                    <label for="experience1-org">Organization</label>
+                    <input type="text" id="experience1-org" placeholder="VELVERAL FOODS INC.">
+                </div>
+                <div class="form-group">
+                    <label for="experience1-position">Position</label>
+                    <input type="text" id="experience1-position" placeholder="Volunteer">
+                </div>
+                <div class="form-group">
+                    <label for="experience1-years">Years</label>
+                    <input type="text" id="experience1-years" placeholder="">
+                </div>
+                <div class="form-group">
+                    <label for="experience1-description">Description</label>
+                    <textarea id="experience1-description">Participation in collections to distribute in low-income schools.</textarea>
+                </div>
+                
+                <h3>Additional Experience (Optional)</h3>
+                <div class="form-group">
+                    <label for="experience2-org">Organization</label>
+                    <input type="text" id="experience2-org" placeholder="">
+                </div>
+                <div class="form-group">
+                    <label for="experience2-position">Position</label>
+                    <input type="text" id="experience2-position" placeholder="">
+                </div>
+                <div class="form-group">
+                    <label for="experience2-years">Years</label>
+                    <input type="text" id="experience2-years" placeholder="">
+                </div>
+                <div class="form-group">
+                    <label for="experience2-description">Description</label>
+                    <textarea id="experience2-description"></textarea>
+                </div>
+            </div>
+            
+            <div class="button-container">
+                <button onclick="generateResume()">Update Preview</button>
+                <button onclick="printResume()">Print Resume</button>
+            </div>
+        </div>
+        
+        <div class="preview-section">
+            <div id="resume-preview" class="resume">
+                <!-- Preview will be generated here -->
+            </div>
+            <button onclick="downloadResume()" class="download-btn">
+                <i class="fas fa-download"></i> Download PDF
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Global variables for styling
+        let currentStyles = {
+            font: "'Open Sans', sans-serif",
+            headerFont: "'Montserrat', sans-serif",
+            accentColor: "#2c3e50",
+            bulletStyle: "square",
+            nameSize: "36px",
+            titleSize: "20px",
+            sectionHeadingSize: "18px",
+            itemHeadingSize: "16px",
+            textSize: "14px"
+        };
+        
+        function showTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.add('hidden');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show the selected tab content
+            document.getElementById(tabName + '-tab').classList.remove('hidden');
+            
+            // Add active class to the clicked tab
+            event.currentTarget.classList.add('active');
+        }
+        
+        function updateStyle() {
+            // Get style values from controls
+            currentStyles.font = document.getElementById("resume-font").value;
+            currentStyles.headerFont = document.getElementById("header-font").value;
+            currentStyles.accentColor = document.getElementById("resume-accent").value;
+            currentStyles.bulletStyle = document.getElementById("bullet-style").value;
+            currentStyles.nameSize = document.getElementById("name-size").value + "px";
+            currentStyles.titleSize = document.getElementById("title-size").value + "px";
+            
+            // Update the preview
+            generateResume();
+        }
+        
+        function generateResume() {
+            // Get personal information
+            const firstName = document.getElementById("first-name").value || "Olivia";
+            const lastName = document.getElementById("last-name").value || "Wilson";
+            const jobTitle = document.getElementById("job-title").value || "Student";
+            const phone = document.getElementById("phone").value || "(123) 456-7890";
+            const email = document.getElementById("email").value || "hello@realtygreatsite.com";
+            const address = document.getElementById("address").value || "123 Anywhere St., Any City, State, Country 12345";
+            
+            // Get professional information
+            const profile = document.getElementById("profile").value || "I consider myself a responsible and orderly person. I am looking forward to my first work experience.";
+            const languages = document.getElementById("languages").value.split('\n').filter(lang => lang.trim() !== '');
+            const computerSkills = document.getElementById("computer-skills").value.split('\n').filter(skill => skill.trim() !== '');
+            
+            // Get education information
+            const edu1Degree = document.getElementById("education1-degree").value || "Business Administration";
+            const edu1School = document.getElementById("education1-school").value || "MILEMORA UNIVERSITY";
+            const edu1Years = document.getElementById("education1-years").value || "2017-2021";
+            const edu1Desc = document.getElementById("education1-description").value || "Business Administration career, in progress.";
+            
+            const edu2Degree = document.getElementById("education2-degree").value;
+            const edu2School = document.getElementById("education2-school").value;
+            const edu2Years = document.getElementById("education2-years").value;
+            const edu2Desc = document.getElementById("education2-description").value;
+            
+            // Get experience information
+            const exp1Org = document.getElementById("experience1-org").value || "VELVERAL FOODS INC.";
+            const exp1Position = document.getElementById("experience1-position").value || "Volunteer";
+            const exp1Years = document.getElementById("experience1-years").value;
+            const exp1Desc = document.getElementById("experience1-description").value || "Participation in collections to distribute in low-income schools.";
+            
+            const exp2Org = document.getElementById("experience2-org").value;
+            const exp2Position = document.getElementById("experience2-position").value;
+            const exp2Years = document.getElementById("experience2-years").value;
+            const exp2Desc = document.getElementById("experience2-description").value;
+            
+            // Generate the resume preview
+            const resumePreview = document.getElementById("resume-preview");
+            resumePreview.innerHTML = `
+                <style>
+                    .resume {
+                        font-family: ${currentStyles.font};
+                    }
+                    .resume-header {
+                        background-color: ${currentStyles.accentColor};
+                    }
+                    .resume-header h1 {
+                        font-family: ${currentStyles.headerFont};
+                        font-size: ${currentStyles.nameSize};
+                    }
+                    .resume-header h2 {
+                        font-size: ${currentStyles.titleSize};
+                    }
+                    .resume-section h3 {
+                        color: ${currentStyles.accentColor};
+                        border-bottom-color: ${currentStyles.accentColor};
+                        font-size: ${currentStyles.sectionHeadingSize};
+                    }
+                    .resume-item h4 {
+                        font-size: ${currentStyles.itemHeadingSize};
+                    }
+                    .resume-item p, ul.resume-list li {
+                        font-size: ${currentStyles.textSize};
+                    }
+                    ul.resume-list {
+                        list-style-type: ${currentStyles.bulletStyle};
+                    }
+                </style>
+                
+                <div class="resume-header">
+                    <h1>${firstName.toUpperCase()} ${lastName.toUpperCase()}</h1>
+                    <h2>${jobTitle}</h2>
+                </div>
+                
+                <div class="resume-body">
+                    <div class="resume-left">
+                        <div class="resume-section">
+                            <h3>Contact Me</h3>
+                            <div class="resume-item">
+                                <p>${phone}</p>
+                                <p>${email}</p>
+                                <p>${address}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="resume-section">
+                            <h3>Language</h3>
+                            <ul class="resume-list">
+                                ${languages.map(lang => `<li>${lang}</li>`).join('')}
+                            </ul>
+                        </div>
+                        
+                        <div class="resume-section">
+                            <h3>Computer Skills</h3>
+                            <ul class="resume-list">
+                                ${computerSkills.map(skill => `<li>${skill}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="resume-right">
+                        <div class="resume-section">
+                            <h3>Profile</h3>
+                            <p>${profile}</p>
+                        </div>
+                        
+                        <div class="resume-section">
+                            <h3>Education</h3>
+                            <div class="resume-item">
+                                <h4>${edu1Degree}</h4>
+                                <p>${edu1School}</p>
+                                <p class="date">${edu1Years}</p>
+                                <p>${edu1Desc}</p>
+                            </div>
+                            ${edu2School ? `
+                            <div class="resume-item">
+                                <h4>${edu2Degree}</h4>
+                                <p>${edu2School}</p>
+                                ${edu2Years ? `<p class="date">${edu2Years}</p>` : ''}
+                                ${edu2Desc ? `<p>${edu2Desc}</p>` : ''}
+                            </div>
+                            ` : ''}
+                        </div>
+                        
+                        <div class="resume-section">
+                            <h3>Experience</h3>
+                            <div class="resume-item">
+                                <h4>${exp1Org}</h4>
+                                ${exp1Position ? `<p><em>${exp1Position}</em></p>` : ''}
+                                ${exp1Years ? `<p class="date">${exp1Years}</p>` : ''}
+                                <p>${exp1Desc}</p>
+                            </div>
+                            ${exp2Org ? `
+                            <div class="resume-item">
+                                <h4>${exp2Org}</h4>
+                                ${exp2Position ? `<p><em>${exp2Position}</em></p>` : ''}
+                                ${exp2Years ? `<p class="date">${exp2Years}</p>` : ''}
+                                <p>${exp2Desc}</p>
+                            </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Scroll to top of preview
+            document.querySelector('.preview-section').scrollTop = 0;
+        }
+        
+        function downloadResume() {
+            // Generate the resume first to ensure it's up to date
+            generateResume();
+            
+            // Create a clone of the resume element to avoid modifying the original
+            const element = document.getElementById('resume-preview');
+            const clone = element.cloneNode(true);
+            
+            // Remove the download button from the clone
+            const buttons = clone.querySelectorAll('button');
+            buttons.forEach(button => button.remove());
+            
+            // Create a temporary container for the clone
+            const tempContainer = document.createElement('div');
+            tempContainer.appendChild(clone);
+            tempContainer.style.visibility = 'hidden';
+            document.body.appendChild(tempContainer);
+            
+            // Options for the PDF
+            const opt = {
+                margin: 10,
+                filename: `${document.getElementById("first-name").value || 'resume'}_${document.getElementById("last-name").value || ''}.pdf`,
+                image: { 
+                    type: 'jpeg', 
+                    quality: 0.98 
+                },
+                html2canvas: { 
+                    scale: 2,
+                    letterRendering: true,
+                    useCORS: true,
+                    scrollX: 0,
+                    scrollY: 0,
+                    windowWidth: clone.scrollWidth
+                },
+                jsPDF: { 
+                    unit: 'mm', 
+                    format: 'a4', 
+                    orientation: 'portrait' 
+                }
+            };
+            
+            // Generate the PDF
+            html2pdf()
+                .set(opt)
+                .from(clone)
+                .save()
+                .then(() => {
+                    // Clean up by removing the temporary container
+                    document.body.removeChild(tempContainer);
+                });
+        }
+        
+        function printResume() {
+            generateResume();
+            window.print();
+        }
+        
+        // Initialize the form with sample data
+        function initializeForm() {
+            document.getElementById("first-name").value = "Olivia";
+            document.getElementById("last-name").value = "Wilson";
+            document.getElementById("job-title").value = "Student";
+            document.getElementById("phone").value = "(123) 456-7890";
+            document.getElementById("email").value = "hello@realtygreatsite.com";
+            document.getElementById("address").value = "123 Anywhere St., Any City, State, Country 12345";
+            
+            document.getElementById("profile").value = "I consider myself a responsible and orderly person. I am looking forward to my first work experience.";
+            
+            document.getElementById("education1-degree").value = "Business Administration";
+            document.getElementById("education1-school").value = "MILEMORA UNIVERSITY";
+            document.getElementById("education1-years").value = "2017-2021";
+            document.getElementById("education1-description").value = "Business Administration career, in progress.";
+            
+            document.getElementById("experience1-org").value = "VELVERAL FOODS INC.";
+            document.getElementById("experience1-position").value = "Volunteer";
+            document.getElementById("experience1-description").value = "Participation in collections to distribute in low-income schools.";
+            
+            // Generate initial preview
+            generateResume();
+        }
+        
+        // Initialize when page loads
+        window.onload = initializeForm;
+    </script>
+</body>
+</html>
